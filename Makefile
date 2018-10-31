@@ -1,7 +1,8 @@
 PLATFORM ?= generic
 
-HEADERS  =
-OBJECTS  =
+HEADERS  = mp-types.h mp-core.h
+OBJECTS  = mp-$(PLATFORM).o
+OBJECTS += mp-mul.o
 
 NAME     = mp
 VERSION  = 0
