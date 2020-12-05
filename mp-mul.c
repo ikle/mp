@@ -19,14 +19,12 @@ mp_word mp_mul (mp_word *r, const mp_word *x, size_t xlen,
 
 	c = mp_mul_1 (r, x, xlen, a);
 
-	r++[xlen] = c;
-
 	for (i = 1; i < ylen; ++i) {
+		r++[xlen] = c;
+
 		a = y[i];
 
 		c = mp_addmul_1 (r, x, xlen, a);
-
-		r++[xlen] = c;
 	}
 
 	return c;
