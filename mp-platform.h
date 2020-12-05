@@ -120,6 +120,23 @@ mp_word mp_msc_umul (mp_word *r, mp_word x, mp_word y)
 #endif  /* ICC ≥ 13.0 */
 
 /*
+ * GCC-specific checks
+ */
+
+#if defined(__GNUC__)
+#if defined(__x86_64__) || defined (__i386__)
+
+#include <x86intrin.h>
+
+#ifdef _ADXINTRIN_H_INCLUDED
+
+#define HAS_ADDCARRY
+
+#endif  /* ADX */
+#endif
+#endif  /* GCC */
+
+/*
  * GCC checked
  */
 
