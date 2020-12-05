@@ -1,21 +1,21 @@
 /*
  * MP Core Multiplication
  *
- * Copyright (c) 2018 Alexei A. Smekalkine <ikle@ikle.ru>
+ * Copyright (c) 2018-2020 Alexei A. Smekalkine <ikle@ikle.ru>
  *
  * SPDX-License-Identifier: BSD-2-Clause
  */
 
 #include <mp/core.h>
 
+/*
+ * Constrains: xlen >= ylen > 0
+ */
 mp_word mp_mul (mp_word *r, const mp_word *x, size_t xlen,
 			    const mp_word *y, size_t ylen)
 {
 	mp_word c;
 	size_t i;
-
-	if (ylen == 0)
-		return 0;
 
 	c = mp_mul_1 (r, x, xlen, y[0]);
 

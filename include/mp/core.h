@@ -1,7 +1,7 @@
 /*
  * MP Core
  *
- * Copyright (c) 2014-2018 Alexei A. Smekalkine <ikle@ikle.ru>
+ * Copyright (c) 2014-2020 Alexei A. Smekalkine <ikle@ikle.ru>
  *
  * SPDX-License-Identifier: BSD-2-Clause
  */
@@ -28,6 +28,7 @@ char mp_neg (mp_word *r, const mp_word *x, size_t count);
 mp_word mp_mul_1 (mp_word *r, const mp_word *x, size_t count, mp_word y);
 mp_word mp_addmul_1 (mp_word *r, const mp_word *x, size_t count, mp_word y);
 
+/* xlen >= ylen > 0 */
 mp_word mp_mul (mp_word *r, const mp_word *x, size_t xlen,
 			    const mp_word *y, size_t ylen);
 
