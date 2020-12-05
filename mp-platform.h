@@ -166,8 +166,8 @@ mp_word mp_msc_umul (mp_word *r, mp_word x, mp_word y)
 
 #if MP_WORD_BITS == 64
 
-#define MP_ADDC(r, c, x, y)  _addcarry_u64  ((c), (x), (y), (r))
-#define MP_SUBB(r, c, x, y)  _subborrow_u64 ((c), (x), (y), (r))
+#define MP_ADDC(r, c, x, y)  _addcarry_u64  ((c), (x), (y), (void *) (r))
+#define MP_SUBB(r, c, x, y)  _subborrow_u64 ((c), (x), (y), (void *) (r))
 
 #elif MP_WORD_BITS == 32
 
