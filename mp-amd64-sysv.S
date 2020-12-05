@@ -61,9 +61,8 @@ entry mp_add_1
 #define I	%r8
 
 	xor	I, I
-	mov     (X), %rax
-	add	Y, %rax
-	mov	%rax, (R)
+	add	(X), Y
+	mov	Y, (R)
 	inc	I
 	dec	COUNT
 	jz	1f
