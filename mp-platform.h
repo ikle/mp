@@ -32,18 +32,18 @@
 #if __has_builtin(__builtin_addcl)
 
 static inline
-char mp_clang_addc (mp_word *r, int c, mp_word x, mp_word y)
+mp_word mp_clang_addc (mp_word *r, int c, mp_word x, mp_word y)
 {
-	char cout;
+	mp_word cout;
 
 	*r = __builtin_addcl (x, y, c, &cout);
 	return cout;
 }
 
 static inline
-char mp_clang_subb (mp_word *r, int c, mp_word x, mp_word y)
+mp_word mp_clang_subb (mp_word *r, int c, mp_word x, mp_word y)
 {
-	char cout;
+	mp_word cout;
 
 	*r = __builtin_subcl (x, y, c, &cout);
 	return cout;
