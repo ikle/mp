@@ -6,8 +6,22 @@
  * SPDX-License-Identifier: BSD-2-Clause
  */
 
+#include <string.h>
+
 #include <mp/core.h>
 #include <mp/platform.h>
+
+static inline mp_word mp_zero (mp_word *r, size_t count)
+{
+	memset (r, 0, count * sizeof (*r));
+	return 0;
+}
+
+static inline mp_word mp_copy (mp_word *r, const mp_word *x, size_t count)
+{
+	memcpy (r, x, count * sizeof (*r));
+	return 0;
+}
 
 char mp_add_n (mp_word *r, const mp_word *x, const mp_word *y, size_t count)
 {
@@ -103,6 +117,11 @@ mp_word mp_mul_1 (mp_word *r, const mp_word *x, size_t count, mp_word y)
 	size_t i;
 	mp_word c;
 
+#if 0
+	if (y <= 1)
+		return y < 1 ? mp_zero (r, count) : mp_copy (r, x, count);
+#endif
+
 	for (i = 0, c = 0; i < count; ++i)
 		c = mp_word_mul_add (r + i, x[i], y, c);
 
@@ -113,6 +132,11 @@ mp_word mp_addmul_1 (mp_word *r, const mp_word *x, size_t count, mp_word y)
 {
 	size_t i;
 	mp_word c, a;
+
+#if 0
+	if (y <= 1)
+		return y < 1 ? 0 : mp_add_n (r, r, x, count);
+#endif
 
 	for (i = 0, c = 0; i < count; ++i) {
 		c  = mp_word_mul_add (&a, x[i], y, c);
