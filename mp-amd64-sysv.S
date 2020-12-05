@@ -250,12 +250,14 @@ entry mp_neg
 #define X	%rsi
 #define COUNT	%rdx
 #define I	%rcx
+#define Z	%r8
 
 	test	COUNT, COUNT
 	jz	1f
 	xor	I, I		/* and reset input carry */
+	mov	I, Z
 head 2
-	mov	$0, %rax
+	mov	Z, %rax
 	sbb	(X, I, 8), %rax
 	mov	%rax, (R, I, 8)
 	inc	I
