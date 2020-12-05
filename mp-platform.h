@@ -31,12 +31,23 @@
 
 #if __has_builtin(__builtin_addcl)
 
+#if (sizeof (int) * CHAR_BIT) == MP_WORD_BITS
+#define MP_CLANG_ADDC(x, y, ci, co)	__builtin_addc ((x), (y), (ci), (co))
+#define MP_CLANG_SUBB(x, y, ci, co)	__builtin_subc ((x), (y), (ci), (co))
+#elif (sizeof (long) * CHAR_BIT) == MP_WORD_BITS
+#define MP_CLANG_ADDC(x, y, ci, co)	__builtin_addcl ((x), (y), (ci), (co))
+#define MP_CLANG_SUBB(x, y, ci, co)	__builtin_subcl ((x), (y), (ci), (co))
+#else
+#define MP_CLANG_ADDC(x, y, ci, co)	__builtin_addcll ((x), (y), (ci), (co))
+#define MP_CLANG_SUBB(x, y, ci, co)	__builtin_subcll ((x), (y), (ci), (co))
+#endif
+
 static inline
 mp_word mp_clang_addc (mp_word *r, int c, mp_word x, mp_word y)
 {
 	mp_word cout;
 
-	*r = __builtin_addcl (x, y, c, &cout);
+	*r = MP_CLANG_ADDC (x, y, c, &cout);
 	return cout;
 }
 
@@ -45,7 +56,7 @@ mp_word mp_clang_subb (mp_word *r, int c, mp_word x, mp_word y)
 {
 	mp_word cout;
 
-	*r = __builtin_subcl (x, y, c, &cout);
+	*r = MP_CLANG_SUBB (x, y, c, &cout);
 	return cout;
 }
 
