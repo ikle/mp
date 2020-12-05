@@ -228,7 +228,7 @@ mp_word mp_word_mul (mp_word *r, mp_word x, mp_word y)
 #ifdef MP_UMUL
 	return MP_UMUL (r, x, y);
 #else
-	mp_dword a = (mp_dword) x * (mp_dword) y;
+	mp_dword a = (mp_dword) x * y;
 	*r = a;
 	return a >> MP_WORD_BITS;
 #endif
