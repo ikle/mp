@@ -99,17 +99,8 @@ mp_word mp_msc_umul (mp_word *r, mp_word x, mp_word y)
 
 #include <intrin.h>
 
-#if MP_WORD_BITS == 64
+#define HAS_ADDCARRY
 
-#define MP_ADDC(r, c, x, y)  _addcarry_u64  ((c), (x), (y), (r))
-#define MP_SUBB(r, c, x, y)  _subborrow_u64 ((c), (x), (y), (r))
-
-#elif MP_WORD_BITS == 32
-
-#define MP_ADDC(r, c, x, y)  _addcarry_u32  ((c), (x), (y), (r))
-#define MP_SUBB(r, c, x, y)  _subborrow_u32 ((c), (x), (y), (r))
-
-#endif
 #endif  /* MP_ADDC */
 #endif  /* MSC ≥ 18.0 (VS ≥ 2013) */
 
@@ -123,17 +114,8 @@ mp_word mp_msc_umul (mp_word *r, mp_word x, mp_word y)
 
 #include <immintrin.h>
 
-#if MP_WORD_BITS == 64
+#define HAS_ADDCARRY
 
-#define MP_ADDC(r, c, x, y)  _addcarry_u64  ((c), (x), (y), (r))
-#define MP_SUBB(r, c, x, y)  _subborrow_u64 ((c), (x), (y), (r))
-
-#elif MP_WORD_BITS == 32
-
-#define MP_ADDC(r, c, x, y)  _addcarry_u32  ((c), (x), (y), (r))
-#define MP_SUBB(r, c, x, y)  _subborrow_u32 ((c), (x), (y), (r))
-
-#endif
 #endif  /* MP_ADDC */
 #endif  /* ICC ≥ 13.0 */
 
@@ -147,6 +129,25 @@ mp_word mp_msc_umul (mp_word *r, mp_word x, mp_word y)
 #define MP_SUB(r, x, y)  __builtin_sub_overflow ((x), (y), (r))
 
 #endif
+
+/*
+ * addcarry
+ */
+
+#if !defined(MP_ADDC) && defined(HAS_ADDCARRY)
+
+#if MP_WORD_BITS == 64
+
+#define MP_ADDC(r, c, x, y)  _addcarry_u64  ((c), (x), (y), (r))
+#define MP_SUBB(r, c, x, y)  _subborrow_u64 ((c), (x), (y), (r))
+
+#elif MP_WORD_BITS == 32
+
+#define MP_ADDC(r, c, x, y)  _addcarry_u32  ((c), (x), (y), (r))
+#define MP_SUBB(r, c, x, y)  _subborrow_u32 ((c), (x), (y), (r))
+
+#endif
+#endif  /* adcarry */
 
 /*
  * Core functions
