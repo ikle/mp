@@ -9,7 +9,7 @@
 #ifndef MP_PLATFORM_H
 #define MP_PLATFORM_H  1
 
-#include "mp-types.h"
+#include <mp/types.h>
 
 /*
  * GCC-specific checks

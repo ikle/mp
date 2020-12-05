@@ -6,8 +6,8 @@
  * SPDX-License-Identifier: BSD-2-Clause
  */
 
-#include "mp-core.h"
-#include "mp-platform.h"
+#include <mp/core.h>
+#include <mp/platform.h>
 
 char mp_add_n (mp_word *r, const mp_word *x, const mp_word *y, size_t count)
 {

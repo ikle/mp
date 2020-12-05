@@ -8,7 +8,7 @@
 
 #include <string.h>
 
-#include "mp-core.h"
+#include <mp/core.h>
 
 static inline
 mp_word mp_zero (mp_word *r, size_t count)

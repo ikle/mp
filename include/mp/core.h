@@ -10,7 +10,8 @@
 #define MP_CORE_H  1
 
 #include <stddef.h>
-#include "mp-types.h"
+
+#include <mp/types.h>
 
 char mp_add_n (mp_word *r, const mp_word *x, const mp_word *y, size_t count);
 char mp_add_1 (mp_word *r, const mp_word *x, size_t count, mp_word y);
