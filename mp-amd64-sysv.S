@@ -110,7 +110,7 @@ head 2
 	inc	I
 	dec	YLEN
 	jnz	2b
-	inc	XLEN
+	inc	XLEN		/* this magic required to save CF */
 	jmp	3f
 head 4
 	mov	(X, I, 8), %rax
@@ -222,7 +222,7 @@ head 2
 	inc	I
 	dec	YLEN
 	jnz	2b
-	inc	XLEN
+	inc	XLEN		/* this magic required to save CF */
 	jmp	3f
 head 4
 	mov	(X, I, 8), %rax
