@@ -104,6 +104,17 @@ digit_t mp_msc_umul (digit_t *r, digit_t x, digit_t y)
 
 #define MP_UMUL(r, x, y)  mp_msc_umul ((r), (x), (y))
 
+static inline
+digit_t mp_msc_udiv (digit_t *r, digit_t x1, digit_t x0, digit_t y)
+{
+	digit_t quo, rem;
+
+	*r = _udiv128 (x1, x0, y, &rem);
+	return rem;
+}
+
+#define MP_UDIV(r, x1, xo, y)  mp_msc_udiv ((r), (x1), (x0), (y))
+
 #endif  /* AMD64 or IA-64 */
 
 #ifndef MP_ADDC
@@ -252,6 +263,19 @@ digit_t mp_word_mul_add (digit_t *r, digit_t x, digit_t y, digit_t a)
 	digit_t l, h = mp_word_mul (&l, x, y);
 
 	return h + mp_word_add (r, l, a);
+}
+
+static inline
+digit_t mp_word_div (digit_t *r, digit_t x1, digit_t x0, digit_t y)
+{
+#ifdef MP_UMUL
+	return MP_UDIV (r, x1, x0, y);
+#else
+	digit_pair_t pair = ((digit_pair_t) x1 << MP_WORD_BITS) | x0;
+
+	*r = pair / y;
+	return pair % y;
+#endif
 }
 
 #endif  /* MP_PLATFORM_H */
