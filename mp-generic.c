@@ -1,7 +1,7 @@
 /*
  * MP Core Generic Implemention
  *
- * Copyright (c) 2014-2018 Alexei A. Smekalkine <ikle@ikle.ru>
+ * Copyright (c) 2014-2020 Alexei A. Smekalkine <ikle@ikle.ru>
  *
  * SPDX-License-Identifier: BSD-2-Clause
  */
@@ -11,19 +11,19 @@
 #include <mp/core.h>
 #include <mp/platform.h>
 
-static inline mp_word mp_zero (mp_word *r, size_t count)
+static inline digit_t mp_zero (digit_t *r, size_t count)
 {
 	memset (r, 0, count * sizeof (*r));
 	return 0;
 }
 
-static inline mp_word mp_copy (mp_word *r, const mp_word *x, size_t count)
+static inline digit_t mp_copy (digit_t *r, const digit_t *x, size_t count)
 {
 	memcpy (r, x, count * sizeof (*r));
 	return 0;
 }
 
-char mp_add_n (mp_word *r, const mp_word *x, const mp_word *y, size_t count)
+char mp_add_n (digit_t *r, const digit_t *x, const digit_t *y, size_t count)
 {
 	size_t i;
 	int c = 0;
@@ -34,7 +34,7 @@ char mp_add_n (mp_word *r, const mp_word *x, const mp_word *y, size_t count)
 	return c;
 }
 
-char mp_add_1 (mp_word *r, const mp_word *x, size_t count, mp_word y)
+char mp_add_1 (digit_t *r, const digit_t *x, size_t count, digit_t y)
 {
 	size_t i;
 	int c;
@@ -47,8 +47,8 @@ char mp_add_1 (mp_word *r, const mp_word *x, size_t count, mp_word y)
 	return c;
 }
 
-char mp_add (mp_word *r, const mp_word *x, size_t xlen,
-			 const mp_word *y, size_t ylen)
+char mp_add (digit_t *r, const digit_t *x, size_t xlen,
+			 const digit_t *y, size_t ylen)
 {
 	size_t i;
 	int c = 0;
@@ -62,7 +62,7 @@ char mp_add (mp_word *r, const mp_word *x, size_t xlen,
 	return c;
 }
 
-char mp_sub_n (mp_word *r, const mp_word *x, const mp_word *y, size_t count)
+char mp_sub_n (digit_t *r, const digit_t *x, const digit_t *y, size_t count)
 {
 	size_t i;
 	int c = 0;
@@ -73,7 +73,7 @@ char mp_sub_n (mp_word *r, const mp_word *x, const mp_word *y, size_t count)
 	return c;
 }
 
-char mp_sub_1 (mp_word *r, const mp_word *x, size_t count, mp_word y)
+char mp_sub_1 (digit_t *r, const digit_t *x, size_t count, digit_t y)
 {
 	size_t i;
 	int c;
@@ -86,8 +86,8 @@ char mp_sub_1 (mp_word *r, const mp_word *x, size_t count, mp_word y)
 	return c;
 }
 
-char mp_sub (mp_word *r, const mp_word *x, size_t xlen,
-			 const mp_word *y, size_t ylen)
+char mp_sub (digit_t *r, const digit_t *x, size_t xlen,
+			 const digit_t *y, size_t ylen)
 {
 	size_t i;
 	int c = 0;
@@ -101,7 +101,7 @@ char mp_sub (mp_word *r, const mp_word *x, size_t xlen,
 	return c;
 }
 
-char mp_neg (mp_word *r, const mp_word *x, size_t count)
+char mp_neg (digit_t *r, const digit_t *x, size_t count)
 {
 	size_t i;
 	int c = 0;
@@ -112,10 +112,10 @@ char mp_neg (mp_word *r, const mp_word *x, size_t count)
 	return c;
 }
 
-mp_word mp_mul_1 (mp_word *r, const mp_word *x, size_t count, mp_word y)
+digit_t mp_mul_1 (digit_t *r, const digit_t *x, size_t count, digit_t y)
 {
 	size_t i;
-	mp_word c;
+	digit_t c;
 
 #if 0
 	if (y <= 1)
@@ -128,10 +128,10 @@ mp_word mp_mul_1 (mp_word *r, const mp_word *x, size_t count, mp_word y)
 	return c;
 }
 
-mp_word mp_addmul_1 (mp_word *r, const mp_word *x, size_t count, mp_word y)
+digit_t mp_addmul_1 (digit_t *r, const digit_t *x, size_t count, digit_t y)
 {
 	size_t i;
-	mp_word c, a;
+	digit_t c, a;
 
 #if 0
 	if (y <= 1)

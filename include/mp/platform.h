@@ -43,18 +43,18 @@
 #endif
 
 static inline
-mp_word mp_clang_addc (mp_word *r, int c, mp_word x, mp_word y)
+digit_t mp_clang_addc (digit_t *r, int c, digit_t x, digit_t y)
 {
-	mp_word cout;
+	digit_t cout;
 
 	*r = MP_CLANG_ADDC (x, y, c, &cout);
 	return cout;
 }
 
 static inline
-mp_word mp_clang_subb (mp_word *r, int c, mp_word x, mp_word y)
+digit_t mp_clang_subb (digit_t *r, int c, digit_t x, digit_t y)
 {
-	mp_word cout;
+	digit_t cout;
 
 	*r = MP_CLANG_SUBB (x, y, c, &cout);
 	return cout;
@@ -94,9 +94,9 @@ mp_word mp_clang_subb (mp_word *r, int c, mp_word x, mp_word y)
 #include <intrin.h>
 
 static inline
-mp_word mp_msc_umul (mp_word *r, mp_word x, mp_word y)
+digit_t mp_msc_umul (digit_t *r, digit_t x, digit_t y)
 {
-	mp_word cout;
+	digit_t cout;
 
 	*r = _umul128 (x, y, &cout);
 	return cout;
@@ -182,7 +182,7 @@ mp_word mp_msc_umul (mp_word *r, mp_word x, mp_word y)
  */
 
 static inline
-char mp_word_add (mp_word *r, mp_word x, mp_word y)
+char mp_word_add (digit_t *r, digit_t x, digit_t y)
 {
 #if defined(MP_ADD)   
 	return MP_ADD (r, x, y);
@@ -195,7 +195,7 @@ char mp_word_add (mp_word *r, mp_word x, mp_word y)
 }
 
 static inline
-char mp_word_sub (mp_word *r, mp_word x, mp_word y)
+char mp_word_sub (digit_t *r, digit_t x, digit_t y)
 {
 #if defined(MP_SUB)   
 	return MP_SUB (r, x, y);
@@ -208,12 +208,12 @@ char mp_word_sub (mp_word *r, mp_word x, mp_word y)
 }
 
 static inline
-char mp_word_add_carry (mp_word *r, int c, mp_word x, mp_word y)
+char mp_word_add_carry (digit_t *r, int c, digit_t x, digit_t y)
 {
 #if defined(MP_ADDC)
 	return MP_ADDC (r, c, x, y);
 #else  
-	mp_word a;
+	digit_t a;
 
 	c = mp_word_add (&a, y, c);
 	return c + mp_word_add (r,  x, a);
@@ -221,12 +221,12 @@ char mp_word_add_carry (mp_word *r, int c, mp_word x, mp_word y)
 }
 
 static inline
-char mp_word_sub_borrow (mp_word *r, int c, mp_word x, mp_word y)
+char mp_word_sub_borrow (digit_t *r, int c, digit_t x, digit_t y)
 {
 #if defined(MP_SUBB)
 	return MP_SUBB (r, c, x, y);
 #else
-	mp_word a;
+	digit_t a;
 
 	c = mp_word_add (&a, y, c);
 	return c + mp_word_sub (r,  x, a);
@@ -234,7 +234,7 @@ char mp_word_sub_borrow (mp_word *r, int c, mp_word x, mp_word y)
 }
 
 static inline
-mp_word mp_word_mul (mp_word *r, mp_word x, mp_word y)
+digit_t mp_word_mul (digit_t *r, digit_t x, digit_t y)
 {
 #ifdef MP_UMUL
 	return MP_UMUL (r, x, y);
@@ -246,9 +246,9 @@ mp_word mp_word_mul (mp_word *r, mp_word x, mp_word y)
 }
 
 static inline
-mp_word mp_word_mul_add (mp_word *r, mp_word x, mp_word y, mp_word a)
+digit_t mp_word_mul_add (digit_t *r, digit_t x, digit_t y, digit_t a)
 {
-	mp_word l, h = mp_word_mul (&l, x, y);
+	digit_t l, h = mp_word_mul (&l, x, y);
 
 	return h + mp_word_add (r, l, a);
 }

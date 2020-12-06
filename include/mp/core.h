@@ -13,23 +13,23 @@
 
 #include <mp/types.h>
 
-char mp_add_n (mp_word *r, const mp_word *x, const mp_word *y, size_t count);
-char mp_add_1 (mp_word *r, const mp_word *x, size_t count, mp_word y);
-char mp_add (mp_word *r, const mp_word *x, size_t xlen,
-			 const mp_word *y, size_t ylen);
+char mp_add_n (digit_t *r, const digit_t *x, const digit_t *y, size_t count);
+char mp_add_1 (digit_t *r, const digit_t *x, size_t count, digit_t y);
+char mp_add (digit_t *r, const digit_t *x, size_t xlen,
+			 const digit_t *y, size_t ylen);
 
-char mp_sub_n (mp_word *r, const mp_word *x, const mp_word *y, size_t count);
-char mp_sub_1 (mp_word *r, const mp_word *x, size_t count, mp_word y);
-char mp_sub (mp_word *r, const mp_word *x, size_t xlen,
-			 const mp_word *y, size_t ylen);
+char mp_sub_n (digit_t *r, const digit_t *x, const digit_t *y, size_t count);
+char mp_sub_1 (digit_t *r, const digit_t *x, size_t count, digit_t y);
+char mp_sub (digit_t *r, const digit_t *x, size_t xlen,
+			 const digit_t *y, size_t ylen);
 
-char mp_neg (mp_word *r, const mp_word *x, size_t count);
+char mp_neg (digit_t *r, const digit_t *x, size_t count);
 
-mp_word mp_mul_1 (mp_word *r, const mp_word *x, size_t count, mp_word y);
-mp_word mp_addmul_1 (mp_word *r, const mp_word *x, size_t count, mp_word y);
+digit_t mp_mul_1 (digit_t *r, const digit_t *x, size_t count, digit_t y);
+digit_t mp_addmul_1 (digit_t *r, const digit_t *x, size_t count, digit_t y);
 
 /* xlen >= ylen > 0 */
-mp_word mp_mul (mp_word *r, const mp_word *x, size_t xlen,
-			    const mp_word *y, size_t ylen);
+digit_t mp_mul (digit_t *r, const digit_t *x, size_t xlen,
+			    const digit_t *y, size_t ylen);
 
 #endif  /* MP_CORE_H */

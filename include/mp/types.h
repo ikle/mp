@@ -1,7 +1,7 @@
 /*
  * MP Core Types
  *
- * Copyright (c) 2014-2018 Alexei A. Smekalkine <ikle@ikle.ru>
+ * Copyright (c) 2014-2020 Alexei A. Smekalkine <ikle@ikle.ru>
  *
  * SPDX-License-Identifier: BSD-2-Clause
  */
@@ -18,7 +18,7 @@
 
 #if ULONG_MAX > 0xfffffffful && defined(__SIZEOF_INT128__)
 
-typedef uint64_t mp_word;
+typedef uint64_t digit_t;
 typedef unsigned __int128 mp_dword;
 
 #define MP_WORD_SIZE  8
@@ -26,14 +26,14 @@ typedef unsigned __int128 mp_dword;
 
 #elif defined(_M_AMD64) || defined(_M_IA64)
 
-typedef uint64_t mp_word;
+typedef uint64_t digit_t;
 
 #define MP_WORD_SIZE  8
 #define MP_WORD_BITS  64
 
 #else
 
-typedef uint32_t mp_word;
+typedef uint32_t digit_t;
 typedef uint64_t mp_dword;
 
 #define MP_WORD_SIZE  4

@@ -1,7 +1,7 @@
 /*
  * MP Core AMD64 SysV ABI Implemention
  *
- * Copyright (c) 2014-2018 Alexei A. Smekalkine <ikle@ikle.ru>
+ * Copyright (c) 2014-2020 Alexei A. Smekalkine <ikle@ikle.ru>
  *
  * SPDX-License-Identifier: BSD-2-Clause
  */
@@ -18,7 +18,7 @@
 .endm
 
 /*
- * char mp_add_n (mp_word *r, const mp_word *x, const mp_word *y, size_t count)
+ * char mp_add_n (digit_t *r, const digit_t *x, const digit_t *y, size_t count)
  */
 
 entry mp_add_n
@@ -49,7 +49,7 @@ head 2
 #undef I
 
 /*
- * char mp_add_1 (mp_word *r, const mp_word *x, size_t count, mp_word y)
+ * char mp_add_1 (digit_t *r, const digit_t *x, size_t count, digit_t y)
  */
 
 entry mp_add_1
@@ -83,8 +83,8 @@ head 2
 #undef I
 
 /*
- * char mp_add (mp_word *r, const mp_word *x, size_t xlen,
- *			    const mp_word *y, size_t ylen)
+ * char mp_add (digit_t *r, const digit_t *x, size_t xlen,
+ *			    const digit_t *y, size_t ylen)
  *
  * NOTE: xlen ≥ ylen
  */
@@ -129,7 +129,7 @@ head 4
 #undef I
 
 /*
- * char mp_sub_n (mp_word *r, const mp_word *x, const mp_word *y, size_t count)
+ * char mp_sub_n (digit_t *r, const digit_t *x, const digit_t *y, size_t count)
  */
 
 entry mp_sub_n
@@ -160,7 +160,7 @@ head 2
 #undef I
 
 /*
- * char mp_sub_1 (mp_word *r, const mp_word *x, size_t count, mp_word y)
+ * char mp_sub_1 (digit_t *r, const digit_t *x, size_t count, digit_t y)
  */
 
 entry mp_sub_1
@@ -195,8 +195,8 @@ head 2
 #undef I
 
 /*
- * char mp_sub (mp_word *r, const mp_word *x, size_t xlen,
- *			    const mp_word *y, size_t ylen)
+ * char mp_sub (digit_t *r, const digit_t *x, size_t xlen,
+ *			    const digit_t *y, size_t ylen)
  *
  * NOTE: xlen ≥ ylen
  */
@@ -241,7 +241,7 @@ head 4
 #undef I
 
 /*
- * char mp_neg (mp_word *r, const mp_word *x, size_t count)
+ * char mp_neg (digit_t *r, const digit_t *x, size_t count)
  */
 
 entry mp_neg
@@ -272,7 +272,7 @@ head 2
 #undef I
 
 /*
- * void mp_mul_1 (mp_word *r, const mp_word *x, size_t count, mp_word y)
+ * void mp_mul_1 (digit_t *r, const digit_t *x, size_t count, digit_t y)
  */
 
 entry mp_mul_1
@@ -310,7 +310,7 @@ head 2
 #undef I
 
 /*
- * void mp_addmul_1 (mp_word *r, const mp_word *x, size_t count, mp_word y)
+ * void mp_addmul_1 (digit_t *r, const digit_t *x, size_t count, digit_t y)
  */
 
 entry mp_addmul_1

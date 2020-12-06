@@ -11,10 +11,10 @@
 /*
  * Constrains: xlen >= ylen > 0
  */
-mp_word mp_mul (mp_word *r, const mp_word *x, size_t xlen,
-			    const mp_word *y, size_t ylen)
+digit_t mp_mul (digit_t *r, const digit_t *x, size_t xlen,
+			    const digit_t *y, size_t ylen)
 {
-	mp_word c;
+	digit_t c;
 	size_t i;
 
 	c = mp_mul_1 (r, x, xlen, y[0]);
