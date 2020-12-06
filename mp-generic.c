@@ -117,7 +117,7 @@ digit_t mp_mul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
 	size_t i;
 	digit_t c;
 
-#if 0
+#ifdef MP_INSECURE
 	if (y <= 1)
 		return y < 1 ? mp_zero (r, len) : mp_copy (r, x, len);
 #endif
@@ -133,7 +133,7 @@ digit_t mp_addmul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
 	size_t i;
 	digit_t c, a;
 
-#if 0
+#ifdef MP_INSECURE
 	if (y <= 1)
 		return y < 1 ? 0 : mp_add_n (r, r, x, len);
 #endif
