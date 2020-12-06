@@ -60,5 +60,10 @@ digit_t mp_mul_1    (digit_t *r, const digit_t *x, size_t len, digit_t y);
 digit_t mp_addmul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y);
 void    mp_mul      (digit_t *r, const digit_t *x, size_t xlen,
 				 const digit_t *y, size_t ylen);
+/*
+ * Function mp_div_1 divides (x, len) by y, stores result into (r, len),
+ * and returns the remaider value.
+ */
+digit_t mp_div_1 (digit_t *r, const digit_t *x, size_t len, digit_t y);
 
 #endif  /* MP_CORE_H */

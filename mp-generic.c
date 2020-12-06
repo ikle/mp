@@ -145,3 +145,14 @@ digit_t mp_addmul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
 
 	return c;
 }
+
+digit_t mp_div_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
+{
+	size_t i;
+	digit_t rem;
+
+	for (i = len, rem = 0; i > 0; --i)
+		rem = mp_word_div (r + i - 1, rem, x[i - 1], y);
+
+	return rem;
+}
