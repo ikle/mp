@@ -239,7 +239,8 @@ digit_t mp_word_mul (digit_t *r, digit_t x, digit_t y)
 #ifdef MP_UMUL
 	return MP_UMUL (r, x, y);
 #else
-	mp_dword a = (mp_dword) x * y;
+	digit_pair_t a = (digit_pair_t) x * y;
+
 	*r = a;
 	return a >> MP_WORD_BITS;
 #endif

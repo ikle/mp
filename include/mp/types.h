@@ -12,14 +12,14 @@
 #include <limits.h>
 #include <stdint.h>
 
-/* NOTE: mp_dword type is used by generic multiplication only */
+/* NOTE: digit_pair_t type is used by generic multiplication only */
 
 #ifndef MP_WORD_BITS
 
 #if ULONG_MAX > 0xfffffffful && defined(__SIZEOF_INT128__)
 
 typedef uint64_t digit_t;
-typedef unsigned __int128 mp_dword;
+typedef unsigned __int128 digit_pair_t;
 
 #define MP_WORD_SIZE  8
 #define MP_WORD_BITS  64
@@ -34,7 +34,7 @@ typedef uint64_t digit_t;
 #else
 
 typedef uint32_t digit_t;
-typedef uint64_t mp_dword;
+typedef uint64_t digit_pair_t;
 
 #define MP_WORD_SIZE  4
 #define MP_WORD_BITS  32
