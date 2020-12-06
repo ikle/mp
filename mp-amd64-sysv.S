@@ -272,7 +272,7 @@ head 2
 #undef I
 
 /*
- * void mp_mul_1 (digit_t *r, const digit_t *x, size_t count, digit_t y)
+ * digit_t mp_mul_1 (digit_t *r, const digit_t *x, size_t count, digit_t y)
  */
 
 entry mp_mul_1
@@ -310,7 +310,7 @@ head 2
 #undef I
 
 /*
- * void mp_addmul_1 (digit_t *r, const digit_t *x, size_t count, digit_t y)
+ * digit_t mp_addmul_1 (digit_t *r, const digit_t *x, size_t count, digit_t y)
  */
 
 entry mp_addmul_1
