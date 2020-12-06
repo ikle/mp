@@ -54,7 +54,8 @@ char mp_neg   (digit_t *r, const digit_t *x, size_t len);
  * and returns the carry value.
  *
  * Function mp_mul multiplies (x, xlen) by (y, ylen), stores result into
- * (r, xlen), and returns the carry value. Constrains: xlen >= ylen > 0.
+ * (r, xlen + ylen - 1), and returns the carry value.
+ * Constrains: xlen >= ylen > 0.
  */
 digit_t mp_mul_1    (digit_t *r, const digit_t *x, size_t len, digit_t y);
 digit_t mp_addmul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y);
