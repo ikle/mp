@@ -11,19 +11,14 @@
 /*
  * Constrains: xlen >= ylen > 0
  */
-digit_t mp_mul (digit_t *r, const digit_t *x, size_t xlen,
-			    const digit_t *y, size_t ylen)
+void mp_mul (digit_t *r, const digit_t *x, size_t xlen,
+			 const digit_t *y, size_t ylen)
 {
-	digit_t c;
 	size_t i;
 
-	c = mp_mul_1 (r, x, xlen, y[0]);
+	r[xlen] = mp_mul_1 (r, x, xlen, y[0]);
 
-	for (i = 1; i < ylen; ++i) {
-		r++[xlen] = c;
-
-		c = mp_addmul_1 (r, x, xlen, y[i]);
+	for (++r, i = 1; i < ylen; ++r, ++i) {
+		r[xlen] = mp_addmul_1 (r, x, xlen, y[i]);
 	}
-
-	return c;
 }
