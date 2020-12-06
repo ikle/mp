@@ -18,7 +18,7 @@
 .endm
 
 /*
- * char mp_add_n (digit_t *r, const digit_t *x, const digit_t *y, size_t count)
+ * char mp_add_n (digit_t *r, const digit_t *x, const digit_t *y, size_t len)
  */
 
 entry mp_add_n
@@ -26,10 +26,10 @@ entry mp_add_n
 #define R	%rdi
 #define X	%rsi
 #define Y	%rdx
-#define COUNT	%rcx
+#define LEN	%rcx
 #define I	%r8
 
-	test	COUNT, COUNT
+	test	LEN, LEN
 	jz	1f
 	xor	I, I		/* and reset input carry */
 head 2
@@ -37,7 +37,7 @@ head 2
 	adc	(Y, I, 8), %rax
 	mov	%rax, (R, I, 8)
 	inc	I
-	dec	COUNT
+	dec	LEN
 	jnz	2b
 1:	setc	%al
 	ret
@@ -45,18 +45,18 @@ head 2
 #undef R
 #undef X
 #undef Y
-#undef COUNT
+#undef LEN
 #undef I
 
 /*
- * char mp_add_1 (digit_t *r, const digit_t *x, size_t count, digit_t y)
+ * char mp_add_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
  */
 
 entry mp_add_1
 
 #define R	%rdi
 #define X	%rsi
-#define COUNT	%rdx
+#define LEN	%rdx
 #define Y	%rcx
 #define I	%r8
 
@@ -64,21 +64,21 @@ entry mp_add_1
 	add	(X), Y
 	mov	Y, (R)
 	inc	I
-	dec	COUNT
+	dec	LEN
 	jz	1f
 head 2
 	mov	(X, I, 8), %rax
 	adc	$0, %rax
 	mov	%rax, (R, I, 8)
 	inc	I
-	dec	COUNT
+	dec	LEN
 	jnz	2b
 1:	setc	%al
 	ret
 
 #undef R
 #undef X
-#undef COUNT
+#undef LEN
 #undef Y
 #undef I
 
@@ -129,7 +129,7 @@ head 4
 #undef I
 
 /*
- * char mp_sub_n (digit_t *r, const digit_t *x, const digit_t *y, size_t count)
+ * char mp_sub_n (digit_t *r, const digit_t *x, const digit_t *y, size_t len)
  */
 
 entry mp_sub_n
@@ -137,10 +137,10 @@ entry mp_sub_n
 #define R	%rdi
 #define X	%rsi
 #define Y	%rdx
-#define COUNT	%rcx
+#define LEN	%rcx
 #define I	%r8
 
-	test	COUNT, COUNT
+	test	LEN, LEN
 	jz	1f
 	xor	I, I		/* and reset input carry */
 head 2
@@ -148,7 +148,7 @@ head 2
 	sbb	(Y, I, 8), %rax
 	mov	%rax, (R, I, 8)
 	inc	I
-	dec	COUNT
+	dec	LEN
 	jnz	2b
 1:	setc	%al
 	ret
@@ -156,18 +156,18 @@ head 2
 #undef R
 #undef X
 #undef Y
-#undef COUNT
+#undef LEN
 #undef I
 
 /*
- * char mp_sub_1 (digit_t *r, const digit_t *x, size_t count, digit_t y)
+ * char mp_sub_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
  */
 
 entry mp_sub_1
 
 #define R	%rdi
 #define X	%rsi
-#define COUNT	%rdx
+#define LEN	%rdx
 #define Y	%rcx
 #define I	%r8
 
@@ -176,21 +176,21 @@ entry mp_sub_1
 	sub	Y, %rax
 	mov	%rax, (R)
 	inc	I
-	dec	COUNT
+	dec	LEN
 	jz	1f
 head 2
 	mov	(X, I, 8), %rax
 	sbb	$0, %rax
 	mov	%rax, (R, I, 8)
 	inc	I
-	dec	COUNT
+	dec	LEN
 	jnz	2b
 1:	setc	%al
 	ret
 
 #undef R
 #undef X
-#undef COUNT
+#undef LEN
 #undef Y
 #undef I
 
@@ -241,18 +241,18 @@ head 4
 #undef I
 
 /*
- * char mp_neg (digit_t *r, const digit_t *x, size_t count)
+ * char mp_neg (digit_t *r, const digit_t *x, size_t len)
  */
 
 entry mp_neg
 
 #define R	%rdi
 #define X	%rsi
-#define COUNT	%rdx
+#define LEN	%rdx
 #define I	%rcx
 #define Z	%r8
 
-	test	COUNT, COUNT
+	test	LEN, LEN
 	jz	1f
 	xor	I, I		/* and reset input carry */
 	mov	I, Z
@@ -261,25 +261,25 @@ head 2
 	sbb	(X, I, 8), %rax
 	mov	%rax, (R, I, 8)
 	inc	I
-	dec	COUNT
+	dec	LEN
 	jnz	2b
 1:	setc	%al
 	ret
 
 #undef R
 #undef X
-#undef COUNT
+#undef LEN
 #undef I
 
 /*
- * digit_t mp_mul_1 (digit_t *r, const digit_t *x, size_t count, digit_t y)
+ * digit_t mp_mul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
  */
 
 entry mp_mul_1
 
 #define R	%rdi
 #define X	%rsi
-#define COUNT	%r10
+#define LEN	%r10
 #define Y	%rcx
 #define C	%r9
 #define I	%r8
@@ -287,7 +287,7 @@ entry mp_mul_1
 	xor	C, C
 	xor	I, I
 	test	%rdx, %rdx
-	mov	%rdx, COUNT	/* rdx mangled by multiplication, save it */
+	mov	%rdx, LEN	/* rdx mangled by multiplication, save it */
 	jz	1f
 head 2
 	mov	(X, I, 8), %rax
@@ -297,27 +297,27 @@ head 2
 	mov	%rax, (R, I, 8)
 	mov	%rdx, C
 	inc	I
-	dec	COUNT
+	dec	LEN
 	jne	2b
 1:	mov	C, %rax
 	ret
 
 #undef R
 #undef X
-#undef COUNT
+#undef LEN
 #undef Y
 #undef C
 #undef I
 
 /*
- * digit_t mp_addmul_1 (digit_t *r, const digit_t *x, size_t count, digit_t y)
+ * digit_t mp_addmul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
  */
 
 entry mp_addmul_1
 
 #define R	%rdi
 #define X	%rsi
-#define COUNT	%r10
+#define LEN	%r10
 #define Y	%rcx
 #define C	%r9
 #define I	%r8
@@ -325,7 +325,7 @@ entry mp_addmul_1
 	xor	C, C
 	xor	I, I
 	test	%rdx, %rdx
-	mov	%rdx, COUNT	/* rdx mangled by multiplication, save it */
+	mov	%rdx, LEN	/* rdx mangled by multiplication, save it */
 	jz	1f
 head 2
 	mov	(X, I, 8), %rax
@@ -336,14 +336,14 @@ head 2
 	adc	$0, %rdx
 	mov	%rdx, C
 	inc	I
-	dec	COUNT
+	dec	LEN
 	jne	2b
 1:	mov	C, %rax
 	ret
 
 #undef R
 #undef X
-#undef COUNT
+#undef LEN
 #undef Y
 #undef C
 #undef I
