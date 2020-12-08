@@ -23,7 +23,7 @@ typedef unsigned __int128 digit_pair_t;
 
 #define MP_DIGIT_BITS  64
 
-#elif defined(_M_AMD64) || defined(_M_IA64)
+#elif UINT_FAST32_MAX > ULONG_MAX  /* LLP64 ABI? */
 
 typedef uint64_t digit_t;
 
