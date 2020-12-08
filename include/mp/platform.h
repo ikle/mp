@@ -86,9 +86,13 @@ digit_t mp_word_mul (digit_t *r, digit_t x, digit_t y)
 static inline
 digit_t mp_word_mul_add (digit_t *r, digit_t x, digit_t y, digit_t a)
 {
+#ifdef MP_UFMA
+	return MP_UFMA (r, x, y, a);
+#else
 	digit_t l, h = mp_word_mul (&l, x, y);
 
 	return h + mp_word_add (r, l, a);
+#endif
 }
 
 static inline
