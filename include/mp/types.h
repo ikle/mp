@@ -21,14 +21,12 @@
 typedef uint64_t digit_t;
 typedef unsigned __int128 digit_pair_t;
 
-#define MP_WORD_SIZE  8
 #define MP_DIGIT_BITS  64
 
 #elif defined(_M_AMD64) || defined(_M_IA64)
 
 typedef uint64_t digit_t;
 
-#define MP_WORD_SIZE  8
 #define MP_DIGIT_BITS  64
 
 #else
@@ -36,7 +34,6 @@ typedef uint64_t digit_t;
 typedef uint32_t digit_t;
 typedef uint64_t digit_pair_t;
 
-#define MP_WORD_SIZE  4
 #define MP_DIGIT_BITS  32
 
 #endif
