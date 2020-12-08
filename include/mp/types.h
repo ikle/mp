@@ -35,8 +35,8 @@ typedef uint_fast32_t digit_t;
 
 #else
 
-typedef uint32_t digit_t;
-typedef uint64_t digit_pair_t;
+typedef uint_least32_t digit_t;
+typedef uint_least64_t digit_pair_t;
 
 #define MP_DIGIT_BITS  32
 #define MP_HAVE_PAIR_TYPE
