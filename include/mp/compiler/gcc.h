@@ -15,7 +15,7 @@
 
 #include <mp/types.h>
 
-#if __GNUC__ >= 5
+#if !defined (HAVE_GCC_CHECKED) && __GNUC__ >= 5
 #define HAVE_GCC_CHECKED
 #endif  /* gcc >= 5 */
 
