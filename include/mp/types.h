@@ -12,11 +12,14 @@
 #include <limits.h>
 #include <stdint.h>
 
-/* NOTE: digit_pair_t type is used by generic multiplication only */
+/*
+ * NOTE: The digit pair type is used by generic multiplication and
+ * division only
+ */
 
 #ifndef MP_DIGIT_BITS
 
-#if ULONG_MAX > 0xfffffffful && defined(__SIZEOF_INT128__)
+#if ULONG_MAX > 0xfffffffful && defined (__SIZEOF_INT128__)
 
 typedef uint64_t digit_t;
 typedef unsigned __int128 digit_pair_t;
