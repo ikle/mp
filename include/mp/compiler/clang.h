@@ -54,4 +54,12 @@ static inline digit_t mp_clang_subb (digit_t *r, int c, digit_t x, digit_t y)
 #define HAVE_GCC_CHECKED
 #endif
 
+#ifndef HAVE_ADDCARRY
+
+#if (MP_DIGIT_BITS == 64 && __has_builtin (_addcarry_u64)) || \
+    (MP_DIGIT_BITS == 32 && __has_builtin (_addcarry_u32))
+#define HAVE_ADDCARRY
+#endif
+#endif
+
 #endif  /* MP_COMPILER_CLANG_H */
