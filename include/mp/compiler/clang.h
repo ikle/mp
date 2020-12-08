@@ -50,15 +50,14 @@ static inline digit_t mp_clang_subb (digit_t *r, int c, digit_t x, digit_t y)
 #endif
 #endif  /* no MP_ADDC */
 
-#if !defined (HAVE_GCC_CHECKED) && __has_builtin (__builtin_add_overflow)
-#define HAVE_GCC_CHECKED
+#if !defined (MP_HAVE_GCC_CHECKED) && __has_builtin (__builtin_add_overflow)
+#define MP_HAVE_GCC_CHECKED
 #endif
 
-#ifndef HAVE_ADDCARRY
-
+#ifndef MP_HAVE_ADDCARRY
 #if (MP_DIGIT_BITS == 64 && __has_builtin (_addcarry_u64)) || \
     (MP_DIGIT_BITS == 32 && __has_builtin (_addcarry_u32))
-#define HAVE_ADDCARRY
+#define MP_HAVE_ADDCARRY
 #endif
 #endif
 

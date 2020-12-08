@@ -15,8 +15,8 @@
 
 #include <mp/types.h>
 
-#if !defined (HAVE_GCC_CHECKED) && __GNUC__ >= 5
-#define HAVE_GCC_CHECKED
+#if !defined (MP_HAVE_GCC_CHECKED) && __GNUC__ >= 5
+#define MP_HAVE_GCC_CHECKED
 #endif  /* gcc >= 5 */
 
 #if defined (__x86_64__) || defined (__i386__)
@@ -25,7 +25,7 @@
 #include <x86intrin.h>
 
 #ifdef _ADXINTRIN_H_INCLUDED
-#define HAVE_ADDCARRY
+#define MP_HAVE_ADDCARRY
 #endif  /* ADX supported */
 #endif  /* gcc >= 4.4 */
 
@@ -34,7 +34,7 @@
 /*
  * GCC checked builtins
  */
-#if !defined (MP_ADD) && defined (HAVE_GCC_CHECKED)
+#if !defined (MP_ADD) && defined (MP_HAVE_GCC_CHECKED)
 
 #define MP_ADD(r, x, y)  __builtin_add_overflow ((x), (y), (r))
 #define MP_SUB(r, x, y)  __builtin_sub_overflow ((x), (y), (r))
@@ -44,7 +44,7 @@
 /*
  * Family of addcarry builtins
  */
-#if !defined (MP_ADDC) && defined (HAVE_ADDCARRY)
+#if !defined (MP_ADDC) && defined (MP_HAVE_ADDCARRY)
 
 #if MP_DIGIT_BITS == 64
 

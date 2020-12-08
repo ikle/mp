@@ -21,7 +21,7 @@
 
 #include <immintrin.h>
 
-#define HAVE_ADDCARRY
+#define MP_HAVE_ADDCARRY
 
 #endif  /* MP_ADDC */
 #endif  /* ICC ≥ 13.0 */

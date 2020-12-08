@@ -52,7 +52,7 @@ digit_t mp_msvc_udiv (digit_t *r, digit_t x1, digit_t x0, digit_t y)
 
 #include <intrin.h>
 
-#define HAVE_ADDCARRY
+#define MP_HAVE_ADDCARRY
 
 #endif  /* MP_ADDC */
 #endif  /* MSC ≥ 18.0 (VS ≥ 2013) */
