@@ -22,6 +22,7 @@ typedef uint64_t digit_t;
 typedef unsigned __int128 digit_pair_t;
 
 #define MP_DIGIT_BITS  64
+#define MP_HAVE_PAIR_TYPE
 
 #elif UINT_FAST32_MAX > ULONG_MAX  /* LLP64 ABI? */
 
@@ -35,6 +36,7 @@ typedef uint32_t digit_t;
 typedef uint64_t digit_pair_t;
 
 #define MP_DIGIT_BITS  32
+#define MP_HAVE_PAIR_TYPE
 
 #endif
 #endif  /* MP_DIGIT_BITS */

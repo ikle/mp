@@ -73,11 +73,13 @@ digit_t mp_word_mul (digit_t *r, digit_t x, digit_t y)
 {
 #ifdef MP_UMUL
 	return MP_UMUL (r, x, y);
-#else
+#elif defined (MP_HAVE_PAIR_TYPE)
 	digit_pair_t a = (digit_pair_t) x * y;
 
 	*r = a;
 	return a >> MP_DIGIT_BITS;
+#else
+#error "Platform does not define multiplication primitive and digit pair type"
 #endif
 }
 
@@ -94,11 +96,13 @@ digit_t mp_word_div (digit_t *r, digit_t x1, digit_t x0, digit_t y)
 {
 #ifdef MP_UMUL
 	return MP_UDIV (r, x1, x0, y);
-#else
+#elif defined (MP_HAVE_PAIR_TYPE)
 	digit_pair_t pair = ((digit_pair_t) x1 << MP_DIGIT_BITS) | x0;
 
 	*r = pair / y;
 	return pair % y;
+#else
+#error "Platform does not define division primitive and digit pair type"
 #endif
 }
 
