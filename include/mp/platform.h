@@ -31,10 +31,10 @@
 
 #if __has_builtin(__builtin_addcl)
 
-#if (sizeof (int) * CHAR_BIT) == MP_WORD_BITS
+#if (sizeof (int) * CHAR_BIT) == MP_DIGIT_BITS
 #define MP_CLANG_ADDC(x, y, ci, co)	__builtin_addc ((x), (y), (ci), (co))
 #define MP_CLANG_SUBB(x, y, ci, co)	__builtin_subc ((x), (y), (ci), (co))
-#elif (sizeof (long) * CHAR_BIT) == MP_WORD_BITS
+#elif (sizeof (long) * CHAR_BIT) == MP_DIGIT_BITS
 #define MP_CLANG_ADDC(x, y, ci, co)	__builtin_addcl ((x), (y), (ci), (co))
 #define MP_CLANG_SUBB(x, y, ci, co)	__builtin_subcl ((x), (y), (ci), (co))
 #else
@@ -63,12 +63,12 @@ digit_t mp_clang_subb (digit_t *r, int c, digit_t x, digit_t y)
 #define MP_ADDC(r, c, x, y)  mp_clang_addc ((r), (c), (x), (y))
 #define MP_SUBB(r, c, x, y)  mp_clang_subb ((r), (c), (x), (y))
 
-#elif MP_WORD_BITS == 64 && __has_builtin(__builtin_ia32_addcarry_u64)
+#elif MP_DIGIT_BITS == 64 && __has_builtin(__builtin_ia32_addcarry_u64)
 
 #define MP_ADDC(r, c, x, y)  __builtin_ia32_addcarry_u64  ((c), (x), (y), (r))
 #define MP_SUBB(r, c, x, y)  __builtin_ia32_subborrow_u64 ((c), (x), (y), (r))
 
-#elif MP_WORD_BITS == 32 && __has_builtin(__builtin_ia32_addcarry_u32)
+#elif MP_DIGIT_BITS == 32 && __has_builtin(__builtin_ia32_addcarry_u32)
 
 #define MP_ADDC(r, c, x, y)  __builtin_ia32_addcarry_u32  ((c), (x), (y), (r))
 #define MP_SUBB(r, c, x, y)  __builtin_ia32_subborrow_u32 ((c), (x), (y), (r))
@@ -175,12 +175,12 @@ digit_t mp_msc_udiv (digit_t *r, digit_t x1, digit_t x0, digit_t y)
 
 #if !defined(MP_ADDC) && defined(HAS_ADDCARRY)
 
-#if MP_WORD_BITS == 64
+#if MP_DIGIT_BITS == 64
 
 #define MP_ADDC(r, c, x, y)  _addcarry_u64  ((c), (x), (y), (void *) (r))
 #define MP_SUBB(r, c, x, y)  _subborrow_u64 ((c), (x), (y), (void *) (r))
 
-#elif MP_WORD_BITS == 32
+#elif MP_DIGIT_BITS == 32
 
 #define MP_ADDC(r, c, x, y)  _addcarry_u32  ((c), (x), (y), (r))
 #define MP_SUBB(r, c, x, y)  _subborrow_u32 ((c), (x), (y), (r))
@@ -253,7 +253,7 @@ digit_t mp_word_mul (digit_t *r, digit_t x, digit_t y)
 	digit_pair_t a = (digit_pair_t) x * y;
 
 	*r = a;
-	return a >> MP_WORD_BITS;
+	return a >> MP_DIGIT_BITS;
 #endif
 }
 
@@ -271,7 +271,7 @@ digit_t mp_word_div (digit_t *r, digit_t x1, digit_t x0, digit_t y)
 #ifdef MP_UMUL
 	return MP_UDIV (r, x1, x0, y);
 #else
-	digit_pair_t pair = ((digit_pair_t) x1 << MP_WORD_BITS) | x0;
+	digit_pair_t pair = ((digit_pair_t) x1 << MP_DIGIT_BITS) | x0;
 
 	*r = pair / y;
 	return pair % y;
