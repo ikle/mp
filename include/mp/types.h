@@ -22,7 +22,7 @@
 #if ULONG_MAX > 0xfffffffful && defined (__SIZEOF_INT128__)
 
 #define MP_DIGIT_BITS	64
-#define MP_DIGIT_TYPE	uint64_t
+#define MP_DIGIT_TYPE	uint_least64_t
 #define MP_PAIR_TYPE	unsigned __int128
 
 #elif UINT_FAST32_MAX > ULONG_MAX  /* LLP64 ABI? */
