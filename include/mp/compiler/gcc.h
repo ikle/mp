@@ -21,7 +21,7 @@
 
 #if defined (__x86_64__) || defined (__i386__)
 
-#if __GNUC__ >= 4 && __GNUC_MINOR__ > 4
+#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4)
 #include <x86intrin.h>
 
 #ifdef _ADXINTRIN_H_INCLUDED
