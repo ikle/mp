@@ -19,9 +19,9 @@
 static inline
 char mp_word_add (digit_t *r, digit_t x, digit_t y)
 {
-#if defined(MP_ADD)   
+#if defined (MP_ADD)
 	return MP_ADD (r, x, y);
-#elif defined(MP_ADDC)
+#elif defined (MP_ADDC)
 	return MP_ADDC (r, 0, x, y);
 #else  
 	*r = x + y;
@@ -32,9 +32,9 @@ char mp_word_add (digit_t *r, digit_t x, digit_t y)
 static inline
 char mp_word_sub (digit_t *r, digit_t x, digit_t y)
 {
-#if defined(MP_SUB)   
+#if defined (MP_SUB)
 	return MP_SUB (r, x, y);
-#elif defined(MP_SUBB)
+#elif defined (MP_SUBB)
 	return MP_SUBB (r, 0, x, y);
 #else  
 	*r = x - y;
@@ -45,7 +45,7 @@ char mp_word_sub (digit_t *r, digit_t x, digit_t y)
 static inline
 char mp_word_add_carry (digit_t *r, int c, digit_t x, digit_t y)
 {
-#if defined(MP_ADDC)
+#if defined (MP_ADDC)
 	return MP_ADDC (r, c, x, y);
 #else  
 	digit_t a;
@@ -58,7 +58,7 @@ char mp_word_add_carry (digit_t *r, int c, digit_t x, digit_t y)
 static inline
 char mp_word_sub_borrow (digit_t *r, int c, digit_t x, digit_t y)
 {
-#if defined(MP_SUBB)
+#if defined (MP_SUBB)
 	return MP_SUBB (r, c, x, y);
 #else
 	digit_t a;
