@@ -17,31 +17,35 @@
  * division only
  */
 
-#ifndef MP_DIGIT_BITS
+#ifndef MP_DIGIT_TYPE
 
 #if ULONG_MAX > 0xfffffffful && defined (__SIZEOF_INT128__)
 
-typedef uint64_t digit_t;
-typedef unsigned __int128 digit_pair_t;
-
-#define MP_DIGIT_BITS  64
-#define MP_HAVE_PAIR_TYPE
+#define MP_DIGIT_BITS	64
+#define MP_DIGIT_TYPE	uint64_t
+#define MP_PAIR_TYPE	unsigned __int128
 
 #elif UINT_FAST32_MAX > ULONG_MAX  /* LLP64 ABI? */
 
-typedef uint_fast32_t digit_t;
-
-#define MP_DIGIT_BITS  (CHAR_BIT * sizeof (digit_t))
+#define MP_DIGIT_BITS	(CHAR_BIT * sizeof (uint_fast32_t))
+#define MP_DIGIT_TYPE	uint_fast32_t
 
 #else
 
-typedef uint_least32_t digit_t;
-typedef uint_least64_t digit_pair_t;
-
-#define MP_DIGIT_BITS  32
-#define MP_HAVE_PAIR_TYPE
+#define MP_DIGIT_BITS	32
+#define MP_DIGIT_TYPE	uint_least32_t
+#define MP_PAIR_TYPE	uint_least64_t
 
 #endif
-#endif  /* MP_DIGIT_BITS */
+#endif  /* MP_DIGIT_TYPE */
+
+/*
+ * Core types to represent multiple-precission number digits
+ */
+typedef MP_DIGIT_TYPE	digit_t;
+
+#ifdef MP_PAIR_TYPE
+typedef MP_PAIR_TYPE	digit_pair_t;
+#endif
 
 #endif  /* MP_TYPES_H */
