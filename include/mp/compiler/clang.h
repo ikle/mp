@@ -19,14 +19,14 @@
 #if __has_builtin (__builtin_addcl)
 
 #if MP_DIGIT_BITS == (sizeof (int) * CHAR_BIT)
-#define MP_CLANG_ADDC(x, y, ci, co)	__builtin_addc ((x), (y), (ci), (co))
-#define MP_CLANG_SUBB(x, y, ci, co)	__builtin_subc ((x), (y), (ci), (co))
+#define MP_CLANG_ADDC	__builtin_addc
+#define MP_CLANG_SUBB	__builtin_subc
 #elif MP_DIGIT_BITS == (sizeof (long) * CHAR_BIT)
-#define MP_CLANG_ADDC(x, y, ci, co)	__builtin_addcl ((x), (y), (ci), (co))
-#define MP_CLANG_SUBB(x, y, ci, co)	__builtin_subcl ((x), (y), (ci), (co))
+#define MP_CLANG_ADDC	__builtin_addcl
+#define MP_CLANG_SUBB	__builtin_subcl
 #else
-#define MP_CLANG_ADDC(x, y, ci, co)	__builtin_addcll ((x), (y), (ci), (co))
-#define MP_CLANG_SUBB(x, y, ci, co)	__builtin_subcll ((x), (y), (ci), (co))
+#define MP_CLANG_ADDC	__builtin_addcll
+#define MP_CLANG_SUBB	__builtin_subcll
 #endif
 
 static inline digit_t mp_clang_addc (digit_t *r, int c, digit_t x, digit_t y)
