@@ -25,10 +25,10 @@
 #define MP_DIGIT_TYPE	uint_least64_t
 #define MP_PAIR_TYPE	unsigned __int128
 
-#elif UINT_FAST32_MAX > ULONG_MAX  /* LLP64 ABI? */
+#elif UINT_FAST32_MAX >= 0xffffffffffffffffull  /* LLP64 ABI? */
 
-#define MP_DIGIT_BITS	(CHAR_BIT * sizeof (uint_fast32_t))
-#define MP_DIGIT_TYPE	uint_fast32_t
+#define MP_DIGIT_BITS	64
+#define MP_DIGIT_TYPE	uint_least64_t
 
 #else
 
