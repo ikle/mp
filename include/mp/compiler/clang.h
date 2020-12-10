@@ -68,9 +68,21 @@ static inline char mp_clang_sbb (digit_t *r, digit_t x, digit_t y, int c)
 #define _subborrow_u64	__builtin_ia32_subborrow_u64
 #define MP_HAVE_ADDCARRY
 
+#elif MP_DIGIT_BITS == 64 && __has_builtin (__builtin_ia32_addcarryx_u64)
+
+#define _addcarry_u64	__builtin_ia32_addcarryx_u64
+#define _subborrow_u64	__builtin_ia32_subborrow_u64
+#define MP_HAVE_ADDCARRY
+
 #elif MP_DIGIT_BITS == 32 && __has_builtin (__builtin_ia32_addcarry_u32)
 
 #define _addcarry_u32	__builtin_ia32_addcarry_u32
+#define _subborrow_u32	__builtin_ia32_subborrow_u32
+#define MP_HAVE_ADDCARRY
+
+#elif MP_DIGIT_BITS == 32 && __has_builtin (__builtin_ia32_addcarryx_u32)
+
+#define _addcarry_u32	__builtin_ia32_addcarryx_u32
 #define _subborrow_u32	__builtin_ia32_subborrow_u32
 #define MP_HAVE_ADDCARRY
 
