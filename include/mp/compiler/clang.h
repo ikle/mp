@@ -15,9 +15,7 @@
 
 #include <mp/types.h>
 
-#ifndef MP_ADDC
 #if __has_builtin (__builtin_addcl)
-
 #if MP_DIGIT_ROOF == UINT_MAX
 #define MP_CLANG_ADDC	__builtin_addc
 #define MP_CLANG_SUBB	__builtin_subc
@@ -29,7 +27,7 @@
 #define MP_CLANG_SUBB	__builtin_subcll
 #endif
 
-static inline digit_t mp_clang_addc (digit_t *r, int c, digit_t x, digit_t y)
+static inline char mp_clang_adc (digit_t *r, digit_t x, digit_t y, int c)
 {
 	digit_t cout;
 
@@ -37,26 +35,30 @@ static inline digit_t mp_clang_addc (digit_t *r, int c, digit_t x, digit_t y)
 	return cout;
 }
 
-static inline digit_t mp_clang_subb (digit_t *r, int c, digit_t x, digit_t y)
+static inline char mp_clang_sbb (digit_t *r, digit_t x, digit_t y, int c)
 {
 	digit_t cout;
 
 	*r = MP_CLANG_SUBB (x, y, c, &cout);
 	return cout;
 }
+#endif  /* __builtin_addc */
 
-#define MP_ADDC(r, c, x, y)  mp_clang_addc ((r), (c), (x), (y))
-#define MP_SUBB(r, c, x, y)  mp_clang_subb ((r), (c), (x), (y))
+#ifndef mp_digit_adc
+#if __has_builtin (__builtin_addcl)
+
+#define mp_digit_adc	mp_clang_adc
+#define mp_digit_sbb	mp_clang_sbb
 
 #elif MP_DIGIT_BITS == 64 && __has_builtin (__builtin_ia32_addcarry_u64)
 
-#define MP_ADDC(r, c, x, y)  __builtin_ia32_addcarry_u64  ((c), (x), (y), (r))
-#define MP_SUBB(r, c, x, y)  __builtin_ia32_subborrow_u64 ((c), (x), (y), (r))
+#define mp_digit_adc(r, x, y, c)  __builtin_ia32_addcarry_u64  ((c), (x), (y), (r))
+#define mp_digit_sbb(r, x, y, c)  __builtin_ia32_subborrow_u64 ((c), (x), (y), (r))
 
 #elif MP_DIGIT_BITS == 32 && __has_builtin (__builtin_ia32_addcarry_u32)
 
-#define MP_ADDC(r, c, x, y)  __builtin_ia32_addcarry_u32  ((c), (x), (y), (r))
-#define MP_SUBB(r, c, x, y)  __builtin_ia32_subborrow_u32 ((c), (x), (y), (r))
+#define mp_digit_adc(r, x, y, c)  __builtin_ia32_addcarry_u32  ((c), (x), (y), (r))
+#define mp_digit_sbb(r, x, y, c)  __builtin_ia32_subborrow_u32 ((c), (x), (y), (r))
 
 #endif
 #endif  /* no MP_ADDC */
