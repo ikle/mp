@@ -23,17 +23,20 @@
 
 #define MP_DIGIT_BITS	64
 #define MP_DIGIT_TYPE	uint_least64_t
+#define MP_DIGIT_ROOF	UINT_LEAST64_MAX
 #define MP_PAIR_TYPE	unsigned __int128
 
 #elif UINT_FAST32_MAX >= 0xffffffffffffffffull  /* LLP64 ABI? */
 
 #define MP_DIGIT_BITS	64
 #define MP_DIGIT_TYPE	uint_least64_t
+#define MP_DIGIT_ROOF	UINT_LEAST64_MAX
 
 #else
 
 #define MP_DIGIT_BITS	32
 #define MP_DIGIT_TYPE	uint_least32_t
+#define MP_DIGIT_ROOF	UINT_LEAST32_MAX
 #define MP_PAIR_TYPE	uint_least64_t
 
 #endif
