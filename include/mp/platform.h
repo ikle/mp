@@ -98,7 +98,7 @@ digit_t mp_word_mul_add (digit_t *r, digit_t x, digit_t y, digit_t a)
 static inline
 digit_t mp_word_div (digit_t *r, digit_t x1, digit_t x0, digit_t y)
 {
-#ifdef MP_UMUL
+#ifdef MP_UDIV
 	return MP_UDIV (r, x1, x0, y);
 #elif defined (MP_PAIR_TYPE)
 	digit_pair_t pair = ((digit_pair_t) x1 << MP_DIGIT_BITS) | x0;
