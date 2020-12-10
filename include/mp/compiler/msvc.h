@@ -21,29 +21,23 @@
 
 #include <intrin.h>
 
-#ifndef MP_UMUL
-static inline digit_t mp_msvc_umul (digit_t *r, digit_t x, digit_t y)
+#ifndef mp_digit_mul
+static inline void mp_msvc_mul (digit_t *r1, digit_t *r0, digit_t x, digit_t y)
 {
-	digit_t cout;
-
-	*r = _umul128 (x, y, &cout);
-	return cout;
+	*r0 = _umul128 (x, y, r1);
 }
 
-#define MP_UMUL(r, x, y)  mp_msc_umul ((r), (x), (y))
+#define mp_digit_mul	mp_msvc_mul
 #endif
 
-#ifndef MP_UDIV
+#ifndef mp_digit_div
 static inline
-digit_t mp_msvc_udiv (digit_t *r, digit_t x1, digit_t x0, digit_t y)
+void mp_msvc_div (digit_t *q, digit_t *r, digit_t n1, digit_t n0, digit_t d)
 {
-	digit_t quo, rem;
-
-	*r = _udiv128 (x1, x0, y, &rem);
-	return rem;
+	*q = _udiv128 (x1, x0, y, r);
 }
 
-#define MP_UDIV(r, x1, xo, y)  mp_msc_udiv ((r), (x1), (x0), (y))
+#define mp_digit_div	mp_msvc_div
 #endif
 
 #endif  /* AMD64 or IA-64 */
