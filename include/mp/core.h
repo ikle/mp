@@ -47,6 +47,17 @@ char mp_sub   (digit_t *r, const digit_t *x, size_t xlen,
 char mp_neg   (digit_t *r, const digit_t *x, size_t len);
 
 /*
+ * Function mp_lshift multiplies (x, len) by (2 ^ count), stores result into
+ * (r, len + extra), and returns the carry value. The count must be less
+ * than MP_DIGIT_BITS.
+ *
+ * Function mp_rshift divides (x, len) by (2 ^ count) and stores result
+ * into (r, len). The most significant bits will be cleared.
+ */
+digit_t mp_lshift (digit_t *r, const digit_t *x, size_t len, size_t count);
+void    mp_rshift (digit_t *r, const digit_t *x, size_t len, size_t count);
+
+/*
  * Function mp_mul_1 multiplies (x, len) by y, stores result into (r, len),
  * and returns the carry value.
  *
