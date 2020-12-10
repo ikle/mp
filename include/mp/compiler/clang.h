@@ -44,34 +44,38 @@ static inline char mp_clang_sbb (digit_t *r, digit_t x, digit_t y, int c)
 }
 #endif  /* __builtin_addc */
 
-#ifndef mp_digit_adc
-#if __has_builtin (__builtin_addcl)
+#if !defined (mp_digit_adc) && __has_builtin (__builtin_addcl)
 
 #define mp_digit_adc	mp_clang_adc
 #define mp_digit_sbb	mp_clang_sbb
 
-#elif MP_DIGIT_BITS == 64 && __has_builtin (__builtin_ia32_addcarry_u64)
-
-#define mp_digit_adc(r, x, y, c)  __builtin_ia32_addcarry_u64  ((c), (x), (y), (r))
-#define mp_digit_sbb(r, x, y, c)  __builtin_ia32_subborrow_u64 ((c), (x), (y), (r))
-
-#elif MP_DIGIT_BITS == 32 && __has_builtin (__builtin_ia32_addcarry_u32)
-
-#define mp_digit_adc(r, x, y, c)  __builtin_ia32_addcarry_u32  ((c), (x), (y), (r))
-#define mp_digit_sbb(r, x, y, c)  __builtin_ia32_subborrow_u32 ((c), (x), (y), (r))
-
 #endif
-#endif  /* no MP_ADDC */
 
 #if !defined (MP_HAVE_GCC_CHECKED) && __has_builtin (__builtin_add_overflow)
 #define MP_HAVE_GCC_CHECKED
 #endif
 
 #ifndef MP_HAVE_ADDCARRY
+
 #if (MP_DIGIT_BITS == 64 && __has_builtin (_addcarry_u64)) || \
     (MP_DIGIT_BITS == 32 && __has_builtin (_addcarry_u32))
+
 #define MP_HAVE_ADDCARRY
+
+#elif MP_DIGIT_BITS == 64 && __has_builtin (__builtin_ia32_addcarry_u64)
+
+#define _addcarry_u64	__builtin_ia32_addcarry_u64
+#define _subborrow_u64	__builtin_ia32_subborrow_u64
+#define MP_HAVE_ADDCARRY
+
+#elif MP_DIGIT_BITS == 32 && __has_builtin (__builtin_ia32_addcarry_u32)
+
+#define _addcarry_u32	__builtin_ia32_addcarry_u32
+#define _subborrow_u32	__builtin_ia32_subborrow_u32
+#define MP_HAVE_ADDCARRY
+
 #endif
-#endif
+
+#endif  /* addcarry */
 
 #endif  /* MP_COMPILER_CLANG_H */
