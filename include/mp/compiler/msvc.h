@@ -51,4 +51,48 @@ void mp_msvc_div (digit_t *q, digit_t *r, digit_t n1, digit_t n0, digit_t d)
 #endif  /* addcarry */
 #endif  /* MSC ≥ 18.0 (VS ≥ 2013) */
 
+/*
+ * CLZ
+ */
+#ifndef mp_digit_clz  /* && ver > ? */
+#include <intrin.h>
+
+static inline int mp_msvc_clz (digit_t x)
+{
+#if MP_DIGIT_BITS == 64
+	unsigned __int64 count;
+
+	_BitScanReverse64 (&count, x);
+#else
+	unsigned long count;
+
+	_BitScanReverse (&count, x);
+#endif
+	return MP_DIGIT_BITS - 1 - count;
+}
+#define mp_digit_clz	mp_msvc_clz
+#endif  /* clz */
+
+/*
+ * CTZ
+ */
+#ifndef mp_digit_ctz  /* && ver > ? */
+#include <intrin.h>
+
+static inline int mp_msvc_ctz (digit_t x)
+{
+#if MP_DIGIT_BITS == 64
+	unsigned __int64 count;
+
+	_BitScanForward64 (&count, x);
+#else
+	unsigned long count;
+
+	_BitScanForward (&count, x);
+#endif
+	return count;
+}
+#define mp_digit_ctz	mp_msvc_ctz
+#endif  /* ctz */
+
 #endif  /* MP_COMPILER_MSVC_H */
