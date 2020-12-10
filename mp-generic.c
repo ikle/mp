@@ -10,6 +10,7 @@
 
 #include <mp/core.h>
 #include <mp/platform.h>
+#include <mp/primitive.h>
 
 static inline digit_t mp_zero (digit_t *r, size_t len)
 {
@@ -29,7 +30,7 @@ char mp_add_n (digit_t *r, const digit_t *x, const digit_t *y, size_t len)
 	int c = 0;
 
 	for (i = 0; i < len; ++i)
-		c = mp_word_add_carry (r + i, c, x[i], y[i]);
+		c = mp_digit_adc (r + i, x[i], y[i], c);
 
 	return c;
 }
@@ -39,10 +40,10 @@ char mp_add_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
 	size_t i;
 	int c;
 
-	c = mp_word_add (r, x[0], y);
+	c = mp_digit_add (r, x[0], y);
 
 	for (i = 1; i < len; ++i)
-		c = mp_word_add_carry (r + i, c, x[i], 0);
+		c = mp_digit_adc (r + i, x[i], 0, c);
 
 	return c;
 }
@@ -54,10 +55,10 @@ char mp_add (digit_t *r, const digit_t *x, size_t xlen,
 	int c = 0;
 
 	for (i = 0; i < ylen; ++i)
-		c = mp_word_add_carry (r + i, c, x[i], y[i]);
+		c = mp_digit_adc (r + i, x[i], y[i], c);
 
 	for (i = 0; i < xlen; ++i)
-		c = mp_word_add_carry (r + i, c, x[i], 0);
+		c = mp_digit_adc (r + i, x[i], 0, c);
 
 	return c;
 }
@@ -68,7 +69,7 @@ char mp_sub_n (digit_t *r, const digit_t *x, const digit_t *y, size_t len)
 	int c = 0;
 
 	for (i = 0; i < len; ++i)
-		c = mp_word_sub_borrow (r + i, c, x[i], y[i]);
+		c = mp_digit_sbb (r + i, x[i], y[i], c);
 
 	return c;
 }
@@ -78,10 +79,10 @@ char mp_sub_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
 	size_t i;
 	int c;
 
-	c = mp_word_sub (r, x[0], y);
+	c = mp_digit_sub (r, x[0], y);
 
 	for (i = 1; i < len; ++i)
-		c = mp_word_sub_borrow (r + i, c, x[i], 0);
+		c = mp_digit_sbb (r + i, x[i], 0, c);
 
 	return c;
 }
@@ -93,10 +94,10 @@ char mp_sub (digit_t *r, const digit_t *x, size_t xlen,
 	int c = 0;
 
 	for (i = 0; i < ylen; ++i)
-		c = mp_word_sub_borrow (r + i, c, x[i], y[i]);
+		c = mp_digit_sbb (r + i, x[i], y[i], c);
 
 	for (i = 0; i < xlen; ++i)
-		c = mp_word_sub_borrow (r + i, c, x[i], 0);
+		c = mp_digit_sbb (r + i, x[i], 0, c);
 
 	return c;
 }
@@ -107,7 +108,7 @@ char mp_neg (digit_t *r, const digit_t *x, size_t len)
 	int c = 0;
 
 	for (i = 0; i < len; ++i)
-		c = mp_word_sub_borrow (r + i, c, 0, x[i]);
+		c = mp_digit_sbb (r + i, 0, x[i], c);
 
 	return c;
 }
@@ -140,7 +141,7 @@ digit_t mp_addmul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
 
 	for (i = 0, c = 0; i < len; ++i) {
 		c  = mp_word_mul_add (&a, x[i], y, c);
-		c += mp_word_add (r + i, r[i], a);
+		c += mp_digit_add (r + i, r[i], a);
 	}
 
 	return c;
@@ -152,7 +153,7 @@ digit_t mp_div_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
 	digit_t rem;
 
 	for (i = len, rem = 0; i > 0; --i)
-		rem = mp_word_div (r + i - 1, rem, x[i - 1], y);
+		mp_digit_div (r + i - 1, &rem, rem, x[i - 1], y);
 
 	return rem;
 }
