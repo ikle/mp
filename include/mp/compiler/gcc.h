@@ -59,4 +59,24 @@
 #endif
 #endif  /* no adc primitive and have addcarry */
 
+#ifndef mp_digit_clz  /* && gc > ? */
+#if MP_DIGIT_ROOF == UINT_MAX
+#define mp_digit_clz	__builtin_clz
+#elif MP_DIGIT_ROOF == ULONG_MAX
+#define mp_digit_clz	__builtin_clzl
+#else
+#define mp_digit_clz	__builtin_clzll
+#endif
+#endif  /* clz */
+
+#ifndef mp_digit_ctz  /* && gc > ? */
+#if MP_DIGIT_ROOF == UINT_MAX
+#define mp_digit_ctz	__builtin_ctz
+#elif MP_DIGIT_ROOF == ULONG_MAX
+#define mp_digit_ctz	__builtin_ctzl
+#else
+#define mp_digit_ctz	__builtin_ctzll
+#endif
+#endif  /* ctz */
+
 #endif  /* MP_COMPILER_GCC_H */
