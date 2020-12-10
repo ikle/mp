@@ -18,10 +18,10 @@
 #ifndef MP_ADDC
 #if __has_builtin (__builtin_addcl)
 
-#if MP_DIGIT_BITS == (sizeof (int) * CHAR_BIT)
+#if MP_DIGIT_ROOF == UINT_MAX
 #define MP_CLANG_ADDC	__builtin_addc
 #define MP_CLANG_SUBB	__builtin_subc
-#elif MP_DIGIT_BITS == (sizeof (long) * CHAR_BIT)
+#elif MP_DIGIT_ROOF == ULONG_MAX
 #define MP_CLANG_ADDC	__builtin_addcl
 #define MP_CLANG_SUBB	__builtin_subcl
 #else
