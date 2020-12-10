@@ -17,7 +17,7 @@
 
 #if __INTEL_COMPILER >= 1300
 
-#ifndef MP_ADDC
+#ifndef MP_HAVE_ADDCARRY
 
 #include <immintrin.h>
 
