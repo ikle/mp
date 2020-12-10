@@ -23,7 +23,7 @@
 
 #define MP_HAVE_ADDCARRY
 
-#endif  /* MP_ADDC */
+#endif  /* addcarry */
 #endif  /* ICC ≥ 13.0 */
 
 #endif  /* MP_COMPILER_ICC_H */
