@@ -42,13 +42,13 @@ void mp_msvc_div (digit_t *q, digit_t *r, digit_t n1, digit_t n0, digit_t d)
 
 #endif  /* AMD64 or IA-64 */
 
-#ifndef MP_ADDC
+#ifndef MP_HAVE_ADDCARRY
 
 #include <intrin.h>
 
 #define MP_HAVE_ADDCARRY
 
-#endif  /* MP_ADDC */
+#endif  /* addcarry */
 #endif  /* MSC ≥ 18.0 (VS ≥ 2013) */
 
 #endif  /* MP_COMPILER_MSVC_H */
