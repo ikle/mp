@@ -39,7 +39,7 @@
 #define mp_digit_add(r, x, y)	__builtin_add_overflow ((x), (y), (r))
 #define mp_digit_sub(r, x, y)	__builtin_sub_overflow ((x), (y), (r))
 
-#endif  /* no MP_ADD and have checked */
+#endif  /* no add primitive and have checked */
 
 /*
  * Family of addcarry builtins
@@ -57,6 +57,6 @@
 #define mp_digit_sbb(r, x, y, c)  _subborrow_u32 ((c), (x), (y), (r))
 
 #endif
-#endif  /* no MP_ADDC and have addcarry */
+#endif  /* no adc primitive and have addcarry */
 
 #endif  /* MP_COMPILER_GCC_H */
