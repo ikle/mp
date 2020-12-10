@@ -24,7 +24,7 @@
 #if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4)
 #include <x86intrin.h>
 
-#ifdef _ADXINTRIN_H_INCLUDED
+#if !defined (MP_HAVE_ADDCARRY) && defined (_ADXINTRIN_H_INCLUDED)
 #define MP_HAVE_ADDCARRY
 #endif  /* ADX supported */
 #endif  /* gcc >= 4.4 */
