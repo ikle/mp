@@ -59,7 +59,7 @@
 #endif
 #endif  /* no adc primitive and have addcarry */
 
-#ifndef mp_digit_clz  /* && gc > ? */
+#ifndef mp_digit_clz  /* && gcc > ? */
 #if MP_DIGIT_ROOF == UINT_MAX
 #define mp_digit_clz	__builtin_clz
 #elif MP_DIGIT_ROOF == ULONG_MAX
@@ -69,7 +69,7 @@
 #endif
 #endif  /* clz */
 
-#ifndef mp_digit_ctz  /* && gc > ? */
+#ifndef mp_digit_ctz  /* && gcc > ? */
 #if MP_DIGIT_ROOF == UINT_MAX
 #define mp_digit_ctz	__builtin_ctz
 #elif MP_DIGIT_ROOF == ULONG_MAX
