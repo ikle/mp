@@ -117,6 +117,19 @@ void mp_digit_div (digit_t *q, digit_t *r, digit_t n1, digit_t n0, digit_t d)
 #endif
 
 /*
+ * Function mp_digit_fma multiplies x by y, adds a to the resulting product
+ * and stores result into pair (r1, r0), where r1 * B + r0 = x * y + a.
+ */
+#ifndef mp_digit_fma
+static inline
+void mp_digit_fma (digit_t *r1, digit_t *r0, digit_t x, digit_t y, digit_t a)
+{
+	mp_digit_mul (r1, r0, x, y);
+	*r1 += mp_digit_add (r0, *r0, a);
+}
+#endif
+
+/*
  * Function mp_digit_clz counts leading zeroes in x and returns it as
  * a result of function. Note that the value of the function from 0 is
  * generally undefined.
