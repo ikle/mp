@@ -64,11 +64,15 @@ void    mp_rshift (digit_t *r, const digit_t *x, size_t len, size_t count);
  * Function mp_addmul_1 multiplies (x, len) by y, adds result into (r, len),
  * and returns the carry value.
  *
+ * Function mp_submul_1 multiplies (x, len) by y, substracts result from
+ * (r, len), and returns the borrow value.
+ *
  * Function mp_mul multiplies (x, xlen) by (y, ylen), stores result into
  * (r, xlen + ylen). Constrains: xlen >= ylen > 0.
  */
 digit_t mp_mul_1    (digit_t *r, const digit_t *x, size_t len, digit_t y);
 digit_t mp_addmul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y);
+digit_t mp_submul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y);
 void    mp_mul      (digit_t *r, const digit_t *x, size_t xlen,
 				 const digit_t *y, size_t ylen);
 /*

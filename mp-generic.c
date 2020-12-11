@@ -147,6 +147,24 @@ digit_t mp_addmul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
 	return c;
 }
 
+digit_t mp_submul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
+{
+	size_t i;
+	digit_t c, a;
+
+#ifdef MP_INSECURE
+	if (y <= 1)
+		return y < 1 ? 0 : mp_sub_n (r, r, x, len);
+#endif
+
+	for (i = 0, c = 0; i < len; ++i) {
+		c  = mp_word_mul_add (&a, x[i], y, c);
+		c += mp_digit_sub (r + i, r[i], a);
+	}
+
+	return c;
+}
+
 digit_t mp_div_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
 {
 	size_t i;

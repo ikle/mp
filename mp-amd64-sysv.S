@@ -347,3 +347,42 @@ head 2
 #undef Y
 #undef C
 #undef I
+
+/*
+ * digit_t mp_submul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
+ */
+
+entry mp_submul_1
+
+#define R	%rdi
+#define X	%rsi
+#define LEN	%r10
+#define Y	%rcx
+#define C	%r9
+#define I	%r8
+
+	xor	C, C
+	xor	I, I
+	test	%rdx, %rdx
+	mov	%rdx, LEN	/* rdx mangled by multiplication, save it */
+	jz	1f
+head 2
+	mov	(X, I, 8), %rax
+	mul	Y
+	add	C,  %rax
+	adc	$0, %rdx
+	sub	%rax, (R, I, 8)
+	adc	$0, %rdx
+	mov	%rdx, C
+	inc	I
+	dec	LEN
+	jne	2b
+1:	mov	C, %rax
+	ret
+
+#undef R
+#undef X
+#undef LEN
+#undef Y
+#undef C
+#undef I
