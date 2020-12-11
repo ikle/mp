@@ -9,7 +9,6 @@
 #include <string.h>
 
 #include <mp/core.h>
-#include <mp/platform.h>
 #include <mp/primitive.h>
 
 static inline digit_t mp_zero (digit_t *r, size_t len)
@@ -124,7 +123,7 @@ digit_t mp_mul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
 #endif
 
 	for (i = 0, c = 0; i < len; ++i)
-		c = mp_word_mul_add (r + i, x[i], y, c);
+		mp_digit_fma (&c, r + i, x[i], y, c);
 
 	return c;
 }
@@ -140,7 +139,7 @@ digit_t mp_addmul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
 #endif
 
 	for (i = 0, c = 0; i < len; ++i) {
-		c  = mp_word_mul_add (&a, x[i], y, c);
+		mp_digit_fma (&c, &a, x[i], y, c);
 		c += mp_digit_add (r + i, r[i], a);
 	}
 
@@ -158,7 +157,7 @@ digit_t mp_submul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
 #endif
 
 	for (i = 0, c = 0; i < len; ++i) {
-		c  = mp_word_mul_add (&a, x[i], y, c);
+		mp_digit_fma (&c, &a, x[i], y, c);
 		c += mp_digit_sub (r + i, r[i], a);
 	}
 
