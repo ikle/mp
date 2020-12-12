@@ -9,7 +9,7 @@
 #include <string.h>
 
 #include <mp/core.h>
-#include <mp/primitive.h>
+#include <mp/digit.h>
 
 static inline digit_t mp_zero (digit_t *r, size_t len)
 {

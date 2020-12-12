@@ -6,7 +6,7 @@
  * SPDX-License-Identifier: BSD-2-Clause
  */
 
-#include <mp/primitive.h>
+#include <mp/digit.h>
 
 #ifdef NEED_MP_CLZ_TABLE
 unsigned char mp_clz_table[256] = {

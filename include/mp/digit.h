@@ -1,13 +1,13 @@
 /*
- * Multiple-Precission Primitives
+ * Multiple-Precission Digit Primitives
  *
  * Copyright (c) 2018-2020 Alexei A. Smekalkine <ikle@ikle.ru>
  *
  * SPDX-License-Identifier: BSD-2-Clause
 */
 
-#ifndef MP_PRIMITIVE_H
-#define MP_PRIMITIVE_H  1
+#ifndef MP_DIGIT_H
+#define MP_DIGIT_H  1
 
 #include <mp/types.h>
 #include <mp/compiler.h>
@@ -173,4 +173,4 @@ static inline int mp_digit_ctz (digit_t x)
 }
 #endif
 
-#endif  /* MP_PRIMITIVE_H */
+#endif  /* MP_DIGIT_H */
