@@ -272,6 +272,38 @@ head 2
 #undef I
 
 /*
+ * int mp_cmp_n (const digit_t *x, const digit_t *y, size_t len)
+ */
+
+entry mp_cmp_n
+
+#define X	%rdi
+#define Y	%rsi
+#define LEN	%rdx
+
+	test	LEN, LEN
+	jz	1f
+head 4
+	mov	-8 (X, LEN, 8), %rax
+	cmp	%rax, -8 (Y, LEN, 8)
+	ja	2f
+	jb	3f
+	dec	LEN
+	jnz	4b
+1:	xor	%eax, %eax
+	ret
+2:	mov	$1, %eax
+	ret
+3:	mov	$0xffffffff,%eax
+	ret
+
+#undef R
+#undef X
+#undef Y
+#undef LEN
+#undef I
+
+/*
  * digit_t mp_mul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
  */
 

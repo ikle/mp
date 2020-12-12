@@ -46,6 +46,8 @@ char mp_sub   (digit_t *r, const digit_t *x, size_t xlen,
 			   const digit_t *y, size_t ylen);
 char mp_neg   (digit_t *r, const digit_t *x, size_t len);
 
+int  mp_cmp_n (const digit_t *x, const digit_t *y, size_t len);
+
 /*
  * Function mp_lshift multiplies (x, len) by (2 ^ count), stores result into
  * (r, len + extra), and returns the carry value. The count must be less
