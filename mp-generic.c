@@ -56,7 +56,7 @@ char mp_add (digit_t *r, const digit_t *x, size_t xlen,
 	for (i = 0; i < ylen; ++i)
 		c = mp_digit_adc (r + i, x[i], y[i], c);
 
-	for (i = 0; i < xlen; ++i)
+	for (; i < xlen; ++i)
 		c = mp_digit_adc (r + i, x[i], 0, c);
 
 	return c;
@@ -95,7 +95,7 @@ char mp_sub (digit_t *r, const digit_t *x, size_t xlen,
 	for (i = 0; i < ylen; ++i)
 		c = mp_digit_sbb (r + i, x[i], y[i], c);
 
-	for (i = 0; i < xlen; ++i)
+	for (; i < xlen; ++i)
 		c = mp_digit_sbb (r + i, x[i], 0, c);
 
 	return c;
