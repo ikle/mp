@@ -25,7 +25,24 @@
 #include <x86intrin.h>
 
 #if !defined (MP_HAVE_ADDCARRY) && defined (_ADXINTRIN_H_INCLUDED)
+
+/*
+ * The function _subborrow_u{32,64} on gcc < 7.2 have wrong argument order,
+ * use intrinsics directly.
+ */
+#if MP_DIGIT_BITS == 64
+
+#define _addcarry_u64   __builtin_ia32_addcarryx_u64
+#define _subborrow_u64  __builtin_ia32_sbb_u64
 #define MP_HAVE_ADDCARRY
+
+#elif MP_DIGIT_BITS == 32
+
+#define _addcarry_u32   __builtin_ia32_addcarry_u32
+#define _subborrow_u32  __builtin_ia32_sbb_u32
+#define MP_HAVE_ADDCARRY
+
+#endif  /* B = 64 or B = 32 */
 #endif  /* ADX supported */
 #endif  /* gcc >= 4.4 */
 
