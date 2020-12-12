@@ -146,19 +146,24 @@ no_a:	perror ("mp_alloc");
 	return 0;
 }
 
+#define MAX_LEN	16
+#define COUNT	10000
+
 int main (int argc, char *argv[])
 {
-	size_t len;
+	size_t len, i;
 	time_t start = time (NULL);
 	int ok = 0;
 
 	srand ((unsigned) start);
 
-	for (len = 0; len < 16; ++len)
-		ok |= test_add (len);
+	for (len = 0; len < MAX_LEN; ++len)
+		for (i = 0; i < COUNT; ++i)
+			ok |= test_add (len);
 
-	for (len = 0; len < 16; ++len)
-		ok |= test_mul (len);
+	for (len = 0; len < MAX_LEN; ++len)
+		for (i = 0; i < COUNT; ++i)
+			ok |= test_mul (len);
 
 	return ok ? 0 : 1;
 }
