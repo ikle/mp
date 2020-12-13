@@ -113,6 +113,23 @@ static int test_add (struct test_add *o)
 	return ok;
 }
 
+static int test_add_fuzzy (size_t len, size_t count)
+{
+	struct test_add o;
+	int ok;
+
+	if (!test_add_init (&o, len))
+		return 0;
+
+	for (ok = 0; count > 0; --count) {
+		test_add_mix (&o);
+		ok &= test_add (&o);
+	}
+
+	test_add_fini (&o);
+	return ok;
+}
+
 /*
  * Basic multiplication with addition test
  */
@@ -199,6 +216,23 @@ static int test_mul (struct test_mul *o)
 		mp_show ("\tm     =", m, 2 * len + 1);
 	}
 
+	return ok;
+}
+
+static int test_mul_fuzzy (size_t len, size_t count)
+{
+	struct test_mul o;
+	int ok;
+
+	if (!test_mul_init (&o, len))
+		return 0;
+
+	for (ok = 0; count > 0; --count) {
+		test_mul_mix (&o);
+		ok &= test_mul (&o);
+	}
+
+	test_mul_fini (&o);
 	return ok;
 }
 
@@ -315,6 +349,23 @@ static int test_div (struct test_div *o)
 	return ok;
 }
 
+static int test_div_fuzzy (size_t len, size_t count)
+{
+	struct test_div o;
+	int ok;
+
+	if (!test_div_init (&o, len))
+		return 0;
+
+	for (ok = 0; count > 0; --count) {
+		test_div_mix (&o);
+		ok &= test_div (&o);
+	}
+
+	test_div_fini (&o);
+	return ok;
+}
+
 #define MAX_LEN		16
 
 #define ADD_COUNT	10000
@@ -323,51 +374,20 @@ static int test_div (struct test_div *o)
 
 int main (int argc, char *argv[])
 {
-	size_t len, i;
+	size_t len;
 	time_t start = time (NULL);
 	int ok = 1;
 
-	struct test_add a;
-	struct test_mul m;
-	struct test_div d;
-
 	srand ((unsigned) start);
 
-	for (len = 0; len < MAX_LEN; ++len) {
-		if (!test_add_init (&a, len))
-			return 1;
+	for (len = 0; len < MAX_LEN; ++len)
+		ok &= test_add_fuzzy (len, ADD_COUNT);
 
-		for (i = 0; i < ADD_COUNT; ++i) {
-			test_add_mix (&a);
-			ok &= test_add (&a);
-		}
+	for (len = 0; len < MAX_LEN; ++len)
+		ok &= test_mul_fuzzy (len, MUL_COUNT);
 
-		test_add_fini (&a);
-	}
-
-	for (len = 0; len < MAX_LEN; ++len) {
-		if (!test_mul_init (&m, len))
-			return 1;
-
-		for (i = 0; i < MUL_COUNT; ++i) {
-			test_mul_mix (&m);
-			ok &= test_mul (&m);
-		}
-
-		test_mul_fini (&m);
-	}
-
-	for (len = 1; len < MAX_LEN; ++len) {
-		if (!test_div_init (&d, len))
-			return 1;
-
-		for (i = 0; i < DIV_COUNT; ++i) {
-			test_div_mix (&d);
-			ok &= test_div (&d);
-		}
-
-		test_div_fini (&d);
-	}
+	for (len = 1; len < MAX_LEN; ++len)
+		ok &= test_div_fuzzy (len, DIV_COUNT);
 
 	return ok ? 0 : 1;
 }
