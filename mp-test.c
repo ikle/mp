@@ -22,6 +22,14 @@ static inline void mp_free (digit_t *o)
 	free (o);
 }
 
+static inline size_t mp_normalize (digit_t *x, size_t len)
+{
+	while (len > 0 && x[len - 1] == 0)
+		--len;
+
+	return len;
+}
+
 static void mp_random (digit_t *o, size_t len)
 {
 	unsigned char *p;
@@ -195,14 +203,6 @@ static int test_mul (struct test_mul *o)
 	}
 
 	return ok;
-}
-
-static inline size_t mp_normalize (digit_t *x, size_t len)
-{
-	while (len > 0 && x[len - 1] == 0)
-		--len;
-
-	return len;
 }
 
 static int test_div (size_t len)
