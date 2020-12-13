@@ -465,9 +465,11 @@ typedef clock_t gauge_fn (size_t len, size_t count);
 
 void gauge (size_t len, size_t count, gauge_fn *f)
 {
-	clock_t data[1000];
+	clock_t data[4000];
 	size_t i;
 	double v, s;
+
+	count /= len;
 
 	for (i = 0; i < ARRAY_SIZE (data); ++i)
 		data[i] = f (len, count);
