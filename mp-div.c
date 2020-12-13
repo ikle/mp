@@ -134,15 +134,10 @@ size_t mp_div (digit_t *q, digit_t *r, const digit_t *n, size_t nlen,
 	digit_t c = 0, inv;
 	size_t i, j;
 
-	if (dlen < 2) {
-		r[0] = mp_div_1 (q, n, nlen, d[0]);
-		return r[0] > 0 ? 1 : 0;
-	}
-
 	if (r != n)
 		mp_copy (r, n, nlen);
 
-	inv = mp_pair_invert (d[dlen - 1], d[dlen - 2]);
+	inv = mp_pair_invert (d[dlen - 1], dlen > 1 ? d[dlen - 2]: 0);
 
 	for (
 		i = nlen - 1, j = nlen - dlen;
