@@ -519,27 +519,27 @@ int main (int argc, char *argv[])
 
 		printf ("\nTest a + b\n\n");
 
-		for (len = 1; len < MAX_LEN; ++len)
+		for (len = 1; len <= MAX_LEN; ++len)
 			gauge (len, 20000, gauge_add);
 
 		printf ("\nTest a * b\n\n");
 
-		for (len = 1; len < MAX_LEN; ++len)
+		for (len = 1; len <= MAX_LEN; ++len)
 			gauge (len, 3000, gauge_mul);
 
 		printf ("\nTest a / b\n\n");
 
-		for (len = 1; len < MAX_LEN; ++len)
+		for (len = 1; len <= MAX_LEN; ++len)
 			gauge (len, 2000, gauge_div);
 	}
 	else {
-		for (len = 0; len < MAX_LEN; ++len)
+		for (len = 0; len <= MAX_LEN; ++len)
 			ok &= test_add_fuzzy (len, ADD_COUNT);
 
-		for (len = 0; len < MAX_LEN; ++len)
+		for (len = 0; len <= MAX_LEN; ++len)
 			ok &= test_mul_fuzzy (len, MUL_COUNT);
 
-		for (len = 1; len < MAX_LEN; ++len)
+		for (len = 1; len <= MAX_LEN; ++len)
 			ok &= test_div_fuzzy (len, DIV_COUNT);
 
 		return ok ? 0 : 1;
