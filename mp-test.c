@@ -146,8 +146,91 @@ no_a:	perror ("mp_alloc");
 	return 0;
 }
 
-#define MAX_LEN	16
-#define COUNT	10000
+static inline size_t mp_normalize (digit_t *x, size_t len)
+{
+	while (len > 0 && x[len - 1] == 0)
+		--len;
+
+	return len;
+}
+
+static int test_div (size_t len)
+{
+	digit_t *a, *b, *c, *m, *s, *q, *r;
+	size_t alen = len + 2, mlen, slen, qlen, rlen;
+	int ok;
+
+	if ((a  = mp_alloc_random (alen)) == NULL)	goto no_a;
+	if ((b  = mp_alloc_random (len))  == NULL)	goto no_b;
+	if ((c  = mp_alloc_random (len))  == NULL)	goto no_c;
+
+	/* b must be normalized */
+	b[len - 1] |= (digit_t) 1 << (MP_DIGIT_BITS - 1);
+
+	/* c must be less than b */
+	if (mp_cmp_n (c, b, len) >= 0)
+		mp_sub_n (c, c, b, len);
+
+	mlen = alen + len;
+	slen = mlen + 1;
+	qlen = slen - len + 1;
+	rlen = slen;
+
+	if ((m = mp_alloc (mlen)) == NULL)	goto no_m;
+	if ((s = mp_alloc (slen)) == NULL)	goto no_s;
+	if ((q = mp_alloc (qlen)) == NULL)	goto no_q;
+	if ((r = mp_alloc (rlen)) == NULL)	goto no_r;
+
+	/*
+	 * Test for (ab + c) / b = (a, c), where c < b
+	 */
+	mp_mul (m, a, alen, b, len);
+	s[slen - 1] = mp_add (s, m, mlen, c, len);
+
+	rlen = mp_div (q, r, s, slen, b, len);
+	qlen = mp_normalize (q, qlen);
+
+	ok = qlen == alen && mp_cmp_n (q, a, qlen) == 0 &&
+	     rlen == len  && mp_cmp_n (r, c, len)  == 0;
+
+	if (!ok) {
+		printf ("div (%zu) failed:\n", len);
+
+		mp_show ("\ta      =", a, alen);
+		mp_show ("\tb      =", b, len);
+		mp_show ("\tc      =", c, len);
+
+		mp_show ("\tab     =", m, mlen);
+		mp_show ("\tab + c =", s, slen);
+
+		mp_show ("\tq      =", q, qlen);
+		mp_show ("\tr      =", r, rlen);
+	}
+
+	mp_free (r);
+	mp_free (q);
+	mp_free (s);
+	mp_free (m);
+	mp_free (c);
+	mp_free (b);
+	mp_free (a);
+	return ok;
+
+no_r:	mp_free (q);
+no_q:	mp_free (s);
+no_s:	mp_free (m);
+no_m:	mp_free (c);
+no_c:	mp_free (b);
+no_b:	mp_free (a);
+no_a:	perror ("mp_alloc");
+	return 0;
+}
+
+#define MAX_LEN		16
+
+#define ADD_COUNT	10000
+#define MUL_COUNT	10000
+#define DIV_COUNT	10000
 
 int main (int argc, char *argv[])
 {
@@ -158,12 +241,16 @@ int main (int argc, char *argv[])
 	srand ((unsigned) start);
 
 	for (len = 0; len < MAX_LEN; ++len)
-		for (i = 0; i < COUNT; ++i)
+		for (i = 0; i < ADD_COUNT; ++i)
 			ok |= test_add (len);
 
 	for (len = 0; len < MAX_LEN; ++len)
-		for (i = 0; i < COUNT; ++i)
+		for (i = 0; i < MUL_COUNT; ++i)
 			ok |= test_mul (len);
+
+	for (len = 1; len < MAX_LEN; ++len)
+		for (i = 0; i < DIV_COUNT; ++i)
+			ok |= test_div (len);
 
 	return ok ? 0 : 1;
 }
