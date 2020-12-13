@@ -6,8 +6,10 @@
  * SPDX-License-Identifier: BSD-2-Clause
  */
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 #include <mp/core.h>
@@ -130,6 +132,24 @@ static int test_add_fuzzy (size_t len, size_t count)
 	return ok;
 }
 
+static clock_t gauge_add (size_t len, size_t count)
+{
+	struct test_add o;
+	clock_t t;
+
+	if (!test_add_init (&o, len))
+		return (clock_t) -1;
+
+	test_add_mix (&o);
+
+	for (t = clock (); count > 0; --count)
+		test_add (&o);
+
+	t = clock () - t;
+	test_add_fini (&o);
+	return t;
+}
+
 /*
  * Basic multiplication with addition test
  */
@@ -234,6 +254,24 @@ static int test_mul_fuzzy (size_t len, size_t count)
 
 	test_mul_fini (&o);
 	return ok;
+}
+
+static clock_t gauge_mul (size_t len, size_t count)
+{
+	struct test_mul o;
+	clock_t t;
+
+	if (!test_mul_init (&o, len))
+		return (clock_t) -1;
+
+	test_mul_mix (&o);
+
+	for (t = clock (); count > 0; --count)
+		test_mul (&o);
+
+	t = clock () - t;
+	test_mul_fini (&o);
+	return t;
 }
 
 /*
@@ -366,6 +404,83 @@ static int test_div_fuzzy (size_t len, size_t count)
 	return ok;
 }
 
+static clock_t gauge_div (size_t len, size_t count)
+{
+	struct test_div o;
+	clock_t t;
+
+	if (!test_div_init (&o, len))
+		return (clock_t) -1;
+
+	test_div_mix (&o);
+
+	for (t = clock (); count > 0; --count)
+		test_div (&o);
+
+	t = clock () - t;
+	test_div_fini (&o);
+	return t;
+}
+
+/*
+ * Speed test helpers
+ */
+
+static int clock_cmp (const void *A, const void *B)
+{
+	const clock_t *a = A, *b = B;
+
+	return *a - *b;
+}
+
+void average (clock_t *data, size_t n, size_t count, double *value, double *s)
+{
+	size_t i, lo = n / 10, hi = (n * 9 + 9) / 10;
+	double v, ss, d;
+	const double r = (1e9 / CLOCKS_PER_SEC) / count;
+
+	qsort (data, n, sizeof (data[0]), clock_cmp);
+
+	for (v = 0, i = lo; i < hi; ++i)
+		v += data[i] * r;
+
+	v /= (hi - lo);
+
+	for (ss = 0, i = lo; i < hi; ++i) {
+		d = data[i] *r - v;
+		ss += d * d;
+	}
+
+	ss /= (hi - lo);
+
+	*value = v;
+	*s = sqrt (ss);
+}
+
+#ifndef ARRAY_SIZE
+#define ARRAY_SIZE(a)  (sizeof (a) / sizeof ((a)[0]))
+#endif
+
+typedef clock_t gauge_fn (size_t len, size_t count);
+
+void gauge (size_t len, size_t count, gauge_fn *f)
+{
+	clock_t data[1000];
+	size_t i;
+	double v, s;
+
+	for (i = 0; i < ARRAY_SIZE (data); ++i)
+		data[i] = f (len, count);
+
+	average (data, ARRAY_SIZE (data), count, &v, &s);
+
+	printf ("%zu\t%.2f\t%.2f\n", len, v, s);
+}
+
+/*
+ * Top-level code
+ */
+
 #define MAX_LEN		16
 
 #define ADD_COUNT	10000
@@ -380,14 +495,34 @@ int main (int argc, char *argv[])
 
 	srand ((unsigned) start);
 
-	for (len = 0; len < MAX_LEN; ++len)
-		ok &= test_add_fuzzy (len, ADD_COUNT);
+	if (argc > 1 && strcmp (argv[1], "speed") == 0) {
+		printf ("a + b - b = a\n\n");
 
-	for (len = 0; len < MAX_LEN; ++len)
-		ok &= test_mul_fuzzy (len, MUL_COUNT);
+		for (len = 1; len < MAX_LEN; ++len)
+			gauge (len, 10000, gauge_add);
 
-	for (len = 1; len < MAX_LEN; ++len)
-		ok &= test_div_fuzzy (len, DIV_COUNT);
+		printf ("\na (b + c) = ab + ac\n\n");
 
-	return ok ? 0 : 1;
+		for (len = 1; len < MAX_LEN; ++len)
+			gauge (len, 2000, gauge_mul);
+
+		printf ("\n(ab + c) / b = (a, c)\n\n");
+
+		for (len = 1; len < MAX_LEN; ++len)
+			gauge (len, 1000, gauge_div);
+	}
+	else {
+		for (len = 0; len < MAX_LEN; ++len)
+			ok &= test_add_fuzzy (len, ADD_COUNT);
+
+		for (len = 0; len < MAX_LEN; ++len)
+			ok &= test_mul_fuzzy (len, MUL_COUNT);
+
+		for (len = 1; len < MAX_LEN; ++len)
+			ok &= test_div_fuzzy (len, DIV_COUNT);
+
+		return ok ? 0 : 1;
+	}
+
+	return 0;
 }
