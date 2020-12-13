@@ -125,8 +125,8 @@ digit_t mp_div_reduce (digit_t *q, digit_t c, digit_t *r,
 
 /*
  * Function mp_div divides (n, nlen) by (d, dlen), stores quotinent into
- * (q, nlen - dlen + 1) and remaider into (r, nlen), and returns the size of
- * remaider. Constrains: n and d are normalized and nlen >= dlen > 0.
+ * (q, nlen - dlen + 1) and remainder into (r, nlen), and returns the size
+ * of remainder. Constrains: n and d are normalized and nlen >= dlen > 0.
  */
 size_t mp_div (digit_t *q, digit_t *r, const digit_t *n, size_t nlen,
 				       const digit_t *d, size_t dlen)

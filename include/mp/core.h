@@ -79,11 +79,11 @@ void    mp_mul      (digit_t *r, const digit_t *x, size_t xlen,
 				 const digit_t *y, size_t ylen);
 /*
  * Function mp_div_1 divides (x, len) by y, stores result into (r, len),
- * and returns the remaider value.
+ * and returns the remainder value.
  *
  * Function mp_div divides (n, nlen) by (d, dlen), stores quotinent into
- * (q, nlen - dlen + 1) and remaider into (r, nlen), and returns the size of
- * remaider. Constrains: n and d are normalized and nlen >= dlen > 0.
+ * (q, nlen - dlen + 1) and remainder into (r, nlen), and returns the size
+ * of remainder. Constrains: n and d are normalized and nlen >= dlen > 0.
  */
 digit_t mp_div_1 (digit_t *r, const digit_t *x, size_t len, digit_t y);
 
