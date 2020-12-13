@@ -325,7 +325,7 @@ int main (int argc, char *argv[])
 {
 	size_t len, i;
 	time_t start = time (NULL);
-	int ok = 0;
+	int ok = 1;
 
 	struct test_add a;
 	struct test_mul m;
@@ -339,7 +339,7 @@ int main (int argc, char *argv[])
 
 		for (i = 0; i < ADD_COUNT; ++i) {
 			test_add_mix (&a);
-			ok |= test_add (&a);
+			ok &= test_add (&a);
 		}
 
 		test_add_fini (&a);
@@ -351,7 +351,7 @@ int main (int argc, char *argv[])
 
 		for (i = 0; i < MUL_COUNT; ++i) {
 			test_mul_mix (&m);
-			ok |= test_mul (&m);
+			ok &= test_mul (&m);
 		}
 
 		test_mul_fini (&m);
@@ -363,7 +363,7 @@ int main (int argc, char *argv[])
 
 		for (i = 0; i < DIV_COUNT; ++i) {
 			test_div_mix (&d);
-			ok |= test_div (&d);
+			ok &= test_div (&d);
 		}
 
 		test_div_fini (&d);
