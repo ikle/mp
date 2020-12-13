@@ -112,20 +112,62 @@ static int test_add (struct test_add *o)
 	return ok;
 }
 
-static int test_mul (size_t len)
-{
+/*
+ * Basic multiplication with addition test
+ */
+
+struct test_mul {
 	digit_t *a, *b, *c, *ns, *n, *m0, *m1, *m;
+	size_t len;
+};
+
+static int test_mul_init (struct test_mul *o, size_t len)
+{
+	if ((o->a  = mp_alloc (len)) == NULL)		goto no_a;
+	if ((o->b  = mp_alloc (len)) == NULL)		goto no_b;
+	if ((o->c  = mp_alloc (len)) == NULL)		goto no_c;
+
+	if ((o->ns = mp_alloc (len + 1))     == NULL)	goto no_ns;
+	if ((o->n  = mp_alloc (2 * len + 1)) == NULL)	goto no_n;
+	if ((o->m0 = mp_alloc (2 * len))     == NULL)	goto no_m0;
+	if ((o->m1 = mp_alloc (2 * len))     == NULL)	goto no_m1;
+	if ((o->m  = mp_alloc (2 * len + 1)) == NULL)	goto no_m;
+
+	o->len = len;
+	return 1;
+
+no_m:	mp_free (o->m1);
+no_m1:	mp_free (o->m0);
+no_m0:	mp_free (o->n);
+no_n:	mp_free (o->ns);
+no_ns:	mp_free (o->c);
+no_c:	mp_free (o->b);
+no_b:	mp_free (o->a);
+no_a:	return 0;
+}
+
+static void test_mul_fini (struct test_mul *o)
+{
+	mp_free (o->m);
+	mp_free (o->m1);
+	mp_free (o->m0);
+	mp_free (o->n);
+	mp_free (o->ns);
+	mp_free (o->c);
+	mp_free (o->b);
+	mp_free (o->a);
+}
+
+static int test_mul (struct test_mul *o)
+{
+	digit_t *a = o->a, *b = o->b, *c = o->c;
+	digit_t *ns = o->ns, *n = o->n, *m0 = o->m0, *m1 = o->m1, *m = o->m;
+	size_t len = o->len;
 	int ok;
 
-	if ((a  = mp_alloc_random (len)) == NULL)	goto no_a;
-	if ((b  = mp_alloc_random (len)) == NULL)	goto no_b;
-	if ((c  = mp_alloc_random (len)) == NULL)	goto no_c;
-
-	if ((ns = mp_alloc (len + 1))     == NULL)	goto no_ns;
-	if ((n  = mp_alloc (2 * len + 1)) == NULL)	goto no_n;
-	if ((m0 = mp_alloc (2 * len))     == NULL)	goto no_m0;
-	if ((m1 = mp_alloc (2 * len))     == NULL)	goto no_m1;
-	if ((m  = mp_alloc (2 * len + 1)) == NULL)	goto no_m;
+	mp_random (a, len);
+	mp_random (b, len);
+	mp_random (c, len);
 
 	/*
 	 * Test for a(b + c) = ab + ac
@@ -152,25 +194,7 @@ static int test_mul (size_t len)
 		mp_show ("\tm     =", m, 2 * len + 1);
 	}
 
-	mp_free (m);
-	mp_free (m1);
-	mp_free (m0);
-	mp_free (n);
-	mp_free (ns);
-	mp_free (c);
-	mp_free (b);
-	mp_free (a);
 	return ok;
-
-no_m:	mp_free (m1);
-no_m1:	mp_free (m0);
-no_m0:	mp_free (n);
-no_n:	mp_free (ns);
-no_ns:	mp_free (c);
-no_c:	mp_free (b);
-no_b:	mp_free (a);
-no_a:	perror ("mp_alloc");
-	return 0;
 }
 
 static inline size_t mp_normalize (digit_t *x, size_t len)
@@ -266,6 +290,7 @@ int main (int argc, char *argv[])
 	int ok = 0;
 
 	struct test_add a;
+	struct test_mul m;
 
 	srand ((unsigned) start);
 
@@ -281,9 +306,17 @@ int main (int argc, char *argv[])
 		test_add_fini (&a);
 	}
 
-	for (len = 0; len < MAX_LEN; ++len)
+	for (len = 0; len < MAX_LEN; ++len) {
+		if (!test_mul_init (&m, len)) {
+			perror ("test_mul_init");
+			return 1;
+		}
+
 		for (i = 0; i < MUL_COUNT; ++i)
-			ok |= test_mul (len);
+			ok |= test_mul (&m);
+
+		test_mul_fini (&m);
+	}
 
 	for (len = 1; len < MAX_LEN; ++len)
 		for (i = 0; i < DIV_COUNT; ++i)
