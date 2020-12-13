@@ -205,15 +205,66 @@ static int test_mul (struct test_mul *o)
 	return ok;
 }
 
-static int test_div (size_t len)
-{
+/*
+ * Basic division with multiplication amd addition test
+ */
+
+struct test_div {
 	digit_t *a, *b, *c, *m, *s, *q, *r;
+	size_t len;
+};
+
+static int test_div_init (struct test_div *o, size_t len)
+{
 	size_t alen = len + 2, mlen, slen, qlen, rlen;
+
+	if ((o->a  = mp_alloc (alen)) == NULL)	goto no_a;
+	if ((o->b  = mp_alloc (len))  == NULL)	goto no_b;
+	if ((o->c  = mp_alloc (len))  == NULL)	goto no_c;
+
+	mlen = alen + len;
+	slen = mlen + 1;
+	qlen = slen - len + 1;
+	rlen = slen;
+
+	if ((o->m = mp_alloc (mlen)) == NULL)	goto no_m;
+	if ((o->s = mp_alloc (slen)) == NULL)	goto no_s;
+	if ((o->q = mp_alloc (qlen)) == NULL)	goto no_q;
+	if ((o->r = mp_alloc (rlen)) == NULL)	goto no_r;
+
+	o->len = len;
+	return 1;
+
+no_r:	mp_free (o->q);
+no_q:	mp_free (o->s);
+no_s:	mp_free (o->m);
+no_m:	mp_free (o->c);
+no_c:	mp_free (o->b);
+no_b:	mp_free (o->a);
+no_a:	return 0;
+}
+
+static void test_div_fini (struct test_div *o)
+{
+	mp_free (o->r);
+	mp_free (o->q);
+	mp_free (o->s);
+	mp_free (o->m);
+	mp_free (o->c);
+	mp_free (o->b);
+	mp_free (o->a);
+}
+
+static int test_div (struct test_div *o)
+{
+	digit_t *a = o->a, *b = o->b, *c = o->c;
+	digit_t *m = o->m, *s = o->s, *q = o->q, *r = o->r;
+	size_t len = o->len, alen = len + 2, mlen, slen, qlen, rlen;
 	int ok;
 
-	if ((a  = mp_alloc_random (alen)) == NULL)	goto no_a;
-	if ((b  = mp_alloc_random (len))  == NULL)	goto no_b;
-	if ((c  = mp_alloc_random (len))  == NULL)	goto no_c;
+	mp_random (a, alen);
+	mp_random (b, len);
+	mp_random (c, len);
 
 	/* b must be normalized */
 	b[len - 1] |= (digit_t) 1 << (MP_DIGIT_BITS - 1);
@@ -226,11 +277,6 @@ static int test_div (size_t len)
 	slen = mlen + 1;
 	qlen = slen - len + 1;
 	rlen = slen;
-
-	if ((m = mp_alloc (mlen)) == NULL)	goto no_m;
-	if ((s = mp_alloc (slen)) == NULL)	goto no_s;
-	if ((q = mp_alloc (qlen)) == NULL)	goto no_q;
-	if ((r = mp_alloc (rlen)) == NULL)	goto no_r;
 
 	/*
 	 * Test for (ab + c) / b = (a, c), where c < b
@@ -258,23 +304,7 @@ static int test_div (size_t len)
 		mp_show ("\tr      =", r, rlen);
 	}
 
-	mp_free (r);
-	mp_free (q);
-	mp_free (s);
-	mp_free (m);
-	mp_free (c);
-	mp_free (b);
-	mp_free (a);
 	return ok;
-
-no_r:	mp_free (q);
-no_q:	mp_free (s);
-no_s:	mp_free (m);
-no_m:	mp_free (c);
-no_c:	mp_free (b);
-no_b:	mp_free (a);
-no_a:	perror ("mp_alloc");
-	return 0;
 }
 
 #define MAX_LEN		16
@@ -291,6 +321,7 @@ int main (int argc, char *argv[])
 
 	struct test_add a;
 	struct test_mul m;
+	struct test_div d;
 
 	srand ((unsigned) start);
 
@@ -318,9 +349,17 @@ int main (int argc, char *argv[])
 		test_mul_fini (&m);
 	}
 
-	for (len = 1; len < MAX_LEN; ++len)
+	for (len = 1; len < MAX_LEN; ++len) {
+		if (!test_div_init (&d, len)) {
+			perror ("test_div_init");
+			return 1;
+		}
+
 		for (i = 0; i < DIV_COUNT; ++i)
-			ok |= test_div (len);
+			ok |= test_div (&d);
+
+		test_div_fini (&d);
+	}
 
 	return ok ? 0 : 1;
 }
