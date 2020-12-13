@@ -39,17 +39,6 @@ static void mp_random (digit_t *o, size_t len)
 		p[i] = rand ();
 }
 
-static digit_t *mp_alloc_random (size_t len)
-{
-	digit_t *o;
-
-	if ((o = mp_alloc (len)) == NULL)
-		return NULL;
-
-	mp_random (o, len);
-	return o;
-}
-
 static void mp_show (const char *prefix, const digit_t *o, size_t len)
 {
 	if (len == 0) {
