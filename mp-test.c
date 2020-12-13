@@ -74,7 +74,8 @@ static int test_add_init (struct test_add *o, size_t len)
 
 no_n:	mp_free (o->b);
 no_b:	mp_free (o->a);
-no_a:	return 0;
+no_a:	perror ("test add");
+	return 0;
 }
 
 static void test_add_fini (struct test_add *o)
@@ -143,7 +144,8 @@ no_n:	mp_free (o->ns);
 no_ns:	mp_free (o->c);
 no_c:	mp_free (o->b);
 no_b:	mp_free (o->a);
-no_a:	return 0;
+no_a:	perror ("test mul");
+	return 0;
 }
 
 static void test_mul_fini (struct test_mul *o)
@@ -236,7 +238,8 @@ no_s:	mp_free (o->m);
 no_m:	mp_free (o->c);
 no_c:	mp_free (o->b);
 no_b:	mp_free (o->a);
-no_a:	return 0;
+no_a:	perror ("test div");
+	return 0;
 }
 
 static void test_div_fini (struct test_div *o)
@@ -331,10 +334,8 @@ int main (int argc, char *argv[])
 	srand ((unsigned) start);
 
 	for (len = 0; len < MAX_LEN; ++len) {
-		if (!test_add_init (&a, len)) {
-			perror ("test_add_init");
+		if (!test_add_init (&a, len))
 			return 1;
-		}
 
 		for (i = 0; i < ADD_COUNT; ++i) {
 			test_add_mix (&a);
@@ -345,10 +346,8 @@ int main (int argc, char *argv[])
 	}
 
 	for (len = 0; len < MAX_LEN; ++len) {
-		if (!test_mul_init (&m, len)) {
-			perror ("test_mul_init");
+		if (!test_mul_init (&m, len))
 			return 1;
-		}
 
 		for (i = 0; i < MUL_COUNT; ++i) {
 			test_mul_mix (&m);
@@ -359,10 +358,8 @@ int main (int argc, char *argv[])
 	}
 
 	for (len = 1; len < MAX_LEN; ++len) {
-		if (!test_div_init (&d, len)) {
-			perror ("test_div_init");
+		if (!test_div_init (&d, len))
 			return 1;
-		}
 
 		for (i = 0; i < DIV_COUNT; ++i) {
 			test_div_mix (&d);
