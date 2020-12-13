@@ -22,18 +22,23 @@ static inline void mp_free (digit_t *o)
 	free (o);
 }
 
+static void mp_random (digit_t *o, size_t len)
+{
+	unsigned char *p;
+	size_t i;
+
+	for (p = (void *) o, i = 0; i < len * sizeof (*o); ++i)
+		p[i] = rand ();
+}
+
 static digit_t *mp_alloc_random (size_t len)
 {
 	digit_t *o;
-	unsigned char *p;
-	size_t i;
 
 	if ((o = mp_alloc (len)) == NULL)
 		return NULL;
 
-	for (p = (void *) o, i = 0; i < len * sizeof (*o); ++i)
-		p[i] = rand ();
-
+	mp_random (o, len);
 	return o;
 }
 
