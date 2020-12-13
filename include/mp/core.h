@@ -84,6 +84,7 @@ void    mp_mul      (digit_t *r, const digit_t *x, size_t xlen,
  * Function mp_div divides (n, nlen) by (d, dlen), stores quotinent into
  * (q, nlen - dlen + 1) and remainder into (r, nlen), and returns the size
  * of remainder. Constrains: n and d are normalized and nlen >= dlen > 0.
+ * Note that the remainder is not normalized.
  */
 digit_t mp_div_1 (digit_t *r, const digit_t *x, size_t len, digit_t y);
 
