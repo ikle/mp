@@ -498,17 +498,20 @@ int main (int argc, char *argv[])
 	srand ((unsigned) start);
 
 	if (argc > 1 && strcmp (argv[1], "speed") == 0) {
-		printf ("a + b - b = a\n\n");
+		printf ("Legend: number of digits, running time and standard "
+			"deviation in nanoseconds\n");
+
+		printf ("\nTest a + b - b = a\n\n");
 
 		for (len = 1; len < MAX_LEN; ++len)
 			gauge (len, 10000, gauge_add);
 
-		printf ("\na (b + c) = ab + ac\n\n");
+		printf ("\nTest a (b + c) = ab + ac\n\n");
 
 		for (len = 1; len < MAX_LEN; ++len)
 			gauge (len, 2000, gauge_mul);
 
-		printf ("\n(ab + c) / b = (a, c)\n\n");
+		printf ("\nTest (ab + c) / b = (a, c)\n\n");
 
 		for (len = 1; len < MAX_LEN; ++len)
 			gauge (len, 1000, gauge_div);
