@@ -57,14 +57,44 @@ static void mp_show (const char *prefix, const digit_t *o, size_t len)
 	printf ("\n");
 }
 
-static int test_add (size_t len)
+/*
+ * Basic addition and substraction test
+ */
+
+struct test_add {
+	digit_t *a, *b, *n;
+	size_t len;
+};
+
+static int test_add_init (struct test_add *o, size_t len)
 {
-	digit_t *n, *a, *b;
+	if ((o->a = mp_alloc (len)) == NULL)		goto no_a;
+	if ((o->b = mp_alloc (len)) == NULL)		goto no_b;
+	if ((o->n = mp_alloc (len + 1)) == NULL)	goto no_n;
+
+	o->len = len;
+	return 1;
+
+no_n:	mp_free (o->b);
+no_b:	mp_free (o->a);
+no_a:	return 0;
+}
+
+static void test_add_fini (struct test_add *o)
+{
+	mp_free (o->n);
+	mp_free (o->b);
+	mp_free (o->a);
+}
+
+static int test_add (struct test_add *o)
+{
+	digit_t *a = o->a, *b = o->b, *n = o->n;
+	size_t len = o->len;
 	int ok;
 
-	if ((n = mp_alloc (len + 1)) == NULL)		goto no_n;
-	if ((a = mp_alloc_random (len)) == NULL)	goto no_a;
-	if ((b = mp_alloc_random (len)) == NULL)	goto no_b;
+	mp_random (a, len);
+	mp_random (b, len);
 
 	/*
 	 * Test for a + b - b = a
@@ -79,15 +109,7 @@ static int test_add (size_t len)
 		mp_show ("\tn =", n, len);
 	}
 
-	mp_free (b);
-	mp_free (a);
-	mp_free (n);
 	return ok;
-
-no_b:	mp_free (a);
-no_a:	mp_free (n);
-no_n:	perror ("mp_alloc");
-	return 0;
 }
 
 static int test_mul (size_t len)
@@ -243,11 +265,21 @@ int main (int argc, char *argv[])
 	time_t start = time (NULL);
 	int ok = 0;
 
+	struct test_add a;
+
 	srand ((unsigned) start);
 
-	for (len = 0; len < MAX_LEN; ++len)
+	for (len = 0; len < MAX_LEN; ++len) {
+		if (!test_add_init (&a, len)) {
+			perror ("test_add_init");
+			return 1;
+		}
+
 		for (i = 0; i < ADD_COUNT; ++i)
-			ok |= test_add (len);
+			ok |= test_add (&a);
+
+		test_add_fini (&a);
+	}
 
 	for (len = 0; len < MAX_LEN; ++len)
 		for (i = 0; i < MUL_COUNT; ++i)
