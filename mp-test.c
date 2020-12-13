@@ -84,14 +84,17 @@ static void test_add_fini (struct test_add *o)
 	mp_free (o->a);
 }
 
+static void test_add_mix (struct test_add *o)
+{
+	mp_random (o->a, o->len);
+	mp_random (o->b, o->len);
+}
+
 static int test_add (struct test_add *o)
 {
 	digit_t *a = o->a, *b = o->b, *n = o->n;
 	size_t len = o->len;
 	int ok;
-
-	mp_random (a, len);
-	mp_random (b, len);
 
 	/*
 	 * Test for a + b - b = a
@@ -155,16 +158,19 @@ static void test_mul_fini (struct test_mul *o)
 	mp_free (o->a);
 }
 
+static void test_mul_mix (struct test_mul *o)
+{
+	mp_random (o->a, o->len);
+	mp_random (o->b, o->len);
+	mp_random (o->c, o->len);
+}
+
 static int test_mul (struct test_mul *o)
 {
 	digit_t *a = o->a, *b = o->b, *c = o->c;
 	digit_t *ns = o->ns, *n = o->n, *m0 = o->m0, *m1 = o->m1, *m = o->m;
 	size_t len = o->len;
 	int ok;
-
-	mp_random (a, len);
-	mp_random (b, len);
-	mp_random (c, len);
 
 	/*
 	 * Test for a(b + c) = ab + ac
@@ -244,12 +250,10 @@ static void test_div_fini (struct test_div *o)
 	mp_free (o->a);
 }
 
-static int test_div (struct test_div *o)
+static void test_div_mix (struct test_div *o)
 {
 	digit_t *a = o->a, *b = o->b, *c = o->c;
-	digit_t *m = o->m, *s = o->s, *q = o->q, *r = o->r;
-	size_t len = o->len, alen = len + 2, clen, mlen, slen, qlen, rlen;
-	int ok;
+	size_t len = o->len, alen = o->len + 2;
 
 	mp_random (a, alen);
 	mp_random (b, len);
@@ -261,6 +265,14 @@ static int test_div (struct test_div *o)
 	/* c must be less than b */
 	if (mp_cmp_n (c, b, len) >= 0)
 		mp_sub_n (c, c, b, len);
+}
+
+static int test_div (struct test_div *o)
+{
+	digit_t *a = o->a, *b = o->b, *c = o->c;
+	digit_t *m = o->m, *s = o->s, *q = o->q, *r = o->r;
+	size_t len = o->len, alen = len + 2, clen, mlen, slen, qlen, rlen;
+	int ok;
 
 	mlen = alen + len;
 	slen = mlen + 1;
@@ -324,8 +336,10 @@ int main (int argc, char *argv[])
 			return 1;
 		}
 
-		for (i = 0; i < ADD_COUNT; ++i)
+		for (i = 0; i < ADD_COUNT; ++i) {
+			test_add_mix (&a);
 			ok |= test_add (&a);
+		}
 
 		test_add_fini (&a);
 	}
@@ -336,8 +350,10 @@ int main (int argc, char *argv[])
 			return 1;
 		}
 
-		for (i = 0; i < MUL_COUNT; ++i)
+		for (i = 0; i < MUL_COUNT; ++i) {
+			test_mul_mix (&m);
 			ok |= test_mul (&m);
+		}
 
 		test_mul_fini (&m);
 	}
@@ -348,8 +364,10 @@ int main (int argc, char *argv[])
 			return 1;
 		}
 
-		for (i = 0; i < DIV_COUNT; ++i)
+		for (i = 0; i < DIV_COUNT; ++i) {
+			test_div_mix (&d);
 			ok |= test_div (&d);
+		}
 
 		test_div_fini (&d);
 	}
