@@ -143,7 +143,7 @@ static clock_t gauge_add (size_t len, size_t count)
 	test_add_mix (&o);
 
 	for (t = clock (); count > 0; --count)
-		test_add (&o);
+		o.n[len] = mp_add_n (o.n, o.a, o.b, len);
 
 	t = clock () - t;
 	test_add_fini (&o);
@@ -267,7 +267,7 @@ static clock_t gauge_mul (size_t len, size_t count)
 	test_mul_mix (&o);
 
 	for (t = clock (); count > 0; --count)
-		test_mul (&o);
+		mp_mul (o.m0, o.a, len, o.b, len);
 
 	t = clock () - t;
 	test_mul_fini (&o);
@@ -406,20 +406,36 @@ static int test_div_fuzzy (size_t len, size_t count)
 
 static clock_t gauge_div (size_t len, size_t count)
 {
-	struct test_div o;
+	digit_t *n, *d, *q, *r;
+	size_t nlen = 2 * len, dlen = len, qlen = len + 1, rlen = nlen;
 	clock_t t;
 
-	if (!test_div_init (&o, len))
-		return (clock_t) -1;
+	if ((n  = mp_alloc (nlen)) == NULL)	goto no_n;
+	if ((d  = mp_alloc (dlen)) == NULL)	goto no_d;
+	if ((q  = mp_alloc (qlen)) == NULL)	goto no_q;
+	if ((r  = mp_alloc (rlen)) == NULL)	goto no_r;
 
-	test_div_mix (&o);
+	mp_random (n, nlen);
+	mp_random (d, dlen);
+
+	/* b must be normalized */
+	d[len - 1] |= (digit_t) 1 << (MP_DIGIT_BITS - 1);
 
 	for (t = clock (); count > 0; --count)
-		test_div (&o);
+		mp_div (q, r, n, nlen, d, dlen);
 
 	t = clock () - t;
-	test_div_fini (&o);
+
+	mp_free (r);
+	mp_free (q);
+	mp_free (d);
+	mp_free (n);
 	return t;
+
+no_r:	mp_free (q);
+no_q:	mp_free (d);
+no_d:	mp_free (n);
+no_n:	return (clock_t) -1;
 }
 
 /*
@@ -501,20 +517,20 @@ int main (int argc, char *argv[])
 		printf ("Legend: number of digits, running time and standard "
 			"deviation in nanoseconds\n");
 
-		printf ("\nTest a + b - b = a\n\n");
+		printf ("\nTest a + b\n\n");
 
 		for (len = 1; len < MAX_LEN; ++len)
-			gauge (len, 10000, gauge_add);
+			gauge (len, 20000, gauge_add);
 
-		printf ("\nTest a (b + c) = ab + ac\n\n");
-
-		for (len = 1; len < MAX_LEN; ++len)
-			gauge (len, 2000, gauge_mul);
-
-		printf ("\nTest (ab + c) / b = (a, c)\n\n");
+		printf ("\nTest a * b\n\n");
 
 		for (len = 1; len < MAX_LEN; ++len)
-			gauge (len, 1000, gauge_div);
+			gauge (len, 3000, gauge_mul);
+
+		printf ("\nTest a / b\n\n");
+
+		for (len = 1; len < MAX_LEN; ++len)
+			gauge (len, 2000, gauge_div);
 	}
 	else {
 		for (len = 0; len < MAX_LEN; ++len)
