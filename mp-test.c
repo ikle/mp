@@ -248,7 +248,7 @@ static int test_div (struct test_div *o)
 {
 	digit_t *a = o->a, *b = o->b, *c = o->c;
 	digit_t *m = o->m, *s = o->s, *q = o->q, *r = o->r;
-	size_t len = o->len, alen = len + 2, mlen, slen, qlen, rlen;
+	size_t len = o->len, alen = len + 2, clen, mlen, slen, qlen, rlen;
 	int ok;
 
 	mp_random (a, alen);
@@ -275,9 +275,13 @@ static int test_div (struct test_div *o)
 
 	rlen = mp_div (q, r, s, slen, b, len);
 	qlen = mp_normalize (q, qlen);
+	rlen = mp_normalize (r, rlen);
+
+	alen = mp_normalize (a, alen);
+	clen = mp_normalize (c, len);
 
 	ok = qlen == alen && mp_cmp_n (q, a, qlen) == 0 &&
-	     rlen == len  && mp_cmp_n (r, c, len)  == 0;
+	     rlen == clen && mp_cmp_n (r, c, len)  == 0;
 
 	if (!ok) {
 		printf ("div (%zu) failed:\n", len);
