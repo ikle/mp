@@ -134,20 +134,30 @@ static int test_add_fuzzy (size_t len, size_t count)
 
 static clock_t gauge_add (size_t len, size_t count)
 {
-	struct test_add o;
+	digit_t *a, *b, *s;
 	clock_t t;
 
-	if (!test_add_init (&o, len))
-		return (clock_t) -1;
+	if ((a = mp_alloc (len))     == NULL)	goto no_a;
+	if ((b = mp_alloc (len))     == NULL)	goto no_b;
+	if ((s = mp_alloc (len + 1)) == NULL)	goto no_s;
 
-	test_add_mix (&o);
+	mp_random (a, len);
+	mp_random (b, len);
 
 	for (t = clock (); count > 0; --count)
-		o.n[len] = mp_add_n (o.n, o.a, o.b, len, 0);
+		s[len] = mp_add_n (s, a, b, len, 0);
 
 	t = clock () - t;
-	test_add_fini (&o);
+
+	mp_free (s);
+	mp_free (b);
+	mp_free (a);
 	return t;
+
+no_s:	mp_free (b);
+no_b:	mp_free (a);
+no_a:	perror ("gauge add");
+	return (clock_t) -1;
 }
 
 /*
@@ -282,7 +292,6 @@ no_m:	mp_free (b);
 no_b:	mp_free (a);
 no_a:	perror ("gauge mul");
 	return (clock_t) -1;
-
 }
 
 /*
