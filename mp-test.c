@@ -485,7 +485,7 @@ void gauge (size_t len, size_t count, gauge_fn *f)
 	size_t i;
 	double v, s;
 
-	count /= len;
+	count = count > len ? count / len : 1;
 
 	for (i = 0; i < ARRAY_SIZE (data); ++i)
 		data[i] = f (len, count);
