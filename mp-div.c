@@ -113,7 +113,7 @@ digit_t mp_div_reduce (digit_t *q, digit_t c, digit_t *r,
 {
 	q[0] = mp_pair_divapprox (c, r[dlen - 1], inv);
 
-	c -= mp_submul_1 (r, d, dlen, q[0]);
+	c -= mp_submul_1 (r, d, dlen, q[0], 0);
 
 	if (c > 0 || mp_cmp_n (r, d, dlen) >= 0) {
 		++q[0];
