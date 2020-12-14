@@ -258,20 +258,31 @@ static int test_mul_fuzzy (size_t len, size_t count)
 
 static clock_t gauge_mul (size_t len, size_t count)
 {
-	struct test_mul o;
+	digit_t *a, *b, *m;
 	clock_t t;
 
-	if (!test_mul_init (&o, len))
-		return (clock_t) -1;
+	if ((a = mp_alloc (len))     == NULL)	goto no_a;
+	if ((b = mp_alloc (len))     == NULL)	goto no_b;
+	if ((m = mp_alloc (len * 2)) == NULL)	goto no_m;
 
-	test_mul_mix (&o);
+	mp_random (a, len);
+	mp_random (b, len);
 
 	for (t = clock (); count > 0; --count)
-		mp_mul (o.m0, o.a, len, o.b, len);
+		mp_mul (m, a, len, b, len);
 
 	t = clock () - t;
-	test_mul_fini (&o);
+
+	mp_free (m);
+	mp_free (b);
+	mp_free (a);
 	return t;
+
+no_m:	mp_free (b);
+no_b:	mp_free (a);
+no_a:	perror ("gauge mul");
+	return (clock_t) -1;
+
 }
 
 /*
