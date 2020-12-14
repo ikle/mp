@@ -499,7 +499,7 @@ void gauge (size_t len, size_t count, gauge_fn *f)
  * Top-level code
  */
 
-#define MAX_LEN		16
+#define MAX_LEN		32
 
 #define ADD_COUNT	10000
 #define MUL_COUNT	10000
