@@ -1,0 +1,12 @@
+#!/usr/bin/gnuplot -p
+
+set title "Speed of basic operations"
+
+set xlabel "Number size in digits"
+set ylabel "Time in nanoseconds"
+
+set grid
+
+plot "data/add.data" title "add" with yerrorbars, \
+     "data/mul.data" title "mul" with yerrorbars, \
+     "data/div.data" title "div" with yerrorbars
