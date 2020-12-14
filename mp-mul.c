@@ -76,7 +76,8 @@ char mp_addmul_kara (digit_t *r, const digit_t *x, size_t xlen,
 	mp_sub (m, m, alen + clen + 2, ac, alen + clen, 0);
 	mp_sub (m, m, alen + clen + 2, bd, blen + dlen, 0);
 
-	return mp_add (r + dlen, r + dlen, xlen + clen, m, alen + clen + 2, 0) +
+	/* Note that the most significant digit of m is always zero */
+	return mp_add (r + dlen, r + dlen, xlen + clen, m, alen + clen + 1, 0) +
 	       C;
 }
 
