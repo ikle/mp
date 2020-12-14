@@ -73,7 +73,8 @@ void    mp_rshift (digit_t *r, const digit_t *x, size_t len, size_t count);
  * (r, xlen + ylen). Constrains: xlen >= ylen > 0.
  */
 digit_t mp_mul_1    (digit_t *r, const digit_t *x, size_t len, digit_t y);
-digit_t mp_addmul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y);
+digit_t mp_addmul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y,
+		     digit_t c);
 digit_t mp_submul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y);
 void    mp_mul      (digit_t *r, const digit_t *x, size_t xlen,
 				 const digit_t *y, size_t ylen);

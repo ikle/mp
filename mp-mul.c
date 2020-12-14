@@ -19,6 +19,6 @@ void mp_mul (digit_t *r, const digit_t *x, size_t xlen,
 	r[xlen] = mp_mul_1 (r, x, xlen, y[0]);
 
 	for (i = 1; i < ylen; ++i) {
-		r[i + xlen] = mp_addmul_1 (r + i, x, xlen, y[i]);
+		r[i + xlen] = mp_addmul_1 (r + i, x, xlen, y[i], 0);
 	}
 }
