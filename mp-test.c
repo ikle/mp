@@ -123,7 +123,7 @@ static int test_add_fuzzy (size_t len, size_t count)
 	if (!test_add_init (&o, len))
 		return 0;
 
-	for (ok = 0; count > 0; --count) {
+	for (ok = 1; count > 0; --count) {
 		test_add_mix (&o);
 		ok &= test_add (&o);
 	}
@@ -247,7 +247,7 @@ static int test_mul_fuzzy (size_t len, size_t count)
 	if (!test_mul_init (&o, len))
 		return 0;
 
-	for (ok = 0; count > 0; --count) {
+	for (ok = 1; count > 0; --count) {
 		test_mul_mix (&o);
 		ok &= test_mul (&o);
 	}
@@ -395,7 +395,7 @@ static int test_div_fuzzy (size_t len, size_t count)
 	if (!test_div_init (&o, len))
 		return 0;
 
-	for (ok = 0; count > 0; --count) {
+	for (ok = 1; count > 0; --count) {
 		test_div_mix (&o);
 		ok &= test_div (&o);
 	}
