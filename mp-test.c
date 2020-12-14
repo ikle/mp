@@ -51,7 +51,7 @@ static void mp_show (const char *prefix, const digit_t *o, size_t len)
 	printf ("%s", prefix);
 
 	for (; len > 0; --len)
-		printf (" %016lX ", o[len - 1]);
+		printf (" %016lX", o[len - 1]);
 
 	printf ("\n");
 }
