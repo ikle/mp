@@ -80,14 +80,14 @@ void    mp_rshift (digit_t *r, const digit_t *x, size_t len, size_t count);
  */
 digit_t mp_mul_1    (digit_t *r, const digit_t *x, size_t len, digit_t y);
 digit_t mp_addmul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y,
-		     digit_t c);
+		     int c);
 digit_t mp_submul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y,
-		     digit_t c);
+		     int c);
 
 void    mp_mul      (digit_t *r, const digit_t *x, size_t xlen,
 				 const digit_t *y, size_t ylen);
 char    mp_addmul   (digit_t *r, const digit_t *x, size_t xlen,
-				 const digit_t *y, size_t ylen, digit_t c);
+				 const digit_t *y, size_t ylen, int c);
 /*
  * School Book multiplication, exported for tests only
  */

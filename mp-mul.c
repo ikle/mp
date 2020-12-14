@@ -32,13 +32,14 @@ void mp_mul_sb (digit_t *r, const digit_t *x, size_t xlen,
 
 static
 char mp_addmul_sb (digit_t *r, const digit_t *x, size_t xlen,
-			       const digit_t *y, size_t ylen, digit_t c)
+			       const digit_t *y, size_t ylen, int c)
 {
 	size_t i;
+	digit_t rh;
 
 	for (i = 0; i < ylen; ++i) {
-		c = mp_addmul_1 (r + i, x, xlen, y[i], c);
-		c = mp_add_1 (r + xlen + i, r + xlen + i, ylen - i, c);
+		rh = mp_addmul_1 (r + i, x, xlen, y[i], c);
+		c = mp_add_1 (r + xlen + i, r + xlen + i, ylen - i, rh);
 	}
 
 	return c;
@@ -48,7 +49,7 @@ char mp_addmul_sb (digit_t *r, const digit_t *x, size_t xlen,
 
 static
 char mp_addmul_kara (digit_t *r, const digit_t *x, size_t xlen,
-				 const digit_t *y, size_t ylen, digit_t C)
+				 const digit_t *y, size_t ylen, int C)
 {
 	/*
 	 * len must be less at least 4 to prevent infinite recursion
@@ -98,7 +99,7 @@ void mp_mul (digit_t *r, const digit_t *x, size_t xlen,
 }
 
 char mp_addmul (digit_t *r, const digit_t *x, size_t xlen,
-			    const digit_t *y, size_t ylen, digit_t c)
+			    const digit_t *y, size_t ylen, int c)
 {
 	if (xlen < MP_KARATSUBA_CUTOFF)
 		return mp_addmul_sb (r, x, xlen, y, ylen, c);
