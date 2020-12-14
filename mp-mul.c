@@ -22,3 +22,16 @@ void mp_mul (digit_t *r, const digit_t *x, size_t xlen,
 		r[i + xlen] = mp_addmul_1 (r + i, x, xlen, y[i], 0);
 	}
 }
+
+char mp_addmul (digit_t *r, const digit_t *x, size_t xlen,
+			    const digit_t *y, size_t ylen, digit_t c)
+{
+	size_t i;
+
+	for (i = 0; i < ylen; ++i) {
+		c = mp_addmul_1 (r + i, x, xlen, y[i], c);
+		c = mp_add_1 (r + xlen + i, r + xlen + i, ylen - i, c);
+	}
+
+	return c;
+}

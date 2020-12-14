@@ -71,13 +71,20 @@ void    mp_rshift (digit_t *r, const digit_t *x, size_t len, size_t count);
  *
  * Function mp_mul multiplies (x, xlen) by (y, ylen), stores result into
  * (r, xlen + ylen). Constrains: xlen >= ylen > 0.
+ *
+ * Function mp_addmul multiplies (x, xlen) by (y, ylen), adds result into
+ * (r, xlen + ylen) and returns the carry value.
+ * Constrains: xlen >= ylen > 0.
  */
 digit_t mp_mul_1    (digit_t *r, const digit_t *x, size_t len, digit_t y);
 digit_t mp_addmul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y,
 		     digit_t c);
 digit_t mp_submul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y);
+
 void    mp_mul      (digit_t *r, const digit_t *x, size_t xlen,
 				 const digit_t *y, size_t ylen);
+char    mp_addmul   (digit_t *r, const digit_t *x, size_t xlen,
+				 const digit_t *y, size_t ylen, digit_t c);
 /*
  * Function mp_div_1 divides (x, len) by y, stores result into (r, len),
  * and returns the remainder value.
