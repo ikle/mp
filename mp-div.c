@@ -97,7 +97,7 @@ digit_t mp_pair_divapprox (digit_t n1, digit_t n0, digit_t r)
 
 	q1 += mp_digit_add (&q0, q0, p1);	/* Q = N r / B */
 
-	mp_pair_add  (&q1, &q0, q1, q0, n1, n0);
+	mp_pair_add (&q1, &q0, q1, q0, n1, n0);
 	return q1;
 }
 
