@@ -89,6 +89,38 @@ no_a:	perror ("gauge add");
 }
 
 /*
+ * Gauge School Book multiplication operation
+ */
+
+static clock_t gauge_mul_sb (size_t len, size_t count)
+{
+	digit_t *a, *b, *m;
+	clock_t t;
+
+	if ((a = mp_alloc (len))     == NULL)	goto no_a;
+	if ((b = mp_alloc (len))     == NULL)	goto no_b;
+	if ((m = mp_alloc (len * 2)) == NULL)	goto no_m;
+
+	mp_random (a, len);
+	mp_random (b, len);
+
+	for (t = clock (); count > 0; --count)
+		mp_mul_sb (m, a, len, b, len);
+
+	t = clock () - t;
+
+	mp_free (m);
+	mp_free (b);
+	mp_free (a);
+	return t;
+
+no_m:	mp_free (b);
+no_b:	mp_free (a);
+no_a:	perror ("gauge mul");
+	return (clock_t) -1;
+}
+
+/*
  * Gauge multiplication operation
  */
 
@@ -253,6 +285,11 @@ int main (int argc, char *argv[])
 
 	for (len = 1; len <= MAX_LEN; ++len)
 		gauge (len, 10000, gauge_add, root, "add");
+
+	printf ("\nTest school book a * b\n\n");
+
+	for (len = 1; len <= MAX_LEN; ++len)
+		gauge (len, 3000, gauge_mul_sb, root, "mul-sb");
 
 	printf ("\nTest a * b\n\n");
 
