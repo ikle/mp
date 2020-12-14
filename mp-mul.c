@@ -18,7 +18,6 @@ static inline void mp_zero (digit_t *x, size_t len)
 /*
  * Constrains for all mp_mul and mp_addmul : xlen >= ylen > 0
  */
-static
 void mp_mul_sb (digit_t *r, const digit_t *x, size_t xlen,
 			    const digit_t *y, size_t ylen)
 {

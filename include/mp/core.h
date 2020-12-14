@@ -89,6 +89,11 @@ void    mp_mul      (digit_t *r, const digit_t *x, size_t xlen,
 char    mp_addmul   (digit_t *r, const digit_t *x, size_t xlen,
 				 const digit_t *y, size_t ylen, digit_t c);
 /*
+ * School Book multiplication, exported for tests only
+ */
+void    mp_mul_sb   (digit_t *r, const digit_t *x, size_t xlen,
+				 const digit_t *y, size_t ylen);
+/*
  * Function mp_div_1 divides (x, len) by y, stores result into (r, len),
  * and returns the remainder value.
  *
