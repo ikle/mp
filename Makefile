@@ -12,6 +12,6 @@ include make-core.mk
 
 speed: mp-speed-test
 	mkdir -p data
-	rm -f data/*
+	rm -f data/gauge-*
 	./mp-speed-test data
 	./mp-plot-data

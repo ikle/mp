@@ -241,7 +241,7 @@ void gauge (size_t len, size_t count, gauge_fn *f,
 	double v, s;
 
 	if (root != NULL) {
-		snprintf (path, sizeof (path), "%s/%s.data", root, name);
+		snprintf (path, sizeof (path), "%s/gauge-%s.data", root, name);
 		to = fopen (path, "a");
 	}
 
