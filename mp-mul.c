@@ -68,15 +68,16 @@ char mp_addmul_kara (digit_t *r, const digit_t *x, size_t xlen,
 	C = mp_addmul_kara (bd, b, blen, d, dlen, C);
 	C = mp_addmul_kara (ac, a, alen, c, clen, C);
 
-	apb[alen] = mp_add (apb, a, alen, b, blen);
-	cpd[clen] = mp_add (cpd, c, clen, d, dlen);
+	apb[alen] = mp_add (apb, a, alen, b, blen, 0);
+	cpd[clen] = mp_add (cpd, c, clen, d, dlen, 0);
 
 	mp_mul (m, apb, alen + 1, cpd, clen + 1);
 
-	mp_sub (m, m, alen + clen + 2, ac, alen + clen);
-	mp_sub (m, m, alen + clen + 2, bd, blen + dlen);
+	mp_sub (m, m, alen + clen + 2, ac, alen + clen, 0);
+	mp_sub (m, m, alen + clen + 2, bd, blen + dlen, 0);
 
-	return C + mp_add (r + dlen, r + dlen, xlen + clen, m, alen + clen + 2);
+	return mp_add (r + dlen, r + dlen, xlen + clen, m, alen + clen + 2, 0) +
+	       C;
 }
 
 static

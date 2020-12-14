@@ -102,8 +102,8 @@ static int test_add (struct test_add *o)
 	/*
 	 * Test for a + b - b = a
 	 */
-	n[len]  = mp_add_n (n, a, b, len);
-	n[len] -= mp_sub_n (n, n, b, len);
+	n[len]  = mp_add_n (n, a, b, len, 0);
+	n[len] -= mp_sub_n (n, n, b, len, 0);
 
 	if (!(ok = mp_cmp_n (a, n, len) == 0)) {
 		printf ("add (%zu) failed:\n", len);
@@ -143,7 +143,7 @@ static clock_t gauge_add (size_t len, size_t count)
 	test_add_mix (&o);
 
 	for (t = clock (); count > 0; --count)
-		o.n[len] = mp_add_n (o.n, o.a, o.b, len);
+		o.n[len] = mp_add_n (o.n, o.a, o.b, len, 0);
 
 	t = clock () - t;
 	test_add_fini (&o);
@@ -214,12 +214,12 @@ static int test_mul (struct test_mul *o)
 	/*
 	 * Test for a(b + c) = ab + ac
 	 */
-	ns[len] = mp_add_n (ns, b, c, len);
+	ns[len] = mp_add_n (ns, b, c, len, 0);
 	mp_mul (n, ns, len + 1, a, len);
 
 	mp_mul (m0, a, len, b, len);
 	mp_mul (m1, a, len, c, len);
-	m[2 * len] = mp_add_n (m, m0, m1, 2 * len);
+	m[2 * len] = mp_add_n (m, m0, m1, 2 * len, 0);
 
 	if (!(ok = mp_cmp_n (n, m, 2 * len + 1) == 0)) {
 		printf ("mul (%zu) failed:\n", len);
@@ -350,7 +350,7 @@ static void test_div_mix (struct test_div *o)
 
 	/* c must be less than b */
 	if (mp_cmp_n (c, b, len) >= 0)
-		mp_sub_n (c, c, b, len);
+		mp_sub_n (c, c, b, len, 0);
 }
 
 static int test_div (struct test_div *o)
@@ -369,7 +369,7 @@ static int test_div (struct test_div *o)
 	 * Test for (ab + c) / b = (a, c), where c < b
 	 */
 	mp_mul (m, a, alen, b, len);
-	s[slen - 1] = mp_add (s, m, mlen, c, len);
+	s[slen - 1] = mp_add (s, m, mlen, c, len, 0);
 
 	rlen = mp_div (q, r, s, slen, b, len);
 	qlen = mp_normalize (q, qlen);

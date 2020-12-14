@@ -23,10 +23,10 @@ static inline digit_t mp_copy (digit_t *r, const digit_t *x, size_t len)
 	return 0;
 }
 
-char mp_add_n (digit_t *r, const digit_t *x, const digit_t *y, size_t len)
+char mp_add_n (digit_t *r, const digit_t *x, const digit_t *y, size_t len,
+	       int c)
 {
 	size_t i;
-	int c = 0;
 
 	for (i = 0; i < len; ++i)
 		c = mp_digit_adc (r + i, x[i], y[i], c);
@@ -48,10 +48,9 @@ char mp_add_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
 }
 
 char mp_add (digit_t *r, const digit_t *x, size_t xlen,
-			 const digit_t *y, size_t ylen)
+			 const digit_t *y, size_t ylen, int c)
 {
 	size_t i;
-	int c = 0;
 
 	for (i = 0; i < ylen; ++i)
 		c = mp_digit_adc (r + i, x[i], y[i], c);
@@ -62,10 +61,10 @@ char mp_add (digit_t *r, const digit_t *x, size_t xlen,
 	return c;
 }
 
-char mp_sub_n (digit_t *r, const digit_t *x, const digit_t *y, size_t len)
+char mp_sub_n (digit_t *r, const digit_t *x, const digit_t *y, size_t len,
+	       int c)
 {
 	size_t i;
-	int c = 0;
 
 	for (i = 0; i < len; ++i)
 		c = mp_digit_sbb (r + i, x[i], y[i], c);
@@ -87,10 +86,9 @@ char mp_sub_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
 }
 
 char mp_sub (digit_t *r, const digit_t *x, size_t xlen,
-			 const digit_t *y, size_t ylen)
+			 const digit_t *y, size_t ylen, int c)
 {
 	size_t i;
-	int c = 0;
 
 	for (i = 0; i < ylen; ++i)
 		c = mp_digit_sbb (r + i, x[i], y[i], c);
@@ -149,7 +147,7 @@ digit_t mp_addmul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y,
 
 #ifdef MP_INSECURE
 	if (y <= 1)
-		return y < 1 ? 0 : mp_add_n (r, r, x, len);
+		return y < 1 ? 0 : mp_add_n (r, r, x, len, c);
 #endif
 
 	for (i = 0; i < len; ++i) {
@@ -168,7 +166,7 @@ digit_t mp_submul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y,
 
 #ifdef MP_INSECURE
 	if (y <= 1)
-		return y < 1 ? 0 : mp_sub_n (r, r, x, len);
+		return y < 1 ? 0 : mp_sub_n (r, r, x, len, c);
 #endif
 
 	for (i = 0; i < len; ++i) {

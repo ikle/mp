@@ -117,7 +117,7 @@ digit_t mp_div_reduce (digit_t *q, digit_t c, digit_t *r,
 
 	if (c > 0 || mp_cmp_n (r, d, dlen) >= 0) {
 		++q[0];
-		mp_sub_n (r, r, d, dlen);
+		mp_sub_n (r, r, d, dlen, 0);
 	}
 
 	return r[dlen - 1];

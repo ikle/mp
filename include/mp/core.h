@@ -23,10 +23,11 @@
  * Function mp_add adds (y, ylen) to (x, xlen), stores result into (r, xlen),
  * and returns the carry value.
  */
-char mp_add_n (digit_t *r, const digit_t *x, const digit_t *y, size_t len);
+char mp_add_n (digit_t *r, const digit_t *x, const digit_t *y, size_t len,
+	       int c);
 char mp_add_1 (digit_t *r, const digit_t *x, size_t len, digit_t y);
 char mp_add   (digit_t *r, const digit_t *x, size_t xlen,
-			   const digit_t *y, size_t ylen);
+			   const digit_t *y, size_t ylen, int c);
 /*
  * Function mp_sub_n substracts (y, len) from (x, len), stores result into
  * (r, len), and returns the borrow value.
@@ -40,10 +41,11 @@ char mp_add   (digit_t *r, const digit_t *x, size_t xlen,
  * Function mp_neg negates (x, len), stores result into (r, len), and returns
  * the borrow value.
  */
-char mp_sub_n (digit_t *r, const digit_t *x, const digit_t *y, size_t len);
+char mp_sub_n (digit_t *r, const digit_t *x, const digit_t *y, size_t len,
+	       int c);
 char mp_sub_1 (digit_t *r, const digit_t *x, size_t count, digit_t y);
 char mp_sub   (digit_t *r, const digit_t *x, size_t xlen,
-			   const digit_t *y, size_t ylen);
+			   const digit_t *y, size_t ylen, int c);
 char mp_neg   (digit_t *r, const digit_t *x, size_t len);
 
 int  mp_cmp_n (const digit_t *x, const digit_t *y, size_t len);
