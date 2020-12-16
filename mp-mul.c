@@ -30,7 +30,6 @@ void mp_mul_sb (digit_t *r, const digit_t *x, size_t xlen,
 	}
 }
 
-static
 char mp_addmul_sb (digit_t *r, const digit_t *x, size_t xlen,
 			       const digit_t *y, size_t ylen, int c)
 {
@@ -55,15 +54,12 @@ char mp_addmul_sb (digit_t *r, const digit_t *x, size_t xlen,
 #define MP_KARATSUBA_CUTOFF  20
 
 static
-char mp_addmul_kara (digit_t *r, const digit_t *x, size_t xlen,
-				 const digit_t *y, size_t ylen, int C)
+void mp_mul_kara (digit_t *r, const digit_t *x, size_t xlen,
+			      const digit_t *y, size_t ylen)
 {
 	/*
-	 * len must be less at least 4 to prevent infinite recursion
+	 * ylen must be less at least 4 to prevent infinite recursion
 	 */
-	if (ylen < MP_KARATSUBA_CUTOFF)
-		return mp_addmul_sb (r, x, xlen, y, ylen, C);
-
 	const size_t blen = ylen / 2, alen = xlen - blen;
 	const size_t dlen = ylen / 2, clen = ylen - dlen;
 
@@ -72,8 +68,8 @@ char mp_addmul_kara (digit_t *r, const digit_t *x, size_t xlen,
 	digit_t *ac = r + blen + dlen, *bd = r;
 	digit_t apb[alen + 1], cpd[clen + 1], m[alen + clen + 2];
 
-	C = mp_addmul_kara (bd, b, blen, d, dlen, C);
-	C = mp_addmul_kara (ac, a, alen, c, clen, C);
+	mp_mul (bd, b, blen, d, dlen);
+	mp_mul (ac, a, alen, c, clen);
 
 	apb[alen] = mp_add (apb, a, alen, b, blen, 0);
 	cpd[clen] = mp_add (cpd, c, clen, d, dlen, 0);
@@ -84,16 +80,7 @@ char mp_addmul_kara (digit_t *r, const digit_t *x, size_t xlen,
 	mp_sub (m, m, alen + clen + 2, bd, blen + dlen, 0);
 
 	/* Note that the most significant digit of m is always zero */
-	return mp_add (r + dlen, r + dlen, xlen + clen, m, alen + clen + 1, 0) +
-	       C;
-}
-
-static
-void mp_mul_kara (digit_t *r, const digit_t *x, size_t xlen,
-		  const digit_t *y, size_t ylen)
-{
-	mp_zero (r, xlen + ylen);
-	mp_addmul_kara (r, x, xlen, y, ylen, 0);
+	mp_add (r + dlen, r + dlen, xlen + clen, m, alen + clen + 1, 0);
 }
 
 void mp_mul (digit_t *r, const digit_t *x, size_t xlen,
@@ -103,13 +90,4 @@ void mp_mul (digit_t *r, const digit_t *x, size_t xlen,
 		mp_mul_sb (r, x, xlen, y, ylen);
 	else
 		mp_mul_kara (r, x, xlen, y, ylen);
-}
-
-char mp_addmul (digit_t *r, const digit_t *x, size_t xlen,
-			    const digit_t *y, size_t ylen, int c)
-{
-	if (xlen < MP_KARATSUBA_CUTOFF)
-		return mp_addmul_sb (r, x, xlen, y, ylen, c);
-
-	return mp_addmul_kara (r, x, xlen, y, ylen, 0);
 }
