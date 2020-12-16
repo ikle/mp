@@ -53,13 +53,13 @@ char mp_addmul_sb (digit_t *r, const digit_t *x, size_t xlen,
 
 #define MP_KARATSUBA_CUTOFF  20
 
+/*
+ * Constrains: xlen >= ylen > 4 to prevent overflow
+ */
 static
 void mp_mul_kara (digit_t *r, const digit_t *x, size_t xlen,
 			      const digit_t *y, size_t ylen)
 {
-	/*
-	 * ylen must be at least 4 to prevent infinite recursion
-	 */
 	const size_t blen = ylen / 2, alen = xlen - blen;
 	const size_t dlen = ylen / 2, clen = ylen - dlen;
 
