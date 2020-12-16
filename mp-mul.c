@@ -86,7 +86,7 @@ void mp_mul_kara (digit_t *r, const digit_t *x, size_t xlen,
 void mp_mul (digit_t *r, const digit_t *x, size_t xlen,
 			 const digit_t *y, size_t ylen)
 {
-	if (xlen < MP_KARATSUBA_CUTOFF)
+	if (ylen < MP_KARATSUBA_CUTOFF)
 		mp_mul_sb (r, x, xlen, y, ylen);
 	else
 		mp_mul_kara (r, x, xlen, y, ylen);
