@@ -76,8 +76,9 @@ void mp_mul_kara (digit_t *r, const digit_t *x, size_t xlen,
 
 	mp_mul (m, apb, alen + 1, cpd, clen + 1);
 
-	mp_sub (m, m, alen + clen + 2, ac, alen + clen, 0);
-	mp_sub (m, m, alen + clen + 2, bd, blen + dlen, 0);
+	/* ignore carry, it evaluates to zero always */
+	mp_sub (m, m, alen + clen + 1, ac, alen + clen, 0);
+	mp_sub (m, m, alen + clen + 1, bd, blen + dlen, 0);
 
 	/* Note that the most significant digit of m is always zero */
 	mp_add (r + dlen, r + dlen, xlen + clen, m, alen + clen + 1, 0);
