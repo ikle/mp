@@ -59,22 +59,29 @@ void mp_mul_kara (digit_t *r, const digit_t *x, size_t xlen,
 	const digit_t *a = x + blen, *b = x, *c = y + dlen, *d = y;
 
 	digit_t *ac = r + blen + dlen, *bd = r;
-	digit_t apb[alen + 1], cpd[clen + 1], m[alen + clen + 2];
 
 	mp_mul (bd, b, blen, d, dlen);
 	mp_mul (ac, a, alen, c, clen);
 
-	apb[alen] = mp_add (apb, a, alen, b, blen, 0);
-	cpd[clen] = mp_add (cpd, c, clen, d, dlen, 0);
+	{
+		/*
+		 * do not move it up to prevent O(n log n) memory usage where
+		 * O(n) is enough
+		 */
+		digit_t apb[alen + 1], cpd[clen + 1], m[alen + clen + 2];
 
-	mp_mul (m, apb, alen + 1, cpd, clen + 1);
+		apb[alen] = mp_add (apb, a, alen, b, blen, 0);
+		cpd[clen] = mp_add (cpd, c, clen, d, dlen, 0);
 
-	/* ignore carry, it evaluates to zero always */
-	mp_sub (m, m, alen + clen + 1, ac, alen + clen, 0);
-	mp_sub (m, m, alen + clen + 1, bd, blen + dlen, 0);
+		mp_mul (m, apb, alen + 1, cpd, clen + 1);
 
-	/* Note that the most significant digit of m is always zero */
-	mp_add (r + dlen, r + dlen, xlen + clen, m, alen + clen + 1, 0);
+		/* ignore carry, it evaluates to zero always */
+		mp_sub (m, m, alen + clen + 1, ac, alen + clen, 0);
+		mp_sub (m, m, alen + clen + 1, bd, blen + dlen, 0);
+
+		/* Note that the most significant digit of m is always zero */
+		mp_add (r + dlen, r + dlen, xlen + clen, m, alen + clen + 1, 0);
+	}
 }
 
 void mp_mul (digit_t *r, const digit_t *x, size_t xlen,
