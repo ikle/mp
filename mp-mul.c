@@ -6,14 +6,7 @@
  * SPDX-License-Identifier: BSD-2-Clause
  */
 
-#include <string.h>
-
 #include <mp/core.h>
-
-static inline void mp_zero (digit_t *x, size_t len)
-{
-	memset (x, 0, len * sizeof (x[0]));
-}
 
 /*
  * Constrains for all mp_mul and mp_addmul : xlen >= ylen > 0
