@@ -14,16 +14,6 @@
 
 #include <mp/core.h>
 
-static inline digit_t *mp_alloc (size_t len)
-{
-	return malloc (sizeof (digit_t) * len);
-}
-
-static inline void mp_free (digit_t *o)
-{
-	free (o);
-}
-
 static inline size_t mp_normalize (digit_t *x, size_t len)
 {
 	while (len > 0 && x[len - 1] == 0)
@@ -62,12 +52,8 @@ static inline void mp_show (const char *prefix, const digit_t *o, size_t len)
 
 static clock_t gauge_add (size_t len, size_t count)
 {
-	digit_t *a, *b, *s;
+	digit_t a[len], b[len], s[len + 1];
 	clock_t t;
-
-	if ((a = mp_alloc (len))     == NULL)	goto no_a;
-	if ((b = mp_alloc (len))     == NULL)	goto no_b;
-	if ((s = mp_alloc (len + 1)) == NULL)	goto no_s;
 
 	mp_random (a, len);
 	mp_random (b, len);
@@ -75,17 +61,7 @@ static clock_t gauge_add (size_t len, size_t count)
 	for (t = clock (); count > 0; --count)
 		s[len] = mp_add_n (s, a, b, len, 0);
 
-	t = clock () - t;
-
-	mp_free (s);
-	mp_free (b);
-	mp_free (a);
-	return t;
-
-no_s:	mp_free (b);
-no_b:	mp_free (a);
-no_a:	perror ("gauge add");
-	return (clock_t) -1;
+	return clock () - t;
 }
 
 /*
@@ -94,12 +70,8 @@ no_a:	perror ("gauge add");
 
 static clock_t gauge_mul_sb (size_t len, size_t count)
 {
-	digit_t *a, *b, *m;
+	digit_t a[len], b[len], m[len * 2];
 	clock_t t;
-
-	if ((a = mp_alloc (len))     == NULL)	goto no_a;
-	if ((b = mp_alloc (len))     == NULL)	goto no_b;
-	if ((m = mp_alloc (len * 2)) == NULL)	goto no_m;
 
 	mp_random (a, len);
 	mp_random (b, len);
@@ -107,17 +79,7 @@ static clock_t gauge_mul_sb (size_t len, size_t count)
 	for (t = clock (); count > 0; --count)
 		mp_mul_sb (m, a, len, b, len);
 
-	t = clock () - t;
-
-	mp_free (m);
-	mp_free (b);
-	mp_free (a);
-	return t;
-
-no_m:	mp_free (b);
-no_b:	mp_free (a);
-no_a:	perror ("gauge mul");
-	return (clock_t) -1;
+	return clock () - t;
 }
 
 /*
@@ -126,12 +88,8 @@ no_a:	perror ("gauge mul");
 
 static clock_t gauge_mul (size_t len, size_t count)
 {
-	digit_t *a, *b, *m;
+	digit_t a[len], b[len], m[len * 2];
 	clock_t t;
-
-	if ((a = mp_alloc (len))     == NULL)	goto no_a;
-	if ((b = mp_alloc (len))     == NULL)	goto no_b;
-	if ((m = mp_alloc (len * 2)) == NULL)	goto no_m;
 
 	mp_random (a, len);
 	mp_random (b, len);
@@ -139,17 +97,7 @@ static clock_t gauge_mul (size_t len, size_t count)
 	for (t = clock (); count > 0; --count)
 		mp_mul (m, a, len, b, len);
 
-	t = clock () - t;
-
-	mp_free (m);
-	mp_free (b);
-	mp_free (a);
-	return t;
-
-no_m:	mp_free (b);
-no_b:	mp_free (a);
-no_a:	perror ("gauge mul");
-	return (clock_t) -1;
+	return clock () - t;
 }
 
 /*
@@ -158,14 +106,9 @@ no_a:	perror ("gauge mul");
 
 static clock_t gauge_div (size_t len, size_t count)
 {
-	digit_t *n, *d, *q, *r;
-	size_t nlen = 2 * len, dlen = len, qlen = len + 1, rlen = nlen;
+	const size_t nlen = 2 * len, dlen = len, qlen = len + 1, rlen = nlen;
+	digit_t n[nlen], d[dlen], q[qlen], r[rlen];
 	clock_t t;
-
-	if ((n  = mp_alloc (nlen)) == NULL)	goto no_n;
-	if ((d  = mp_alloc (dlen)) == NULL)	goto no_d;
-	if ((q  = mp_alloc (qlen)) == NULL)	goto no_q;
-	if ((r  = mp_alloc (rlen)) == NULL)	goto no_r;
 
 	mp_random (n, nlen);
 	mp_random (d, dlen);
@@ -176,18 +119,7 @@ static clock_t gauge_div (size_t len, size_t count)
 	for (t = clock (); count > 0; --count)
 		mp_div (q, r, n, nlen, d, dlen);
 
-	t = clock () - t;
-
-	mp_free (r);
-	mp_free (q);
-	mp_free (d);
-	mp_free (n);
-	return t;
-
-no_r:	mp_free (q);
-no_q:	mp_free (d);
-no_d:	mp_free (n);
-no_n:	return (clock_t) -1;
+	return clock () - t;
 }
 
 /*
