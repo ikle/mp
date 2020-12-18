@@ -5,7 +5,6 @@ LIBNAME	= ikle-mp
 LIBVER	= 0
 LIBREV	= 0.1
 
-mp-test: CFLAGS += -lm
 mp-speed-test: CFLAGS += -lm
 
 include make-core.mk
