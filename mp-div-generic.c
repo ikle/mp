@@ -1,5 +1,5 @@
 /*
- * MP Core Generic Implemention
+ * MP Core Division Generic Implemention
  *
  * Copyright (c) 2014-2021 Alexei A. Smekalkine <ikle@ikle.ru>
  *
@@ -8,8 +8,8 @@
 
 #include <string.h>
 
-#include <mp/core.h>
 #include <mp/digit.h>
+#include <mp/div.h>
 
 digit_t mp_div_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
 {
