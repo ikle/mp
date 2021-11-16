@@ -1,7 +1,7 @@
 DESCRIPTION = Multiple Precision Arithmetic Library
 URL = https://github.com/ikle/mp
 
-LIBNAME	= colibri-mp
+LIBNAME	= mp
 LIBVER	= 0
 LIBREV	= 0.1
 
