@@ -52,9 +52,9 @@ static inline void mp_comp (digit_t *r, const digit_t *x, size_t len)
 }
 
 /*
- * The function mp_impl calculates the back implication of set of bits
- * (x, len) and (y, len) -- Y implies X, and stores result into (r, len).
- * In other words, it computes the bitwise OR-NOT: R = X | ~Y.
+ * The function mp_impl calculates the implication of set of bits (x, len)
+ * and (y, len) -- Y implies X, and stores result into (r, len). In other
+ * words, it computes the bitwise OR-NOT: R = ~X | Y.
  */
 static inline
 void mp_impl (digit_t *r, const digit_t *x, const digit_t *y, size_t len)
@@ -62,7 +62,7 @@ void mp_impl (digit_t *r, const digit_t *x, const digit_t *y, size_t len)
 	size_t i;
 
 	for (i = 0; i < len; ++i)
-		r[i] = x[i] | ~y[i];
+		r[i] = ~x[i] | y[i];
 }
 
 /*
