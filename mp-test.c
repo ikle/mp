@@ -1,7 +1,7 @@
 /*
  * MP Core Tests
  *
- * Copyright (c) 2018-2020 Alexei A. Smekalkine <ikle@ikle.ru>
+ * Copyright (c) 2018-2021 Alexei A. Smekalkine <ikle@ikle.ru>
  *
  * SPDX-License-Identifier: BSD-2-Clause
  */
@@ -238,7 +238,7 @@ static int test_mul_fuzzy (size_t len, size_t count)
 }
 
 /*
- * Basic division with multiplication amd addition test
+ * Basic division with multiplication and addition test
  */
 
 struct test_div {
