@@ -1,13 +1,13 @@
 /*
- * MP Core Lattice Operations
+ * MP Core Bit Operations
  *
  * Copyright (c) 2007-2021 Alexei A. Smekalkine <ikle@ikle.ru>
  *
  * SPDX-License-Identifier: BSD-2-Clause
  */
 
-#ifndef MP_LATTICE_H
-#define MP_LATTICE_H  1
+#ifndef MP_BIT_H
+#define MP_BIT_H  1
 
 #include <stddef.h>
 
@@ -51,4 +51,4 @@ static inline void mp_comp (digit_t *r, const digit_t *x, size_t len)
 		r[i] = ~x[i];
 }
 
-#endif  /* MP_LATTICE_H */
+#endif  /* MP_BIT_H */

@@ -12,7 +12,7 @@
 #include <stddef.h>
 
 #include <mp/add.h>
-#include <mp/lattice.h>
+#include <mp/bit.h>
 #include <mp/mul.h>
 #include <mp/div.h>
 #include <mp/unit.h>
