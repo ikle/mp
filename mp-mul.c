@@ -7,7 +7,7 @@
  */
 
 #include <mp/add.h>
-#include <mp/core.h>
+#include <mp/mul.h>
 
 /*
  * Constrains for all mp_mul and mp_addmul : xlen >= ylen > 0

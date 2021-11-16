@@ -11,6 +11,7 @@
 #include <mp/add.h>
 #include <mp/core.h>
 #include <mp/digit.h>
+#include <mp/mul.h>
 
 #ifndef mp_pair_add
 static inline
