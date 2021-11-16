@@ -8,8 +8,8 @@
 
 #include <string.h>
 
-#include <mp/mul.h>
 #include <mp/digit.h>
+#include <mp/mul.h>
 
 static inline digit_t mp_zero (digit_t *r, size_t len)
 {
