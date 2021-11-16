@@ -14,6 +14,7 @@
 #include <mp/add.h>
 #include <mp/mul.h>
 #include <mp/div.h>
+#include <mp/unit.h>
 
 /*
  * Function mp_lshift multiplies (x, len) by (2 ^ count), stores result into

@@ -6,12 +6,11 @@
  * SPDX-License-Identifier: BSD-2-Clause
  */
 
-#include <string.h>
-
 #include <mp/add.h>
 #include <mp/digit.h>
 #include <mp/div.h>
 #include <mp/mul.h>
+#include <mp/unit.h>
 
 #ifndef mp_pair_add
 static inline
@@ -101,12 +100,6 @@ digit_t mp_pair_divapprox (digit_t n1, digit_t n0, digit_t r)
 
 	mp_pair_add (&q1, &q0, q1, q0, n1, n0);
 	return q1;
-}
-
-static inline digit_t mp_copy (digit_t *r, const digit_t *x, size_t len)
-{
-	memcpy (r, x, len * sizeof (*r));
-	return 0;
 }
 
 static inline

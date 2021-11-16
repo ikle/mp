@@ -6,22 +6,9 @@
  * SPDX-License-Identifier: BSD-2-Clause
  */
 
-#include <string.h>
-
 #include <mp/digit.h>
 #include <mp/mul.h>
-
-static inline digit_t mp_zero (digit_t *r, size_t len)
-{
-	memset (r, 0, len * sizeof (*r));
-	return 0;
-}
-
-static inline digit_t mp_copy (digit_t *r, const digit_t *x, size_t len)
-{
-	memcpy (r, x, len * sizeof (*r));
-	return 0;
-}
+#include <mp/unit.h>
 
 digit_t mp_mul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
 {
