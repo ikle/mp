@@ -16,6 +16,18 @@
 #include <mp/unit.h>
 
 /*
+ * Function mp_normalize normalizes (x, len), and returns minimal possible
+ * length value of x.
+ */
+static inline size_t mp_normalize (digit_t *x, size_t len)
+{
+	while (len > 0 && x[len - 1] == 0)
+		--len;
+
+	return len;
+}
+
+/*
  * Function mp_lshift multiplies (x, len) by (2 ^ count), stores result into
  * (r, len + extra), and returns the carry value. The count must be less
  * than MP_DIGIT_BITS.

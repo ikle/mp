@@ -14,14 +14,6 @@
 #include <mp/alloc.h>
 #include <mp/core.h>
 
-static inline size_t mp_normalize (digit_t *x, size_t len)
-{
-	while (len > 0 && x[len - 1] == 0)
-		--len;
-
-	return len;
-}
-
 static void mp_random (digit_t *o, size_t len)
 {
 	unsigned char *p;

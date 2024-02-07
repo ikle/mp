@@ -1,7 +1,7 @@
 /*
  * MP Speed Tests
  *
- * Copyright (c) 2018-2020 Alexei A. Smekalkine <ikle@ikle.ru>
+ * Copyright (c) 2018-2024 Alexei A. Smekalkine <ikle@ikle.ru>
  *
  * SPDX-License-Identifier: BSD-2-Clause
  */
@@ -13,14 +13,6 @@
 #include <time.h>
 
 #include <mp/core.h>
-
-static inline size_t mp_normalize (digit_t *x, size_t len)
-{
-	while (len > 0 && x[len - 1] == 0)
-		--len;
-
-	return len;
-}
 
 static void mp_random (digit_t *o, size_t len)
 {
