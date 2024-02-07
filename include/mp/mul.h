@@ -1,15 +1,13 @@
 /*
  * MP Core Multiplication
  *
- * Copyright (c) 2014-2021 Alexei A. Smekalkine <ikle@ikle.ru>
+ * Copyright (c) 2014-2024 Alexei A. Smekalkine <ikle@ikle.ru>
  *
  * SPDX-License-Identifier: BSD-2-Clause
  */
 
 #ifndef MP_MUL_H
 #define MP_MUL_H  1
-
-#include <stddef.h>
 
 #include <mp/types.h>
 

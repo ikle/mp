@@ -1,7 +1,7 @@
 /*
  * MP Core Types
  *
- * Copyright (c) 2014-2020 Alexei A. Smekalkine <ikle@ikle.ru>
+ * Copyright (c) 2014-2024 Alexei A. Smekalkine <ikle@ikle.ru>
  *
  * SPDX-License-Identifier: BSD-2-Clause
  */
@@ -10,6 +10,7 @@
 #define MP_PYPES_H  1
 
 #include <limits.h>
+#include <stddef.h>
 #include <stdint.h>
 
 /*

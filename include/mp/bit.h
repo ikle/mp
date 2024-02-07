@@ -1,15 +1,13 @@
 /*
  * MP Core Bit Operations
  *
- * Copyright (c) 2007-2021 Alexei A. Smekalkine <ikle@ikle.ru>
+ * Copyright (c) 2007-2024 Alexei A. Smekalkine <ikle@ikle.ru>
  *
  * SPDX-License-Identifier: BSD-2-Clause
  */
 
 #ifndef MP_BIT_H
 #define MP_BIT_H  1
-
-#include <stddef.h>
 
 #include <mp/types.h>
 
