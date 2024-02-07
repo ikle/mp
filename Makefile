@@ -5,7 +5,7 @@ LIBNAME	= mp
 LIBVER	= 0
 LIBREV	= 0.1
 
-mp-speed-test: CFLAGS += -lm
+mp-speed-test: LDFLAGS += -lm
 
 include make-core.mk
 
