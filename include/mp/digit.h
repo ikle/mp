@@ -130,6 +130,30 @@ void mp_digit_fma (digit_t *r1, digit_t *r0, digit_t x, digit_t y, digit_t a)
 #endif
 
 /*
+ * Function mp_digit_lshift multiplies x by 2^n, stores result bitwise
+ * ored with input carry c into r, and returns the shift carry value
+ * (shifted-out bits). The n must be less than MP_DIGIT_BITS.
+ *
+ * Function mp_digit_rshift divides x by 2^n, stores result bitwise
+ * ored with input carry c into r, and returns the remainder value
+ * (shifted-out bits). The n must be less than MP_DIGIT_BITS.
+ *
+ * Note that we assume that there is a logical right shift on the target
+ * platform.
+ */
+static inline digit_t mp_digit_lshift (digit_t *r, digit_t x, digit_t c, int n)
+{
+	*r = x << n | c;
+	return x >> (-n & (MP_DIGIT_BITS - 1));
+}
+
+static inline digit_t mp_digit_rshift (digit_t *r, digit_t x, digit_t c, int n)
+{
+	*r = x >> n | c;
+	return x << (-n & (MP_DIGIT_BITS - 1));
+}
+
+/*
  * Function mp_digit_clz counts leading zeroes in x and returns it as
  * a result of function. Note that the value of the function from 0 is
  * generally undefined.
