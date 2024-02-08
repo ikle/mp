@@ -22,7 +22,7 @@
  * (r, len), and returns the borrow value.
  *
  * Function mp_mul multiplies (x, xlen) by (y, ylen), stores result into
- * (r, xlen + ylen). Constraints: xlen >= ylen > 0.
+ * (r, xlen + ylen). Constraint: xlen >= ylen > 0.
  *
  * Function mp_mul_sb does the same as mp_mul, only using school book
  * algorithm exclusively. Exported for tests only.

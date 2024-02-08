@@ -19,7 +19,7 @@
  * returns the carry value.
  *
  * Function mp_add adds (y, ylen) to (x, xlen), stores result into (r, xlen),
- * and returns the carry value. Constraint: ylen <= xlen.
+ * and returns the carry value. Constraint: xlen >= ylen.
  */
 char mp_add_n (digit_t *r, const digit_t *x, const digit_t *y, size_t len,
 	       int c);
@@ -34,7 +34,7 @@ char mp_add   (digit_t *r, const digit_t *x, size_t xlen,
  * and returns the borrow value.
  *
  * Function mp_sub substracts (y, ylen) from (x, xlen), stores result into
- * (r, len), and returns the borrow value. Constraint: ylen <= xlen.
+ * (r, len), and returns the borrow value. Constraint: xlen >= ylen.
  *
  * Function mp_neg negates (x, len), stores result into (r, len), and returns
  * the borrow value.
