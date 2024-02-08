@@ -16,10 +16,11 @@
  * and returns the remainder value.
  *
  * Function mp_div divides (n, nlen) by (d, dlen), stores quotinent into
- * (q, nlen - dlen + 1) and remainder into (r, nlen), and returns the size
- * of remainder. Constrains: n and d are normalized and nlen >= dlen > 0.
- * Note that the remainder is not normalized.
- */
+ * (q, nlen - dlen + 1), remainder into (r, nlen), and returns the size
+ * of remainder. Constraints: n and d are normalized, the most significant
+ * bit of d is set, and nlen >= dlen > 0. Note that the remainder is not
+ * normalized.
+*/
 digit_t mp_div_1 (digit_t *r, const digit_t *x, size_t len, digit_t y);
 
 size_t mp_div (digit_t *q, digit_t *r, const digit_t *n, size_t nlen,
