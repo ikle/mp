@@ -47,17 +47,6 @@ char mp_add (digit_t *r, const digit_t *x, size_t xlen,
 	return c;
 }
 
-char mp_neg (digit_t *r, const digit_t *x, size_t len)
-{
-	size_t i;
-	int c = 0;
-
-	for (i = 0; i < len; ++i)
-		c = mp_digit_sbb (r + i, 0, x[i], c);
-
-	return c;
-}
-
 int mp_cmp_n (const digit_t *x, const digit_t *y, size_t len)
 {
 	for (; len > 0; --len) {
