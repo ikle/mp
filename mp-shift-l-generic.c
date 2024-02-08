@@ -1,5 +1,5 @@
 /*
- * MP Core Left Shift
+ * MP Core Left Shift: Generic Implementation
  *
  * Copyright (c) 2014-2024 Alexei A. Smekalkine <ikle@ikle.ru>
  *

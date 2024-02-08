@@ -1,5 +1,5 @@
 /*
- * MP Core Right Shift
+ * MP Core Right Shift: Generic Implementation
  *
  * Copyright (c) 2014-2024 Alexei A. Smekalkine <ikle@ikle.ru>
  *
