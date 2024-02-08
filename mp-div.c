@@ -124,6 +124,9 @@ digit_t mp_div_reduce (digit_t *q, digit_t c, digit_t *r,
  * of remainder. Constraints: n and d are normalized, the most significant
  * bit of d is set, and nlen >= dlen > 0. Note that the remainder is not
  * normalized.
+ *
+ * Tip: Normalize n and d, and then shift n and d left by clz(d) before
+ * calling the mp_div function.
  */
 size_t mp_div (digit_t *q, digit_t *r, const digit_t *n, size_t nlen,
 				       const digit_t *d, size_t dlen)

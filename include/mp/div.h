@@ -20,6 +20,9 @@
  * of remainder. Constraints: n and d are normalized, the most significant
  * bit of d is set, and nlen >= dlen > 0. Note that the remainder is not
  * normalized.
+ *
+ * Tip: Normalize n and d, and then shift n and d left by clz(d) before
+ * calling the mp_div function.
 */
 digit_t mp_div_1 (digit_t *r, const digit_t *x, size_t len, digit_t y);
 
