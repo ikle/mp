@@ -38,6 +38,10 @@ char mp_add   (digit_t *r, const digit_t *x, size_t xlen,
  *
  * Function mp_neg negates (x, len), stores result into (r, len), and returns
  * the borrow value.
+ *
+ * Function mp_cmp_n compares (x, len) and (y, len), and returns an integer
+ * less than, equal to, or greater than zero if x is found, respectively,
+ * to be less than, to equal, or be greater than y.
  */
 char mp_sub_n (digit_t *r, const digit_t *x, const digit_t *y, size_t len,
 	       int c);
