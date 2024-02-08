@@ -10,7 +10,7 @@
 #include <mp/mul.h>
 
 /*
- * Constrains for all mp_mul and mp_addmul : xlen >= ylen > 0
+ * Constraint for all mp_mul: xlen >= ylen > 0
  */
 void mp_mul_sb (digit_t *r, const digit_t *x, size_t xlen,
 			    const digit_t *y, size_t ylen)
@@ -27,7 +27,7 @@ void mp_mul_sb (digit_t *r, const digit_t *x, size_t xlen,
 #define MP_KARATSUBA_CUTOFF  20
 
 /*
- * Constrains: xlen >= ylen > 4 to prevent overflow
+ * Constraint: xlen >= ylen > 4 to prevent overflow
  */
 static
 void mp_mul_kara (digit_t *r, const digit_t *x, size_t xlen,

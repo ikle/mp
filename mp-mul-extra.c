@@ -9,6 +9,9 @@
 #include <mp/add.h>
 #include <mp/mul.h>
 
+/*
+ * Constraint: xlen >= ylen > 0
+ */
 char mp_addmul_sb (digit_t *r, const digit_t *x, size_t xlen,
 			       const digit_t *y, size_t ylen, int c)
 {
