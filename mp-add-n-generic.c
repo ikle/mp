@@ -1,5 +1,5 @@
 /*
- * MP Core Addition: Generic Implemention
+ * MP Core Addition: Summation of Numbers of the Same Size, Generic Implemention
  *
  * Copyright (c) 2014-2024 Alexei A. Smekalkine <ikle@ikle.ru>
  *
@@ -9,16 +9,13 @@
 #include <mp/add.h>
 #include <mp/digit.h>
 
-char mp_add (digit_t *r, const digit_t *x, size_t xlen,
-			 const digit_t *y, size_t ylen, int c)
+char mp_add_n (digit_t *r, const digit_t *x, const digit_t *y, size_t len,
+	       int c)
 {
 	size_t i;
 
-	for (i = 0; i < ylen; ++i)
+	for (i = 0; i < len; ++i)
 		c = mp_digit_adc (r + i, x[i], y[i], c);
-
-	for (; i < xlen; ++i)
-		c = mp_digit_adc (r + i, x[i], 0, c);
 
 	return c;
 }
