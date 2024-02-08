@@ -31,8 +31,8 @@ static inline digit_t mp_digit_##name (digit_t x, digit_t y)		\
 	return op;							\
 }									\
 									\
-static inline void mp_##name (digit_t *r, const digit_t *x,		\
-			      const digit_t *y, size_t len)		\
+static inline void mp_##name##_n (digit_t *r, const digit_t *x,		\
+				  const digit_t *y, size_t len)		\
 {									\
 	size_t i;							\
 									\
