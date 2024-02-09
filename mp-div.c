@@ -66,8 +66,7 @@ digit_t mp_pair_invert (digit_t d1, digit_t d0)
  *
  * The r value should be precalculated with mp_pair_invert.
  */
-static inline
-digit_t mp_pair_divapprox (digit_t n1, digit_t n0, digit_t r)
+static inline digit_t mp_pair_divapprox (digit_t n1, digit_t n0, digit_t r)
 {
 	digit_t q1, q0, p1, p0;
 
