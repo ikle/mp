@@ -1,38 +1,16 @@
 /*
  * MP Core Division
  *
- * Copyright (c) 2018-2021 Alexei A. Smekalkine <ikle@ikle.ru>
+ * Copyright (c) 2018-2024 Alexei A. Smekalkine <ikle@ikle.ru>
  *
  * SPDX-License-Identifier: BSD-2-Clause
  */
 
 #include <mp/add.h>
-#include <mp/digit.h>
 #include <mp/div.h>
+#include <mp/pair.h>
 #include <mp/mul.h>
 #include <mp/unit.h>
-
-#ifndef mp_pair_add
-static inline
-char mp_pair_add (digit_t *r1, digit_t *r0,
-		  digit_t x1, digit_t x0, digit_t y1, digit_t y0)
-{
-	char c = mp_digit_add (r0, x0, y0);
-
-	return mp_digit_adc (r1, x1, y1, c);
-}
-#endif
-
-#ifndef mp_pair_sub
-static inline
-char mp_pair_sub (digit_t *r1, digit_t *r0,
-		  digit_t x1, digit_t x0, digit_t y1, digit_t y0)
-{
-	char c = mp_digit_sub (r0, x0, y0);
-
-	return mp_digit_sbb (r1, x1, y1, c);
-}
-#endif
 
 /*
  * Function mp_pair_invert calculates the value of B^3 / (d + 1) - B.
