@@ -22,6 +22,10 @@ static inline mp_is_neg (const digit_t *x, size_t len)
 	return (x[len - 1] & MP_DIGIT_SIGN_MASK) != 0;
 }
 
+/*
+ * Function mp_zext extends (x, xlen) with zeros and stores the result
+ * into (r, rlen).
+ */
 static inline
 void mp_zext (digit_t *r, size_t rlen, const digit_t *x, size_t xlen)
 {
@@ -34,7 +38,8 @@ void mp_zext (digit_t *r, size_t rlen, const digit_t *x, size_t xlen)
 }
 
 /*
- * xlen > 0
+ * Function mp_sext performs the signed two's complement extension of
+ * (x, xlen) and stores the result into (r, rlen). Constraint: xlen > 0.
  */
 static inline
 void mp_sext (digit_t *r, size_t rlen, const digit_t *x, size_t xlen)
