@@ -25,12 +25,12 @@ static inline mp_is_neg (const digit_t *x, size_t len)
 static inline
 void mp_zext (digit_t *r, size_t rlen, const digit_t *x, size_t xlen)
 {
-	if (rlen <= xlen)
-		mp_copy (r, x, rlen);
-	else {
+	if (rlen > xlen) {
 		mp_copy (r, x, xlen);
 		mp_zero (r + xlen, rlen - xlen);
 	}
+	else
+		mp_copy (r, x, rlen);
 }
 
 /*
@@ -41,12 +41,12 @@ void mp_sext (digit_t *r, size_t rlen, const digit_t *x, size_t xlen)
 {
 	const int fill = mp_is_neg (x, xlen) ? ~0 : 0;
 
-	if (rlen <= xlen)
-		mp_copy (r, x, rlen);
-	else {
+	if (rlen > xlen) {
 		mp_copy (r, x, xlen);
 		memset (r + xlen, fill, (rlen - xlen) * sizeof (*r));
 	}
+	else
+		mp_copy (r, x, rlen);
 }
 
 #endif  /* MP_EXTEND_H */
