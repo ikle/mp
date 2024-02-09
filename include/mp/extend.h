@@ -44,7 +44,7 @@ void mp_sext (digit_t *r, size_t rlen, const digit_t *x, size_t xlen)
 	const int fill = mp_is_neg (x, xlen) ? ~0 : 0;
 
 	mp_copy (r, x, xlen);
-	memset (r + xlen, fill, (rlen - xlen) * sizeof (*r));
+	mp_fill (r + xlen, fill, rlen - xlen);
 }
 
 #endif  /* MP_EXTEND_H */

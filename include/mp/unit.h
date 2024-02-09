@@ -1,7 +1,7 @@
 /*
  * MP Core Unit
  *
- * Copyright (c) 2014-2021 Alexei A. Smekalkine <ikle@ikle.ru>
+ * Copyright (c) 2014-2024 Alexei A. Smekalkine <ikle@ikle.ru>
  *
  * SPDX-License-Identifier: BSD-2-Clause
  */
@@ -13,9 +13,15 @@
 
 #include <mp/types.h>
 
+static inline digit_t mp_fill (digit_t *r, int c, size_t len)
+{
+	memset (r, c, len * sizeof (*r));
+	return 0;
+}
+
 static inline digit_t mp_zero (digit_t *r, size_t len)
 {
-	memset (r, 0, len * sizeof (*r));
+	mp_fill (r, 0, len);
 	return 0;
 }
 
