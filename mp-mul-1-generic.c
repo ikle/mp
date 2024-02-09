@@ -20,8 +20,7 @@ digit_t mp_mul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y)
 	return c;
 }
 
-digit_t mp_addmul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y,
-		     int c)
+digit_t mp_addmul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y, int c)
 {
 	size_t i;
 	digit_t r1 = c, r0;
@@ -34,8 +33,7 @@ digit_t mp_addmul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y,
 	return r1;
 }
 
-digit_t mp_submul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y,
-		     int c)
+digit_t mp_submul_1 (digit_t *r, const digit_t *x, size_t len, digit_t y, int c)
 {
 	size_t i;
 	digit_t r1 = c, r0;
