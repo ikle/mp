@@ -12,31 +12,6 @@
 #include <mp/mul.h>
 #include <mp/unit.h>
 
-/*
- * Function mp_pair_divapprox calculates the value of q = N B / (d + 1):
- *
- * 1. r = B^3 / (d + 1) - B
- * 2. q = N B / (d + 1)
- *      = N (B + B^3 / (d + 1) - B) / B^2
- *      = N (B + r) / B^2
- *      = (N B + N r) / B^2
- *      = (N + N r / B) / B
- *
- * The r value should be precalculated with mp_pair_invert.
- */
-static inline digit_t mp_pair_divapprox (digit_t n1, digit_t n0, digit_t r)
-{
-	digit_t q1, q0, p1, p0;
-
-	mp_digit_mul (&q1, &q0, n1, r);
-	mp_digit_mul (&p1, &p0, n0, r);
-
-	q1 += mp_digit_add (&q0, q0, p1);	/* Q = N r / B */
-
-	mp_pair_add (&q1, &q0, q1, q0, n1, n0);
-	return q1;
-}
-
 static inline
 digit_t mp_div_reduce (digit_t *q, digit_t c, digit_t *r,
 		       const digit_t *d, size_t dlen, digit_t inv)
