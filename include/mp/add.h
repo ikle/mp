@@ -52,4 +52,15 @@ char mp_neg   (digit_t *r, const digit_t *x, size_t len);
 
 int  mp_cmp_n (const digit_t *x, const digit_t *y, size_t len);
 
+/*
+ * Function mp_double doubles (x, len), stores retult into (r, len), and
+ * returns the carry value.
+ */
+#ifndef mp_double
+static inline char mp_double (digit_t *r, const digit_t *x, size_t len, int c)
+{
+	return mp_add_n (r, x, x, len, c);
+}
+#endif
+
 #endif  /* MP_ADD_H */
