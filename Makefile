@@ -3,7 +3,7 @@ URL = https://github.com/ikle/mp
 
 LIBNAME	= mp
 LIBVER	= 0
-LIBREV	= 0.15
+LIBREV	= 0.16
 
 mp-speed-test: LDFLAGS += -lm
 
