@@ -38,7 +38,7 @@
 
 #elif MP_DIGIT_BITS == 32
 
-#define _addcarry_u32   __builtin_ia32_addcarry_u32
+#define _addcarry_u32   __builtin_ia32_addcarryx_u32
 #define _subborrow_u32  __builtin_ia32_sbb_u32
 #define MP_HAVE_ADDCARRY
 
