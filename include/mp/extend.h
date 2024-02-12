@@ -17,7 +17,7 @@
  * Function mp_is_neg returns nonzero if x is negative in two's complement,
  * zero otherwise. Constraint: len > 0.
  */
-static inline mp_is_neg (const digit_t *x, size_t len)
+static inline int mp_is_neg (const digit_t *x, size_t len)
 {
 	return (x[len - 1] & MP_DIGIT_SIGN_MASK) != 0;
 }
