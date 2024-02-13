@@ -15,13 +15,13 @@ void mp_mont_pull_n (digit_t *r, const digit_t *x,
 {
 	size_t i;
 
-	mp_copy (r, x, len); r[len] = 0;
-	r[len] += mp_addmul_1 (r, m, len, mu * r[0], 0);
+	mp_copy (r, x, len);
+	r[len] = mp_addmul_1 (r, m, len, mu * r[0], 0);
 	memmove (r, r + 1, len * sizeof (r[0]));
 
 	for (i = 1; i < len; ++i) {
-		r[len] += mp_addmul_1 (r, m, len, mu * r[0], 0);
-		memmove (r, r + 1, len * sizeof (r[0])); r[len] = 0;
+		r[len] = mp_addmul_1 (r, m, len, mu * r[0], 0);
+		memmove (r, r + 1, len * sizeof (r[0]));
 	}
 
 	if (mp_cmp_n (r, m, len) >= 0)
