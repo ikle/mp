@@ -65,32 +65,33 @@ static const char M[] =
 static const char A[] =
 	"559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd";
 
+static void mp_show (const char *prefix, const digit_t *x, size_t len)
+{
+	char s[len * 16 + 1];
+
+	mp_save_hex (s, sizeof (s), x, len);
+	printf ("%s%s\n", prefix, s);
+}
+
 static int ro_make_tests (void)
 {
 	digit_t m[8], mu, ro[8], a[8], am[8], r[8];
-	char s[65];
 	size_t len = mp_load_hex (m, ARRAY_SIZE (m), M);
 
-	mp_save_hex (s, sizeof (s), m, len);
-	printf ("len = %zu, M  = %s\n", len, s);
+	mp_show ("M  = ", m, len);
 
 	mu = mp_mont_mu (m[0]);
 	mp_mont_ro (ro, m, len);
-
-	mp_save_hex (s, sizeof (s), ro, len);
-	printf ("len = %zu, ro = %s\n", len, s);
+	mp_show ("ro = ", ro, len);
 
 	mp_load_hex (a, ARRAY_SIZE (a), A);
-	mp_save_hex (s, sizeof (s), a, len);
-	printf ("len = %zu, A  = %s\n", len, s);
+	mp_show ("A  = ", a, len);
 
 	mp_mont_push_n (am, a, ro, m, len, mu);
-	mp_save_hex (s, sizeof (s), am, len);
-	printf ("len = %zu, Am = %s\n", len, s);
+	mp_show ("Am = ", am, len);
 
 	mp_mont_pull_n (r, am, m, len, mu);
-	mp_save_hex (s, sizeof (s), r, len);
-	printf ("len = %zu, A  = %s\n", len, s);
+	mp_show ("A  = ", r, len);
 
 	if (mp_cmp_n (a, r, len) == 0)
 		return 1;
