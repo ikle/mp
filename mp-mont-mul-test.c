@@ -96,7 +96,7 @@ static int make_test (void)
 	if (mp_cmp_n (a, r, len) == 0)
 		return 1;
 
-	fprintf (stderr, "E: Full failed, result does not match\n");
+	fprintf (stderr, "E: Full test failed, result does not match\n");
 	return 0;
 }
 
