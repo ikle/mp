@@ -73,7 +73,7 @@ static void mp_show (const char *prefix, const digit_t *x, size_t len)
 	printf ("%s%s\n", prefix, s);
 }
 
-static int ro_make_tests (void)
+static int make_test (void)
 {
 	digit_t m[8], mu, ro[8], a[8], am[8], r[8];
 	size_t len = mp_load_hex (m, ARRAY_SIZE (m), M);
@@ -102,5 +102,5 @@ static int ro_make_tests (void)
 
 int main (int argc, char *argv[])
 {
-	return mu_make_tests () && ro_make_tests () ? 0 : 1;
+	return mu_make_tests () && make_test () ? 0 : 1;
 }
