@@ -84,7 +84,7 @@ static int make_test (void)
 	mp_mont_ro (ro, m, len);
 	mp_show ("ro = ", ro, len);
 
-	mp_load_hex (a, ARRAY_SIZE (a), A);
+	mp_load_hex (a, ARRAY_SIZE (a), A);  /* use mp_zext in generic case */
 	mp_show ("A  = ", a, len);
 
 	mp_mont_push_n (am, a, ro, m, len, mu);
