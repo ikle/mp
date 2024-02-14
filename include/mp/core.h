@@ -20,7 +20,7 @@
  * Function mp_normalize normalizes (x, len), and returns minimal possible
  * length value of x.
  */
-static inline size_t mp_normalize (digit_t *x, size_t len)
+static inline size_t mp_normalize (const digit_t *x, size_t len)
 {
 	while (len > 0 && x[len - 1] == 0)
 		--len;
