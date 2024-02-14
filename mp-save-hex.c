@@ -14,7 +14,7 @@
 
 static const char map[] = "0123456789abcdef";
 
-size_t mp_save_hex (char *n, size_t avail, digit_t *x, size_t len)
+size_t mp_save_hex (char *n, size_t avail, const digit_t *x, size_t len)
 {
 	size_t count, i;
 	digit_t h;

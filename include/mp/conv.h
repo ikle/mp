@@ -21,7 +21,7 @@
  * of the string, including the terminating NUL.
  */
 size_t mp_load_hex (digit_t *x, size_t avail, const char *n);
-size_t mp_save_hex (char *n, size_t avail, digit_t *x, size_t len);
+size_t mp_save_hex (char *n, size_t avail, const digit_t *x, size_t len);
 
 #endif  /* MP_SHIFT_H */
 
