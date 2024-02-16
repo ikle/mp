@@ -17,8 +17,8 @@ void mp_rshift_word (digit_t *r, const digit_t *x, size_t len, digit_t c)
 	r[len - 1] = c;
 }
 
-void mp_mont_mul_n  (digit_t *r, const digit_t *x, const digit_t *y,
-		     const digit_t *m, size_t len, digit_t mu)
+void mp_mont_mul_n (digit_t *r, const digit_t *x, const digit_t *y,
+		    const digit_t *m, size_t len, digit_t mu)
 {
 	digit_t rc;
 	size_t i;
