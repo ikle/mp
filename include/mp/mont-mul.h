@@ -36,7 +36,7 @@
  * from its Montgomery to its regular representation, and stores result
  * into (r, len).
  *
- * Function mp_mont_mul multiplies (x, len) by (y, len) module (m, len),
+ * Function mp_mont_mul_n multiplies (x, len) by (y, len) module (m, len),
  * where all X, Y and R are in Montgomery representation, and stores result
  * into (r, len). Constraints: X < M, Y < M.
  */
