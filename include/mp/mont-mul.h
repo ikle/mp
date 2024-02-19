@@ -39,6 +39,14 @@
  * Function mp_mont_mul_n multiplies (x, len) by (y, len) module (m, len),
  * where all X, Y and R are in Montgomery representation, and stores result
  * into (r, len). Constraints: X < M, Y < M.
+ *
+ * Function mp_mont_pow_n computes R * (X^Y) modulo M, where R = (r, len),
+ * X = (x, len), Y = (y, len) and M = (m, len), and stores result into R.
+ * All operands are in Montgomery representation.
+ *
+ * Function mp_mont_pow_n_sec does the same thing as function mp_mont_pow_n,
+ * but the number of operations depends only on the length of the numbers
+ * (len) to prevent timing and Flush+Reload side-channel attacks.
  */
 digit_t mp_mont_mu  (digit_t m0);
 void mp_mont_ro     (digit_t *r, const digit_t *m, size_t len);
@@ -54,5 +62,10 @@ void mp_mont_push_n (digit_t *r, const digit_t *x, const digit_t *ro,
 {
 	mp_mont_mul_n (r, x, ro, m, len, mu);
 }
+
+void mp_mont_pow_n     (digit_t *r, const digit_t *x, const digit_t *y,
+			const digit_t *m, size_t len, digit_t mu);
+void mp_mont_pow_n_sec (digit_t *r, const digit_t *x, const digit_t *y,
+			const digit_t *m, size_t len, digit_t mu);
 
 #endif  /* MP_MONT_MUL_H */
