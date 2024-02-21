@@ -18,7 +18,7 @@ void mp_mont_mul_n (digit_t *r, const digit_t *x, const digit_t *y,
 	char c;
 	size_t i;
 
-	rc  = mp_mul_1 (r, x, len, y[0]);
+	rc = mp_mul_1 (r, x, len, y[0]);
 	c = mp_digit_add (&rc, rc, mp_addmul_1 (r, m, len, mu * r[0], 0));
 	mp_rshift_word (r, r, len, rc);
 
