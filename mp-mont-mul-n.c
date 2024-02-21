@@ -14,18 +14,18 @@
 void mp_mont_mul_n (digit_t *r, const digit_t *x, const digit_t *y,
 		    const digit_t *m, size_t len, digit_t mu)
 {
-	digit_t rc;
+	digit_t h;
 	char c;
 	size_t i;
 
-	rc = mp_mul_1 (r, x, len, y[0]);
-	c = mp_digit_add (&rc, rc, mp_addmul_1 (r, m, len, mu * r[0], 0));
-	mp_rshift_word (r, r, len, rc);
+	h = mp_mul_1 (r, x, len, y[0]);
+	c = mp_digit_add (&h, h, mp_addmul_1 (r, m, len, mu * r[0], 0));
+	mp_rshift_word (r, r, len, h);
 
 	for (i = 1; i < len; ++i) {
-		rc = mp_addmul_1 (r, x, len, y[i], 0) + c;
-		c = mp_digit_add (&rc, rc, mp_addmul_1 (r, m, len, mu * r[0], 0));
-		mp_rshift_word (r, r, len, rc);
+		h = mp_addmul_1 (r, x, len, y[i], 0) + c;
+		c = mp_digit_add (&h, h, mp_addmul_1 (r, m, len, mu * r[0], 0));
+		mp_rshift_word (r, r, len, h);
 	}
 
 	if (c != 0 || mp_cmp_n (r, m, len) >= 0)
