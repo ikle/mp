@@ -11,6 +11,7 @@
 
 #include <mp/conv.h>
 #include <mp/mont-mul.h>
+#include <mp/unit.h>
 
 #ifndef ARRAY_SIZE
 #define ARRAY_SIZE(a)  (sizeof (a) / sizeof ((a)[0]))
@@ -58,12 +59,16 @@ static int mu_make_tests (void)
 }
 
 /*
- * M = SHA256(''), A = SHA256('A')
+ * M = SHA256(''), A = SHA256('A'), B = SHA256('B'), P = (A * A^B) mod M
  */
 static const char M[] =
 	"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
 static const char A[] =
 	"559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd";
+static const char B[] =
+	"df7e70e5021544f4834bbee64a9e3789febc4be81470df629cad6ddb03320a5c";
+static const char P[] =
+	"1ecb066f4c9072b8cd7977e2011519b1b550ff2d0d48fc689b548ec579b1a958";
 
 static void mp_show (const char *prefix, const digit_t *x, size_t len)
 {
@@ -100,7 +105,35 @@ static int make_test (void)
 	return 0;
 }
 
+static int pow_test (void)
+{
+	digit_t m[8], mu, ro[8], a[8], am[8], b[8], rm[8], r[8], p[8];
+	size_t len = mp_load_hex (m, ARRAY_SIZE (m), M);
+
+	mp_show ("M  = ", m, len);
+
+	mu = mp_mont_mu (m[0]);
+	mp_mont_ro (ro, m, len);
+
+	mp_load_hex (a, ARRAY_SIZE (a), A);  /* use mp_zext in generic case */
+	mp_show ("A  = ", a, len);
+
+	mp_mont_push_n (am, a, ro, m, len, mu);
+
+	mp_load_hex (b, ARRAY_SIZE (b), B);  /* use mp_zext in generic case */
+	mp_show ("B  = ", b, len);
+
+	mp_copy (rm, am, len);
+	mp_mont_pow_n (rm, am, b, m, len, mu);
+	mp_mont_pull_n (r, rm, m, len, mu);
+	mp_show ("R  = ", r, len);
+
+	mp_load_hex (p, ARRAY_SIZE (p), P);  /* use mp_zext in generic case */
+
+	return mp_cmp_n (r, p, len) == 0;;
+}
+
 int main (int argc, char *argv[])
 {
-	return mu_make_tests () && make_test () ? 0 : 1;
+	return mu_make_tests () && make_test () && pow_test () ? 0 : 1;
 }
