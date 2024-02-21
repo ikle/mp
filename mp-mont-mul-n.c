@@ -15,7 +15,7 @@ void mp_mont_mul_n (digit_t *r, const digit_t *x, const digit_t *y,
 		    const digit_t *m, size_t len, digit_t mu)
 {
 	digit_t rc;
-	char c, nc;
+	char c;
 	size_t i;
 
 	rc  = mp_mul_1 (r, x, len, y[0]);
@@ -23,10 +23,9 @@ void mp_mont_mul_n (digit_t *r, const digit_t *x, const digit_t *y,
 	mp_rshift_word (r, r, len, rc);
 
 	for (i = 1; i < len; ++i) {
-		rc  = mp_addmul_1 (r, x, len, y[i], 0);
-		nc = mp_digit_add (&rc, rc, mp_addmul_1 (r, m, len, mu * r[0], 0));
-		mp_rshift_word (r, r, len, rc + c);
-		c = nc;
+		rc = mp_addmul_1 (r, x, len, y[i], 0) + c;
+		c = mp_digit_add (&rc, rc, mp_addmul_1 (r, m, len, mu * r[0], 0));
+		mp_rshift_word (r, r, len, rc);
 	}
 
 	if (c != 0 || mp_cmp_n (r, m, len) >= 0)
