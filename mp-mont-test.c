@@ -132,28 +132,33 @@ static int do_pow_test (const struct mp_pow_sample *o)
 {
 	digit_t m[8], mu, ro[8], a[8], am[8], b[8], rm[8], r[8], p[8];
 	size_t len = mp_load_hex (m, ARRAY_SIZE (m), o->M);
+	int ok;
 
-	mp_show ("M  = ", m, len);
+	printf ("pow test:\n");
+
+	mp_show ("\tM  = ", m, len);
 
 	mu = mp_mont_mu (m[0]);
 	mp_mont_ro (ro, m, len);
 
 	mp_load_hex (a, ARRAY_SIZE (a), o->A);  /* use mp_zext in generic case */
-	mp_show ("A  = ", a, len);
+	mp_show ("\tA  = ", a, len);
 
 	mp_mont_push_n (am, a, ro, m, len, mu);
 
 	mp_load_hex (b, ARRAY_SIZE (b), o->B);  /* use mp_zext in generic case */
-	mp_show ("B  = ", b, len);
+	mp_show ("\tB  = ", b, len);
 
 	mp_copy (rm, am, len);
 	mp_mont_pow_n (rm, am, b, m, len, mu);
 	mp_mont_pull_n (r, rm, m, len, mu);
-	mp_show ("R  = ", r, len);
+	mp_show ("\tR  = ", r, len);
 
 	mp_load_hex (p, ARRAY_SIZE (p), o->P);  /* use mp_zext in generic case */
 
-	return mp_cmp_n (r, p, len) == 0;
+	ok = mp_cmp_n (r, p, len) == 0;
+	printf ("\t%s\n", ok ? "passed" : "failed");
+	return ok;
 }
 
 static int make_pow_tests (void)
