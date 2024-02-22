@@ -17,7 +17,7 @@
 #define ARRAY_SIZE(a)  (sizeof (a) / sizeof ((a)[0]))
 #endif
 
-static int mu_test (digit_t x)
+static int do_mu_test (digit_t x)
 {
 	digit_t y, z;
 
@@ -47,12 +47,12 @@ static digit_t m0[] = {
 #endif
 };
 
-static int mu_make_tests (void)
+static int make_mu_tests (void)
 {
 	size_t i;
 
 	for (i = 0; i < ARRAY_SIZE (m0); ++i)
-		if (!mu_test (m0[i]))
+		if (!do_mu_test (m0[i]))
 			return 0;
 
 	return 1;
@@ -169,5 +169,5 @@ static int make_pow_tests (void)
 
 int main (int argc, char *argv[])
 {
-	return mu_make_tests () && make_test () && make_pow_tests () ? 0 : 1;
+	return make_mu_tests () && make_test () && make_pow_tests () ? 0 : 1;
 }
