@@ -153,7 +153,7 @@ static int do_pow_test (const struct mp_pow_sample *o)
 
 	mp_load_hex (p, ARRAY_SIZE (p), o->P);  /* use mp_zext in generic case */
 
-	return mp_cmp_n (r, p, len) == 0;;
+	return mp_cmp_n (r, p, len) == 0;
 }
 
 static int make_pow_tests (void)
