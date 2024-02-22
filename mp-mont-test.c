@@ -47,7 +47,7 @@ static digit_t m0[] = {
 #endif
 };
 
-static int make_mu_tests (void)
+static int do_mu_tests (void)
 {
 	size_t i;
 
@@ -161,7 +161,7 @@ static int do_pow_test (const struct mp_pow_sample *o)
 	return ok;
 }
 
-static int make_pow_tests (void)
+static int do_pow_tests (void)
 {
 	size_t i;
 
@@ -174,5 +174,5 @@ static int make_pow_tests (void)
 
 int main (int argc, char *argv[])
 {
-	return make_mu_tests () && make_test () && make_pow_tests () ? 0 : 1;
+	return do_mu_tests () && make_test () && do_pow_tests () ? 0 : 1;
 }
