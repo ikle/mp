@@ -31,7 +31,7 @@ static int do_mu_test (digit_t x)
 	return 0;
 }
 
-static digit_t m0[] = {
+static const digit_t mu_sample[] = {
 	  0x03,   0x07,   0x0b,   0x0f,   0x13,   0x17,   0x1b,   0x1f,
 	  0x33,   0x37,   0x3b,   0x3f,   0x73,   0x77,   0x7b,   0x7f,
 	 0x103,  0x207,  0x30b,  0x40f,  0x513,  0x617,  0x71b,  0x81f,
@@ -51,8 +51,8 @@ static int do_mu_tests (void)
 {
 	size_t i;
 
-	for (i = 0; i < ARRAY_SIZE (m0); ++i)
-		if (!do_mu_test (m0[i]))
+	for (i = 0; i < ARRAY_SIZE (mu_sample); ++i)
+		if (!do_mu_test (mu_sample[i]))
 			return 0;
 
 	return 1;
@@ -101,11 +101,11 @@ static int make_test (void)
 	return 0;
 }
 
-struct mp_pow_sample {
+struct pow_sample {
 	const char *M, *A, *B, *P;
 };
 
-static const struct mp_pow_sample mp_pow_test[] = {
+static const struct pow_sample pow_sample[] = {
 	{
 		/*
 		 * M = SHA256(''), A = SHA256('A'), B = SHA256('B'),
@@ -128,7 +128,7 @@ static const struct mp_pow_sample mp_pow_test[] = {
 	},
 };
 
-static int do_pow_test (const struct mp_pow_sample *o)
+static int do_pow_test (const struct pow_sample *o)
 {
 	digit_t m[8], mu, ro[8], a[8], am[8], b[8], rm[8], r[8], p[8];
 	size_t len = mp_load_hex (m, ARRAY_SIZE (m), o->M);
@@ -165,8 +165,8 @@ static int do_pow_tests (void)
 {
 	size_t i;
 
-	for (i = 0; i < ARRAY_SIZE (mp_pow_test); ++i)
-		if (!do_pow_test (mp_pow_test + i))
+	for (i = 0; i < ARRAY_SIZE (pow_sample); ++i)
+		if (!do_pow_test (pow_sample + i))
 			return 0;
 
 	return 1;
