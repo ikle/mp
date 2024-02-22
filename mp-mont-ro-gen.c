@@ -23,4 +23,5 @@ void mp_mont_ro_gen (digit_t *r, const digit_t *m, size_t len)
 	mp_lshift (ms, m, len, 0, shift);
 
 	mp_mod (r, R2, n + 1, ms, len);
+	mp_rshift (r, r, len, 0, shift);
 }
