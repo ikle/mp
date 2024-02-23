@@ -118,6 +118,16 @@ static const struct pow_sample pow_sample[] = {
 	},
 	{
 		/*
+		 * M = SHA(''), A = SHA('A'), B = SHA('B'),
+		 * P = (A * A^B) mod M
+		 */
+		"da39a3ee5e6b4b0d3255bfef95601890afd80709",
+		"6dcd4ce23d88e2ee9568ba546c007c63d9131c1b",
+		"ae4f281df5a5d0ff3cad6371f76d5c29b6d953ec",
+		"b4d18c8b96093f7432c9f33ce456c9a37d871085"
+	},
+	{
+		/*
 		 * M = MD5('') + 1, A = MD5('A'), B = MD5('B'),
 		 * P = (A * A^B) mod M
 		 */
@@ -139,7 +149,7 @@ static int do_pow_test (const struct pow_sample *o)
 	mp_show ("\tM  = ", m, len);
 
 	mu = mp_mont_mu (m[0]);
-	mp_mont_ro (ro, m, len);
+	mp_mont_ro_gen (ro, m, len);
 
 	mp_load_hex (a, ARRAY_SIZE (a), o->A);  /* use mp_zext in generic case */
 	mp_show ("\tA  = ", a, len);
