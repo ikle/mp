@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include <mp/conv.h>
+#include <mp/core.h>
 #include <mp/mont-mul.h>
 #include <mp/unit.h>
 
@@ -72,6 +73,46 @@ static int do_mu_tests (void)
 
 	printf ("\tfailed test #%zu\n", i);
 	return 0;
+}
+
+static const char *const pull_sample[] = {
+	/* M = SHA256('') */
+	"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+	/* M = SHA('') */
+	"da39a3ee5e6b4b0d3255bfef95601890afd80709",
+	/* M = MD5('') + 1 */
+	"d41d8cd98f00b204e9800998ecf8427f",
+	/* M = MD5('') >> 4 */
+	"d41d8cd98f00b204e9800998ecf8427",
+};
+
+static int do_pull_test (const char *M)
+{
+	digit_t m[8], mu, x[8], r[8];
+	size_t len = mp_load_hex (m, ARRAY_SIZE (m), M);
+	int ok;
+
+	printf ("pull test:\n");
+	mp_show ("\tM  = ", m, len);
+
+	mu = mp_mont_mu (m[0]);
+	mp_neg (x, m, len);			/* X = base^len mod M	*/
+	mp_mont_pull_n (r, x, m, len, mu);	/* R = X * X^-1 mod M	*/
+
+	ok = mp_normalize (r, len) == 1 && r[0] == 1;
+	printf ("\t%s\n", ok ? "passed" : "failed");
+	return ok;
+}
+
+static int do_pull_tests (void)
+{
+	size_t i;
+
+	for (i = 0; i < ARRAY_SIZE (pull_sample); ++i)
+		if (!do_pull_test (pull_sample[i]))
+			return 0;
+
+	return 1;
 }
 
 /*
@@ -202,5 +243,6 @@ static int do_pow_tests (void)
 
 int main (int argc, char *argv[])
 {
-	return do_mu_tests () && make_test () && do_pow_tests () ? 0 : 1;
+	return	do_mu_tests () && do_pull_tests () &&
+		make_test () && do_pow_tests () ? 0 : 1;
 }
