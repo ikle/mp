@@ -21,10 +21,14 @@ void mp_mont_ro_gen (digit_t *r, const digit_t *m, size_t len)
 
 	/* R^2 * 2^shift, where R = B^len */
 	mp_zero (R2, n); R2[n] = (digit_t) 1 << shift;
-	mp_lshift (ms, m, len, 0, shift);
 
-	mp_mod (r, R2, n + 1, ms, len);
-	mp_rshift (r, r, len, 0, shift);
+	if (shift != 0) {
+		mp_lshift (ms, m, len, 0, shift);
+		mp_mod (r, R2, n + 1, ms, len);
+		mp_rshift (r, r, len, 0, shift);
+	}
+	else
+		mp_mod (r, R2, n + 1, m, len);
 #else
 	const int s = mp_digit_clz (m[len - 1]);
 	size_t i, j;
