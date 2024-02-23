@@ -132,11 +132,11 @@ void mp_digit_fma (digit_t *r1, digit_t *r0, digit_t x, digit_t y, digit_t a)
 /*
  * Function mp_digit_lshift multiplies x by 2^n, stores result bitwise
  * ored with input carry c into r, and returns the shift carry value
- * (shifted-out bits). The n must be less than MP_DIGIT_BITS.
+ * (shifted-out bits). Constraints: 0 < n < MP_DIGIT_BITS.
  *
  * Function mp_digit_rshift divides x by 2^n, stores result bitwise
  * ored with input carry c into r, and returns the remainder value
- * (shifted-out bits). The n must be less than MP_DIGIT_BITS.
+ * (shifted-out bits). Constraints: 0 < n < MP_DIGIT_BITS.
  *
  * Note that we assume that there is a logical right shift on the target
  * platform.
