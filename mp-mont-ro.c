@@ -14,7 +14,7 @@
 
 void mp_mont_ro (digit_t *r, const digit_t *m, size_t len)
 {
-#if 1
+#ifndef HAVE_SLOW_DIV
 	const size_t n = len * 2;
 	digit_t R2[n + 1];
 
