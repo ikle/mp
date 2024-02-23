@@ -15,7 +15,7 @@
  * Constraints for all Montgomery multiplication methods: M is odd.
  *
  * Function mp_mont_mu computes the Montgomery constant mu = -M ^ -1 mod B,
- * where m0 is a low dogot of M, B = 2^w and w = MP_DIGIT_BITS. Subsequently,
+ * where m0 is a low digit of M, B = 2^w and w = MP_DIGIT_BITS. Subsequently,
  * the precalculated value of mu is used for all Montgomery multiplication
  * operations.
  *
