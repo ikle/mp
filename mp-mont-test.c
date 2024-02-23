@@ -147,39 +147,65 @@ static int do_ro_tests (void)
 	return 1;
 }
 
-/*
- * M = SHA256(''), A = SHA256('A')
- */
-static const char M[] =
-	"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
-static const char A[] =
-	"559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd";
+struct push_sample {
+	const char *M, *A;
+};
 
-static int make_test (void)
+static const struct push_sample push_sample[] = {
+	{
+		/* M = SHA256(''), A = SHA256('A') */
+		"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+		"559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd"
+	},
+	{
+		/* M = SHA(''), A = SHA('A') */
+		"da39a3ee5e6b4b0d3255bfef95601890afd80709",
+		"6dcd4ce23d88e2ee9568ba546c007c63d9131c1b"
+	},
+	{
+		/* M = MD5('') + 1, A = MD5('A') */
+		"d41d8cd98f00b204e9800998ecf8427f",
+		"7fc56270e7a70fa81a5935b72eacbe29"
+	},
+	{
+		/* M = MD5('') >> 4, A = MD5('A') >> 4  */
+		"d41d8cd98f00b204e9800998ecf8427",
+		"7fc56270e7a70fa81a5935b72eacbe2"
+	},
+};
+
+static int do_push_test (const struct push_sample *o)
 {
 	digit_t m[8], mu, ro[8], a[8], am[8], r[8];
-	size_t len = mp_load_hex (m, ARRAY_SIZE (m), M);
+	size_t len = mp_load_hex (m, ARRAY_SIZE (m), o->M);
 	int ok;
 
-	printf ("mul test:\n");
+	printf ("push test:\n");
 	mp_show ("\tM  = ", m, len);
 
 	mu = mp_mont_mu (m[0]);
-	mp_mont_ro (ro, m, len);
-	mp_show ("\tro = ", ro, len);
+	mp_mont_ro_gen (ro, m, len);
 
-	mp_load_hex (a, ARRAY_SIZE (a), A);  /* use mp_zext in generic case */
+	mp_load_hex (a, ARRAY_SIZE (a), o->A);  /* use mp_zext in generic case */
 	mp_show ("\tA  = ", a, len);
 
 	mp_mont_push_n (am, a, ro, m, len, mu);
-	mp_show ("\tAm = ", am, len);
-
 	mp_mont_pull_n (r, am, m, len, mu);
-	mp_show ("\tA  = ", r, len);
 
 	ok = mp_cmp_n (a, r, len) == 0;
 	printf ("\t%s\n", ok ? "passed" : "failed");
 	return ok;
+}
+
+static int do_push_tests (void)
+{
+	size_t i;
+
+	for (i = 0; i < ARRAY_SIZE (push_sample); ++i)
+		if (!do_push_test (push_sample + i))
+			return 0;
+
+	return 1;
 }
 
 struct pow_sample {
@@ -276,5 +302,5 @@ static int do_pow_tests (void)
 int main (int argc, char *argv[])
 {
 	return	do_mu_tests () && do_pull_tests () && do_ro_tests () &&
-		make_test () && do_pow_tests () ? 0 : 1;
+		do_push_tests () && do_pow_tests () ? 0 : 1;
 }
