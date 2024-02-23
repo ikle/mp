@@ -42,7 +42,7 @@
  *
  * Function mp_mont_pow_n computes R * (X^Y) modulo M, where R = (r, len),
  * X = (x, len), Y = (y, len) and M = (m, len), and stores result into R.
- * All operands are in Montgomery representation.
+ * Constraints: R and X operands are in Montgomery representation.
  *
  * Function mp_mont_pow_n_sec does the same thing as function mp_mont_pow_n,
  * but the number of operations depends only on the length of the numbers
