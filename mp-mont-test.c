@@ -115,6 +115,38 @@ static int do_pull_tests (void)
 	return 1;
 }
 
+static int do_ro_test (const char *M)
+{
+	digit_t m[8], mu, ro[8], r[8];
+	size_t len = mp_load_hex (m, ARRAY_SIZE (m), M);
+	int ok;
+
+	printf ("ro test:\n");
+	mp_show ("\tM  = ", m, len);
+
+	mu = mp_mont_mu (m[0]);
+	mp_mont_ro_gen (ro, m, len);
+	mp_show ("\tro = ", ro, len);
+
+	mp_mont_pull_n (r, ro, m, len, mu);
+	mp_mont_pull_n (r,  r, m, len, mu);
+
+	ok = mp_normalize (r, len) == 1 && r[0] == 1;
+	printf ("\t%s\n", ok ? "passed" : "failed");
+	return ok;
+}
+
+static int do_ro_tests (void)
+{
+	size_t i;
+
+	for (i = 0; i < ARRAY_SIZE (pull_sample); ++i)
+		if (!do_ro_test (pull_sample[i]))
+			return 0;
+
+	return 1;
+}
+
 /*
  * M = SHA256(''), A = SHA256('A')
  */
@@ -243,6 +275,6 @@ static int do_pow_tests (void)
 
 int main (int argc, char *argv[])
 {
-	return	do_mu_tests () && do_pull_tests () &&
+	return	do_mu_tests () && do_pull_tests () && do_ro_tests () &&
 		make_test () && do_pow_tests () ? 0 : 1;
 }
