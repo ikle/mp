@@ -17,6 +17,14 @@
 #define ARRAY_SIZE(a)  (sizeof (a) / sizeof ((a)[0]))
 #endif
 
+static void mp_show (const char *prefix, const digit_t *x, size_t len)
+{
+	char s[len * 16 + 1];
+
+	mp_save_hex (s, sizeof (s), x, len);
+	printf ("%s%s\n", prefix, s);
+}
+
 static int do_mu_test (digit_t x)
 {
 	digit_t y, z;
@@ -73,14 +81,6 @@ static const char M[] =
 	"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
 static const char A[] =
 	"559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd";
-
-static void mp_show (const char *prefix, const digit_t *x, size_t len)
-{
-	char s[len * 16 + 1];
-
-	mp_save_hex (s, sizeof (s), x, len);
-	printf ("%s%s\n", prefix, s);
-}
 
 static int make_test (void)
 {
