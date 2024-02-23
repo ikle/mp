@@ -51,11 +51,19 @@ static int do_mu_tests (void)
 {
 	size_t i;
 
+	printf ("mu tests:\n");
+
 	for (i = 0; i < ARRAY_SIZE (mu_sample); ++i)
 		if (!do_mu_test (mu_sample[i]))
-			return 0;
+			break;
 
-	return 1;
+	printf ("\tpassed %zu tests\n", i);
+
+	if (i == ARRAY_SIZE (mu_sample))
+		return 1;
+
+	printf ("\tfailed test #%zu\n", i);
+	return 0;
 }
 
 /*
