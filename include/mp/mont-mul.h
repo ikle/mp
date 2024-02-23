@@ -22,11 +22,11 @@
  * Function mp_mont_ro computes ro = R^2 mod M, where M = (m, len), and
  * R = B ^ len. The precomputed value of ro is then used to convert a residue
  * module M from its regular to its Montgomery representation. Constraint:
- * the most significant bit M is set.
+ * the most significant bit of M is set.
  *
  * Function mp_mont_ro_gen does the same thing as function mp_mont_ro, but
- * with fewer restrictions. Constraint: The most significant digit is not
- * zero.
+ * with fewer restrictions. Constraint: The most significant digit of M is
+ * not zero.
  *
  * Function mp_mont_push_n converts a residue (x, len) modulo (m, len)
  * from its regular to its Montgomery representation, and stores result
