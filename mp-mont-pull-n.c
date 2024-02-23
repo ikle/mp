@@ -14,16 +14,16 @@
 void mp_mont_pull_n (digit_t *r, const digit_t *x,
 		     const digit_t *m, size_t len, digit_t mu)
 {
-	digit_t rc;
+	digit_t h;
 	size_t i;
 
 	mp_copy (r, x, len);
-	rc = mp_addmul_1 (r, m, len, mu * r[0], 0);
-	mp_rshift_word (r, r, len, rc);
+	h = mp_addmul_1 (r, m, len, mu * r[0], 0);
+	mp_rshift_word (r, r, len, h);
 
 	for (i = 1; i < len; ++i) {
-		rc = mp_addmul_1 (r, m, len, mu * r[0], 0);
-		mp_rshift_word (r, r, len, rc);
+		h = mp_addmul_1 (r, m, len, mu * r[0], 0);
+		mp_rshift_word (r, r, len, h);
 	}
 
 	if (mp_cmp_n (r, m, len) >= 0)
