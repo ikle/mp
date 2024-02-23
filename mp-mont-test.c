@@ -136,6 +136,16 @@ static const struct pow_sample pow_sample[] = {
 		"9d5ed678fe57bcca610140957afab571",
 		"654c914145d02e984c3ceed12bb64e2b"
 	},
+	{
+		/*
+		 * M = MD5('') >> 4, A = MD5('A') >> 4, B = MD5('B') >> 4,
+		 * P = (A * A^B) mod M
+		 */
+		"d41d8cd98f00b204e9800998ecf8427",
+		"7fc56270e7a70fa81a5935b72eacbe2",
+		"9d5ed678fe57bcca610140957afab57",
+		"1fc541f4d8b93eb976d17f7e236ff0"
+	},
 };
 
 static int do_pow_test (const struct pow_sample *o)
