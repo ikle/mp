@@ -127,27 +127,27 @@ static int make_test (void)
 {
 	digit_t m[8], mu, ro[8], a[8], am[8], r[8];
 	size_t len = mp_load_hex (m, ARRAY_SIZE (m), M);
+	int ok;
 
-	mp_show ("M  = ", m, len);
+	printf ("mul test:\n");
+	mp_show ("\tM  = ", m, len);
 
 	mu = mp_mont_mu (m[0]);
 	mp_mont_ro (ro, m, len);
-	mp_show ("ro = ", ro, len);
+	mp_show ("\tro = ", ro, len);
 
 	mp_load_hex (a, ARRAY_SIZE (a), A);  /* use mp_zext in generic case */
-	mp_show ("A  = ", a, len);
+	mp_show ("\tA  = ", a, len);
 
 	mp_mont_push_n (am, a, ro, m, len, mu);
-	mp_show ("Am = ", am, len);
+	mp_show ("\tAm = ", am, len);
 
 	mp_mont_pull_n (r, am, m, len, mu);
-	mp_show ("A  = ", r, len);
+	mp_show ("\tA  = ", r, len);
 
-	if (mp_cmp_n (a, r, len) == 0)
-		return 1;
-
-	fprintf (stderr, "E: Full test failed, result does not match\n");
-	return 0;
+	ok = mp_cmp_n (a, r, len) == 0;
+	printf ("\t%s\n", ok ? "passed" : "failed");
+	return ok;
 }
 
 struct pow_sample {
